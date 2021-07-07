@@ -1,23 +1,6 @@
 <template>
   <div>
-    <header class="header">
-      <div class="header__logo">
-        <a href="index.html" class="logo">
-          <img
-            src="@/assets/img/logo.svg"
-            alt="V!U!E! Pizza logo"
-            width="90"
-            height="40"
-          />
-        </a>
-      </div>
-      <div class="header__cart">
-        <a href="cart.html">0 ₽</a>
-      </div>
-      <div class="header__user">
-        <a href="#" class="header__login"><span>Войти</span></a>
-      </div>
-    </header>
+    <AppLayoutHeader />
 
     <main class="content">
       <form action="#" method="post">
@@ -39,7 +22,7 @@
                     name="dought"
                     value="light"
                     class="visually-hidden"
-                    checked
+                    :checked="i === 0"
                   />
                   <b>{{ el.name }}</b>
                   <span>{{ el.description }}</span>
@@ -85,7 +68,12 @@
                     :key="`sauce-${i}`"
                     class="radio ingridients__input"
                   >
-                    <input type="radio" name="sauce" value="tomato" checked />
+                    <input
+                      type="radio"
+                      name="sauce"
+                      value="tomato"
+                      :checked="i === 0"
+                    />
                     <span>{{ sauce.name }}</span>
                   </label>
                 </div>
@@ -171,9 +159,14 @@
 
 <script>
 import pizza from "@/static/pizza.json";
+import AppLayoutHeader from "@/layouts/AppLayoutHeader";
 
 export default {
   name: "IndexHome",
+
+  components: {
+    AppLayoutHeader,
+  },
 
   data() {
     return {
