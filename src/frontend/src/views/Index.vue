@@ -11,23 +11,13 @@
             <div class="sheet">
               <h2 class="title title--small sheet__title">Выберите тесто</h2>
 
-              <div class="sheet__content dough">
-                <label
-                  v-for="(el, i) in dough"
-                  :key="`dough-${i}`"
-                  class="dough__input dough__input--light"
-                >
-                  <input
-                    type="radio"
-                    name="dought"
-                    value="light"
-                    class="visually-hidden"
-                    :checked="i === 0"
-                  />
-                  <b>{{ el.name }}</b>
-                  <span>{{ el.description }}</span>
-                </label>
-              </div>
+              <RadioButton
+                :items="dough"
+                name="dough"
+                size="light"
+                checked
+                class="sheet__content dough"
+              />
             </div>
           </div>
 
@@ -35,21 +25,12 @@
             <div class="sheet">
               <h2 class="title title--small sheet__title">Выберите размер</h2>
 
-              <div class="sheet__content diameter">
-                <label
-                  v-for="(size, i) in sizes"
-                  :key="`size-${i}`"
-                  class="diameter__input diameter__input--small"
-                >
-                  <input
-                    type="radio"
-                    name="diameter"
-                    value="small"
-                    class="visually-hidden"
-                  />
-                  <span>{{ size.name }}</span>
-                </label>
-              </div>
+              <RadioButton
+                :items="sizes"
+                name="diameter"
+                size="small"
+                class="sheet__content diameter"
+              />
             </div>
           </div>
 
@@ -60,23 +41,14 @@
               </h2>
 
               <div class="sheet__content ingridients">
-                <div class="ingridients__sauce">
-                  <p>Основной соус:</p>
-
-                  <label
-                    v-for="(sauce, i) in sauces"
-                    :key="`sauce-${i}`"
-                    class="radio ingridients__input"
-                  >
-                    <input
-                      type="radio"
-                      name="sauce"
-                      value="tomato"
-                      :checked="i === 0"
-                    />
-                    <span>{{ sauce.name }}</span>
-                  </label>
-                </div>
+                <RadioButton
+                  :items="sauces"
+                  name="ingridients"
+                  description="Основной соус:"
+                  labelType="radio"
+                  :inputVisuallyHidden="false"
+                  class="ingridients__sauce"
+                />
 
                 <div class="ingridients__filling">
                   <p>Начинка:</p>
@@ -160,12 +132,14 @@
 <script>
 import pizza from "@/static/pizza.json";
 import AppLayoutHeader from "@/layouts/AppLayoutHeader";
+import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "IndexHome",
 
   components: {
     AppLayoutHeader,
+    RadioButton,
   },
 
   data() {
