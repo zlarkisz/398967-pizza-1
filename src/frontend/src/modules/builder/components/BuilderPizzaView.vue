@@ -4,15 +4,17 @@
       label="Название пиццы"
       placeholder="Введите название пиццы"
       name="pizza_name"
+      v-model="pizzaName"
     />
 
     <div class="content__constructor">
       <div class="pizza pizza--foundation--big-tomato">
         <div class="pizza__wrapper">
-          <div class="pizza__filling pizza__filling--ananas"></div>
-          <div class="pizza__filling pizza__filling--bacon"></div>
-          <div class="pizza__filling pizza__filling--cheddar"></div>
-          <div class="pizza__filling pizza__filling--mushrooms"></div>
+          <div
+            v-for="(el, i) in drops"
+            :key="i"
+            :class="['pizza__filling', `pizza__filling--${el}`]"
+          />
         </div>
       </div>
     </div>
@@ -28,9 +30,22 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 export default {
   name: "BuilderPizzaView",
 
+  props: {
+    drops: {
+      type: Array,
+      default: () => [],
+    },
+  },
+
   components: {
     BaseInput,
     BuilderPriceCounter,
+  },
+
+  data() {
+    return {
+      pizzaName: "",
+    };
   },
 };
 </script>

@@ -1,20 +1,17 @@
 <template>
-  <div>
-    <p v-if="description">{{ description }}</p>
-
-    <label v-for="(item, i) in items" :key="i" :class="labelClasses">
-      <input
-        type="radio"
-        :name="name"
-        :value="item.value"
-        :class="inputClasses"
-        :checked="item.checked"
-      />
-      <b v-if="item.name && item.description">{{ item.name }}</b>
-      <span v-if="item.name && item.description">{{ item.description }}</span>
-      <span v-if="item.name">{{ item.name }}</span>
-    </label>
-  </div>
+  <label :class="labelClasses">
+    <input
+      type="radio"
+      :name="name"
+      :value="radioValue"
+      :class="inputClasses"
+      :checked="checked"
+      @change="onChange"
+    />
+    <b v-if="itemName && itemDescription">{{ itemName }}</b>
+    <span v-if="itemName && itemDescription">{{ itemDescription }}</span>
+    <span v-if="itemName">{{ itemName }}</span>
+  </label>
 </template>
 
 <script>
@@ -22,11 +19,6 @@ export default {
   name: "RadioButton",
 
   props: {
-    items: {
-      type: Array,
-      default: () => [],
-    },
-
     name: {
       type: String,
       required: true,
@@ -51,6 +43,26 @@ export default {
       type: String,
       default: "",
     },
+
+    checked: {
+      type: Boolean,
+      default: false,
+    },
+
+    itemName: {
+      type: String,
+      default: "",
+    },
+
+    radioValue: {
+      type: String,
+      default: "",
+    },
+
+    itemDescription: {
+      type: String,
+      default: "",
+    },
   },
 
   computed: {
@@ -64,6 +76,12 @@ export default {
 
     inputClasses() {
       return this.inputVisuallyHidden && "visually-hidden";
+    },
+  },
+
+  methods: {
+    onChange(e) {
+      this.$emit("change", e.target.value);
     },
   },
 };

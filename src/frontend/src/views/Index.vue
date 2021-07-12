@@ -9,14 +9,13 @@
 
       <BuilderIngredientsSelector :sauces="sauces" :ingredients="ingredients" />
 
-      <BuilderPizzaView />
+      <BuilderPizzaView :drops="drops" />
     </div>
   </form>
 </template>
 
 <script>
 import pizza from "@/static/pizza.json";
-import AppLayoutHeader from "@/layouts/AppLayoutHeader";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
@@ -26,7 +25,6 @@ export default {
   name: "IndexHome",
 
   components: {
-    AppLayoutHeader,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
@@ -39,6 +37,7 @@ export default {
       dough: pizza.dough,
       sauces: pizza.sauces,
       ingredients: pizza.ingredients,
+      drops: ["ananas", "bacon", "cheddar", "mushrooms"],
     };
   },
 };

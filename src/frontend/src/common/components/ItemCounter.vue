@@ -8,15 +8,22 @@
         { 'counter__button--disabled': counter <= 0 },
         'counter__button--minus',
       ]"
-      @click="reduceСounter;"
+      :disabled="counter <= 0"
+      @click="reduceСounter()"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
-    <input type="text" name="counter" class="counter__input" :value="counter" />
+    <input
+      type="text"
+      name="counter"
+      class="counter__input"
+      :value="counter"
+      :disabled="counter <= 0"
+    />
     <button
       type="button"
       class="counter__button counter__button--plus"
-      @click="incrementCounter"
+      @click="incrementCounter()"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -35,15 +42,11 @@ export default {
 
   methods: {
     reduceСounter() {
-      this.counter--;
+      if (this.counter !== 0) this.counter--;
     },
     incrementCounter() {
       this.counter++;
     },
-  },
-
-  mounted() {
-    this.$refs.min.addEventListener("click", () => this.counter--);
   },
 };
 </script>

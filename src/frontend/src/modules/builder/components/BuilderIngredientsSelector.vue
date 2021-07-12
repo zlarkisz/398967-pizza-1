@@ -4,14 +4,22 @@
       <h2 class="title title--small sheet__title">Выберите ингридиенты</h2>
 
       <div class="sheet__content ingridients">
-        <RadioButton
-          :items="sauces"
-          name="ingridients"
-          description="Основной соус:"
-          labelType="radio"
-          :inputVisuallyHidden="false"
-          class="ingridients__sauce"
-        />
+        <div class="ingridients__sauce">
+          <p>Основной соус:</p>
+
+          <RadioButton
+            v-for="(item, i) in sauces"
+            :key="i"
+            v-model="selectedSauce"
+            :itemName="item.name"
+            :radioValue="item.value"
+            :checked="item.checked"
+            name="ingridients"
+            labelType="radio"
+            :inputVisuallyHidden="false"
+            @change="changeSauce"
+          />
+        </div>
 
         <div class="ingridients__filling">
           <p>Начинка:</p>
@@ -60,6 +68,18 @@ export default {
     RadioButton,
     ItemCounter,
     SelectorItem,
+  },
+
+  data() {
+    return {
+      selectedSauce: null,
+    };
+  },
+
+  methods: {
+    changeSauce(newcSauce) {
+      this.selectedSauce = newcSauce;
+    },
   },
 };
 </script>

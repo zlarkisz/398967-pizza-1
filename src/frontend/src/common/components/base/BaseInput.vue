@@ -1,7 +1,12 @@
 <template>
   <label class="input">
     <span class="visually-hidden">{{ label }}</span>
-    <input :type="type" :name="name" :placeholder="placeholder" />
+    <input
+      :type="type"
+      :name="name"
+      :placeholder="placeholder"
+      @input="onInput"
+    />
   </label>
 </template>
 
@@ -28,6 +33,12 @@ export default {
     placeholder: {
       type: String,
       default: "",
+    },
+  },
+
+  methods: {
+    onInput(e) {
+      this.$emit("input", e.target.value);
     },
   },
 };

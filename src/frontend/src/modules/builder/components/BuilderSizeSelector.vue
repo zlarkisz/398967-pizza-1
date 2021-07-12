@@ -3,12 +3,19 @@
     <div class="sheet">
       <h2 class="title title--small sheet__title">Выберите размер</h2>
 
-      <RadioButton
-        :items="sizes"
-        name="diameter"
-        size="small"
-        class="sheet__content diameter"
-      />
+      <div class="sheet__content diameter">
+        <RadioButton
+          v-for="(item, i) in sizes"
+          :key="i"
+          v-model="selectedSize"
+          :itemName="item.name"
+          :radioValue="item.value"
+          :checked="item.checked"
+          :size="item.value"
+          name="diameter"
+          @change="changeSize"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -28,6 +35,18 @@ export default {
 
   components: {
     RadioButton,
+  },
+
+  data() {
+    return {
+      selectedSize: null,
+    };
+  },
+
+  methods: {
+    changeSize(newSize) {
+      this.selectedSize = newSize;
+    },
   },
 };
 </script>
