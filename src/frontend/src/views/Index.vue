@@ -1,7 +1,7 @@
 <template>
   <form action="#" method="post">
     <div class="content__wrapper">
-      <h1 class="title title--big">Конструктор пиццы</h1>
+      <BaseTitle size="big" :sheet="false">Конструктор пиццы</BaseTitle>
 
       <BuilderDoughSelector :dough="dough" />
 
@@ -9,13 +9,14 @@
 
       <BuilderIngredientsSelector :sauces="sauces" :ingredients="ingredients" />
 
-      <BuilderPizzaView :drops="drops" />
+      <BuilderPizzaView />
     </div>
   </form>
 </template>
 
 <script>
 import pizza from "@/static/pizza.json";
+import BaseTitle from "@/common/components/base/BaseTitle";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
@@ -25,6 +26,7 @@ export default {
   name: "IndexHome",
 
   components: {
+    BaseTitle,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
@@ -37,7 +39,6 @@ export default {
       dough: pizza.dough,
       sauces: pizza.sauces,
       ingredients: pizza.ingredients,
-      drops: ["ananas", "bacon", "cheddar", "mushrooms"],
     };
   },
 };

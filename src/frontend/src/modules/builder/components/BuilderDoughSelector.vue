@@ -1,7 +1,7 @@
 <template>
   <div class="content__dough">
     <div class="sheet">
-      <h2 class="title title--small sheet__title">Выберите тесто</h2>
+      <BaseTitle>Выберите тесто</BaseTitle>
 
       <div class="sheet__content dough">
         <RadioButton
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
@@ -35,6 +36,7 @@ export default {
   },
 
   components: {
+    BaseTitle,
     RadioButton,
   },
 

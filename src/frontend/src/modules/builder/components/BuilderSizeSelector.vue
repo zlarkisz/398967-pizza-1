@@ -1,7 +1,7 @@
 <template>
   <div class="content__diameter">
     <div class="sheet">
-      <h2 class="title title--small sheet__title">Выберите размер</h2>
+      <BaseTitle>Выберите размер</BaseTitle>
 
       <div class="sheet__content diameter">
         <RadioButton
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
@@ -34,6 +35,7 @@ export default {
   },
 
   components: {
+    BaseTitle,
     RadioButton,
   },
 

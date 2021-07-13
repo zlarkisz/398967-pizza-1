@@ -1,7 +1,7 @@
 <template>
   <div class="content__ingridients">
     <div class="sheet">
-      <h2 class="title title--small sheet__title">Выберите ингридиенты</h2>
+      <BaseTitle>Выберите ингридиенты</BaseTitle>
 
       <div class="sheet__content ingridients">
         <div class="ingridients__sauce">
@@ -31,8 +31,10 @@
               class="ingridients__item"
             >
               <SelectorItem
-                :imageClass="ingredient.class"
+                :imageClass="ingredient.label"
                 :name="ingredient.name"
+                draggable
+                @dragstart.native="startDrag($event, ingredient.label)"
               />
 
               <ItemCounter />
@@ -45,6 +47,7 @@
 </template>
 
 <script>
+import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
 import SelectorItem from "@/common/components/SelectorItem";
@@ -65,6 +68,7 @@ export default {
   },
 
   components: {
+    BaseTitle,
     RadioButton,
     ItemCounter,
     SelectorItem,
@@ -79,6 +83,11 @@ export default {
   methods: {
     changeSauce(newcSauce) {
       this.selectedSauce = newcSauce;
+    },
+    startDrag(evt, item) {
+      evt.dataTransfer.dropEffect = "move";
+      evt.dataTransfer.effectAllowed = "move";
+      evt.dataTransfer.setData("item", item);
     },
   },
 };

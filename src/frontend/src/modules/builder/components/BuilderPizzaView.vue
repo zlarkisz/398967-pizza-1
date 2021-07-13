@@ -7,7 +7,12 @@
       v-model="pizzaName"
     />
 
-    <div class="content__constructor">
+    <div
+      @drop="onDrop($event, 1)"
+      @dragover.prevent
+      @dragenter.prevent
+      class="content__constructor"
+    >
       <div class="pizza pizza--foundation--big-tomato">
         <div class="pizza__wrapper">
           <div
@@ -30,13 +35,6 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 export default {
   name: "BuilderPizzaView",
 
-  props: {
-    drops: {
-      type: Array,
-      default: () => [],
-    },
-  },
-
   components: {
     BaseInput,
     BuilderPriceCounter,
@@ -45,7 +43,15 @@ export default {
   data() {
     return {
       pizzaName: "",
+      drops: [],
     };
+  },
+
+  methods: {
+    onDrop(evt) {
+      const draggedElement = evt.dataTransfer.getData("item");
+      this.drops.push(draggedElement);
+    },
   },
 };
 </script>
