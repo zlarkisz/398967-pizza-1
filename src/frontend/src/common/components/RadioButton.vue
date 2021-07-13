@@ -6,7 +6,7 @@
       :value="radioValue"
       :class="inputClasses"
       :checked="checked"
-      @change="onChange"
+      @input="onInput"
     />
     <b v-if="itemName && itemDescription">{{ itemName }}</b>
     <span v-if="itemName && itemDescription">{{ itemDescription }}</span>
@@ -80,8 +80,8 @@ export default {
   },
 
   methods: {
-    onChange(e) {
-      this.$emit("change", e.target.value);
+    onInput(e) {
+      this.$emit("input", e.target.value);
     },
   },
 };

@@ -17,7 +17,6 @@
             name="ingridients"
             labelType="radio"
             :inputVisuallyHidden="false"
-            @change="changeSauce"
           />
         </div>
 
@@ -81,9 +80,6 @@ export default {
   },
 
   methods: {
-    changeSauce(newcSauce) {
-      this.selectedSauce = newcSauce;
-    },
     startDrag(evt, item) {
       evt.dataTransfer.dropEffect = "move";
       evt.dataTransfer.effectAllowed = "move";

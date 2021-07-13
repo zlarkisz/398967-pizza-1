@@ -14,7 +14,6 @@
           :itemDescription="item.description"
           :size="item.value"
           name="dough"
-          @change="changeDough"
         />
       </div>
     </div>
@@ -44,12 +43,6 @@ export default {
     return {
       selectedDough: null,
     };
-  },
-
-  methods: {
-    changeDough(newDough) {
-      this.selectedDough = newDough;
-    },
   },
 };
 </script>

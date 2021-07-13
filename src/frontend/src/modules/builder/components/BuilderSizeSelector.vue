@@ -13,7 +13,6 @@
           :checked="item.checked"
           :size="item.value"
           name="diameter"
-          @change="changeSize"
         />
       </div>
     </div>
@@ -43,12 +42,6 @@ export default {
     return {
       selectedSize: null,
     };
-  },
-
-  methods: {
-    changeSize(newSize) {
-      this.selectedSize = newSize;
-    },
   },
 };
 </script>
