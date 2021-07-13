@@ -8,7 +8,7 @@
     />
 
     <div
-      @drop="onDrop($event, 1)"
+      @drop="onDrop"
       @dragover.prevent
       @dragenter.prevent
       class="content__constructor"

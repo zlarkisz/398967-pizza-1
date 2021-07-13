@@ -1,7 +1,9 @@
 <template>
   <form action="#" method="post">
     <div class="content__wrapper">
-      <BaseTitle size="big" :sheet="false">Конструктор пиццы</BaseTitle>
+      <BaseTitle :level="1" size="big" :sheet="false">
+        Конструктор пиццы
+      </BaseTitle>
 
       <BuilderDoughSelector :dough="dough" />
 
