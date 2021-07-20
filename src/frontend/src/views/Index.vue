@@ -13,6 +13,8 @@
 
       <BuilderPizzaView />
     </div>
+
+    <!-- <router-view /> -->
   </form>
 </template>
 
