@@ -5,7 +5,7 @@
 
       <div class="sheet__content diameter">
         <RadioButton
-          v-for="(item, i) in sizes"
+          v-for="(item, i) in sizesList"
           :key="i"
           v-model="selectedSize"
           :itemName="item.name"
@@ -20,18 +20,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "BuilderSizeSelector",
-
-  props: {
-    sizes: {
-      type: Array,
-      default: () => [],
-    },
-  },
 
   components: {
     BaseTitle,
@@ -42,6 +37,10 @@ export default {
     return {
       selectedSize: null,
     };
+  },
+
+  computed: {
+    ...mapGetters("Builder", ["sizesList"]),
   },
 };
 </script>

@@ -5,7 +5,7 @@
 
       <div class="sheet__content dough">
         <RadioButton
-          v-for="(item, i) in dough"
+          v-for="(item, i) in doughList"
           :key="i"
           v-model="selectedDough"
           :itemName="item.name"
@@ -21,18 +21,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "BuilderDoughSelector",
-
-  props: {
-    dough: {
-      type: Array,
-      default: () => [],
-    },
-  },
 
   components: {
     BaseTitle,
@@ -43,6 +38,10 @@ export default {
     return {
       selectedDough: null,
     };
+  },
+
+  computed: {
+    ...mapGetters("Builder", ["doughList"]),
   },
 };
 </script>

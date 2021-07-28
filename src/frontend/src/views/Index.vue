@@ -5,11 +5,11 @@
         Конструктор пиццы
       </BaseTitle>
 
-      <BuilderDoughSelector :dough="dough" />
+      <BuilderDoughSelector />
 
-      <BuilderSizeSelector :sizes="sizes" />
+      <BuilderSizeSelector />
 
-      <BuilderIngredientsSelector :sauces="sauces" :ingredients="ingredients" />
+      <BuilderIngredientsSelector />
 
       <BuilderPizzaView />
     </div>
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import pizza from "@/static/pizza.json";
 import BaseTitle from "@/common/components/base/BaseTitle";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
@@ -35,15 +34,6 @@ export default {
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderPizzaView,
-  },
-
-  data() {
-    return {
-      sizes: pizza.sizes,
-      dough: pizza.dough,
-      sauces: pizza.sauces,
-      ingredients: pizza.ingredients,
-    };
   },
 };
 </script>
