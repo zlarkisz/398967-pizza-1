@@ -36,7 +36,7 @@
                 @dragstart.native="startDrag($event, ingredient.label)"
               />
 
-              <ItemCounter />
+              <ItemCounter class="ingridients__counter" />
             </li>
           </ul>
         </div>
