@@ -4,6 +4,7 @@
       label="Название пиццы"
       placeholder="Введите название пиццы"
       name="pizza_name"
+      hideLabel
       v-model="pizzaName"
     />
 
@@ -24,7 +25,7 @@
       </div>
     </div>
 
-    <BuilderPriceCounter />
+    <BuilderPriceCounter buttonText="Готовьте!" />
   </div>
 </template>
 

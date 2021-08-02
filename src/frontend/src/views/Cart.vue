@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form action="test.html" method="post" class="layout-form">
+    <form class="layout-form" @submit.prevent>
       <main class="content cart">
         <div class="container">
           <div class="cart__title">
@@ -57,129 +57,25 @@
 
           <div class="cart__additional">
             <ul class="additional-list">
-              <li class="additional-list__item sheet">
+              <li
+                v-for="(add, idx) in additionalList"
+                :key="`additional-${idx}`"
+                class="additional-list__item sheet"
+              >
                 <p class="additional-list__description">
-                  <img
-                    src="@/assets/img/cola.svg"
-                    width="39"
-                    height="60"
-                    alt="Coca-Cola 0,5 литра"
-                  />
-                  <span>Coca-Cola 0,5 литра</span>
+                  <img :src="add.image" width="39" height="60" :alt="add.alt" />
+                  <span>{{ add.description }}</span>
                 </p>
 
                 <div class="additional-list__wrapper">
-                  <div class="counter additional-list__counter">
-                    <button
-                      type="button"
-                      class="counter__button counter__button--minus"
-                    >
-                      <span class="visually-hidden">Меньше</span>
-                    </button>
-                    <input
-                      type="text"
-                      name="counter"
-                      class="counter__input"
-                      value="2"
-                    />
-                    <button
-                      type="button"
-                      class="
-                        counter__button
-                        counter__button--plus
-                        counter__button--orange
-                      "
-                    >
-                      <span class="visually-hidden">Больше</span>
-                    </button>
-                  </div>
-
-                  <div class="additional-list__price">
-                    <b>56 ₽</b>
-                  </div>
-                </div>
-              </li>
-              <li class="additional-list__item sheet">
-                <p class="additional-list__description">
-                  <img
-                    src="@/assets/img/sauce.svg"
-                    width="39"
-                    height="60"
-                    alt="Острый соус"
+                  <ItemCounter
+                    v-model="add.count"
+                    plusBtnTheme="orange"
+                    class="additional-list__counter"
                   />
-                  <span>Острый соус</span>
-                </p>
-
-                <div class="additional-list__wrapper">
-                  <div class="counter additional-list__counter">
-                    <button
-                      type="button"
-                      class="counter__button counter__button--minus"
-                    >
-                      <span class="visually-hidden">Меньше</span>
-                    </button>
-                    <input
-                      type="text"
-                      name="counter"
-                      class="counter__input"
-                      value="2"
-                    />
-                    <button
-                      type="button"
-                      class="
-                        counter__button
-                        counter__button--plus
-                        counter__button--orange
-                      "
-                    >
-                      <span class="visually-hidden">Больше</span>
-                    </button>
-                  </div>
 
                   <div class="additional-list__price">
-                    <b>30 ₽</b>
-                  </div>
-                </div>
-              </li>
-              <li class="additional-list__item sheet">
-                <p class="additional-list__description">
-                  <img
-                    src="@/assets/img/potato.svg"
-                    width="39"
-                    height="60"
-                    alt="Картошка из печи"
-                  />
-                  <span>Картошка из печи</span>
-                </p>
-
-                <div class="additional-list__wrapper">
-                  <div class="counter additional-list__counter">
-                    <button
-                      type="button"
-                      class="counter__button counter__button--minus"
-                    >
-                      <span class="visually-hidden">Меньше</span>
-                    </button>
-                    <input
-                      type="text"
-                      name="counter"
-                      class="counter__input"
-                      value="2"
-                    />
-                    <button
-                      type="button"
-                      class="
-                        counter__button
-                        counter__button--plus
-                        counter__button--orange
-                      "
-                    >
-                      <span class="visually-hidden">Больше</span>
-                    </button>
-                  </div>
-
-                  <div class="additional-list__price">
-                    <b>56 ₽</b>
+                    <b>{{ add.price }}</b>
                   </div>
                 </div>
               </li>
@@ -198,33 +94,39 @@
                 </select>
               </label>
 
-              <label class="input input--big-label">
-                <span>Контактный телефон:</span>
-                <input type="text" name="tel" placeholder="+7 999-999-99-99" />
-              </label>
+              <BaseSelect
+                v-model="orderReceiving"
+                class="cart-form__select"
+                label="Получение заказа:"
+                labelClass="cart-form__label"
+                :options="options"
+              />
+
+              <BaseInput
+                v-model="contactPhone"
+                name="tel"
+                label="Контактный телефон:"
+                placeholder="+7 999-999-99-99"
+                bigLabel
+              />
 
               <div class="cart-form__address">
                 <span class="cart-form__label">Новый адрес:</span>
 
                 <div class="cart-form__input">
-                  <label class="input">
-                    <span>Улица*</span>
-                    <input type="text" name="street" />
-                  </label>
+                  <BaseInput v-model="street" name="street" label="Улица*" />
                 </div>
 
                 <div class="cart-form__input cart-form__input--small">
-                  <label class="input">
-                    <span>Дом*</span>
-                    <input type="text" name="house" />
-                  </label>
+                  <BaseInput v-model="house" name="house" label="Дом*" />
                 </div>
 
                 <div class="cart-form__input cart-form__input--small">
-                  <label class="input">
-                    <span>Квартира</span>
-                    <input type="text" name="apartment" />
-                  </label>
+                  <BaseInput
+                    v-model="apartment"
+                    name="apartment"
+                    label="Квартира"
+                  />
                 </div>
               </div>
             </div>
@@ -233,20 +135,20 @@
       </main>
       <section class="footer">
         <div class="footer__more">
-          <a href="#" class="button button--border button--arrow"
-            >Хочу еще одну</a
-          >
+          <router-link to="/" class="button button--border button--arrow">
+            Хочу еще одну
+          </router-link>
         </div>
+
         <p class="footer__text">
           Перейти к конструктору<br />чтоб собрать ещё одну пиццу
         </p>
-        <div class="footer__price">
-          <b>Итого: 2 228 ₽</b>
-        </div>
 
-        <div class="footer__submit">
-          <button type="submit" class="button">Оформить заказ</button>
-        </div>
+        <BuilderPriceCounter
+          buttonText="Оформить заказ"
+          @submit="submitOrder"
+          class="footer__price"
+        />
       </section>
     </form>
   </div>
@@ -254,18 +156,29 @@
 
 <script>
 import BaseTitle from "@/common/components/base/BaseTitle";
+import BaseInput from "@/common/components/base/BaseInput";
+import BaseSelect from "@/common/components/base/BaseSelect";
 import ItemCounter from "@/common/components/ItemCounter";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "Cart",
 
   components: {
     BaseTitle,
+    BaseInput,
+    BaseSelect,
     ItemCounter,
+    BuilderPriceCounter,
   },
 
   data() {
     return {
+      orderReceiving: "",
+      contactPhone: "",
+      street: "",
+      house: "",
+      apartment: "",
       cartList: [
         {
           img: { src: require("@/assets/img/product.svg"), alt: "Капричоза" },
@@ -293,9 +206,49 @@ export default {
           price: "782 ₽",
         },
       ],
+      additionalList: [
+        {
+          image: require("@/assets/img/cola.svg"),
+          alt: "Coca-Cola 0,5 литра",
+          description: "Coca-Cola 0,5 литра",
+          count: 2,
+          price: "56 ₽",
+        },
+        {
+          image: require("@/assets/img/sauce.svg"),
+          alt: "Острый соус",
+          description: "Острый соус",
+          count: 2,
+          price: "30 ₽",
+        },
+        {
+          image: require("@/assets/img/potato.svg"),
+          alt: "Картошка из печи",
+          description: "Картошка из печи",
+          count: 2,
+          price: "56 ₽",
+        },
+      ],
+      options: [
+        { value: 1, text: "Заберу сам" },
+        { value: 2, text: "Новый адрес" },
+        { value: 3, text: "Дом" },
+      ],
     };
+  },
+
+  methods: {
+    submitOrder(v) {
+      console.log(v);
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.footer {
+  &__price {
+    margin: 0 0 0 auto;
+  }
+}
+</style>

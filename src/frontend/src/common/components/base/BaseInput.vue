@@ -1,6 +1,9 @@
 <template>
-  <label class="input">
-    <span class="visually-hidden">{{ label }}</span>
+  <label :class="['input', { 'input--big-label': bigLabel }]">
+    <span :class="{ 'visually-hidden': hideLabel }">
+      {{ label }}
+    </span>
+
     <input
       :type="type"
       :name="name"
@@ -33,6 +36,16 @@ export default {
     placeholder: {
       type: String,
       default: "",
+    },
+
+    hideLabel: {
+      type: Boolean,
+      default: false,
+    },
+
+    bigLabel: {
+      type: Boolean,
+      default: false,
     },
   },
 
