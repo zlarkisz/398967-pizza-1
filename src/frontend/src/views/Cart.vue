@@ -43,10 +43,11 @@
                 v-model="product.count"
                 plusBtnTheme="orange"
                 class="cart-list__counter"
+                @click.native="addProduct(product.count, product.price)"
               />
 
               <div class="cart-list__price">
-                <b>{{ product.price }}</b>
+                <b>{{ product.price }} ₽</b>
               </div>
 
               <div class="cart-list__button">
@@ -58,13 +59,13 @@
           <div class="cart__additional">
             <ul class="additional-list">
               <li
-                v-for="(add, idx) in additionalList"
+                v-for="(add, idx) in additionsList"
                 :key="`additional-${idx}`"
                 class="additional-list__item sheet"
               >
                 <p class="additional-list__description">
                   <img :src="add.image" width="39" height="60" :alt="add.alt" />
-                  <span>{{ add.description }}</span>
+                  <span>{{ add.name }}</span>
                 </p>
 
                 <div class="additional-list__wrapper">
@@ -75,7 +76,7 @@
                   />
 
                   <div class="additional-list__price">
-                    <b>{{ add.price }}</b>
+                    <b>{{ add.price }} ₽</b>
                   </div>
                 </div>
               </li>
@@ -84,48 +85,38 @@
 
           <div class="cart__form">
             <div class="cart-form">
-              <label class="cart-form__select">
-                <span class="cart-form__label">Получение заказа:</span>
-
-                <select name="test" class="select">
-                  <option value="1">Заберу сам</option>
-                  <option value="2">Новый адрес</option>
-                  <option value="3">Дом</option>
-                </select>
-              </label>
-
               <BaseSelect
-                v-model="orderReceiving"
                 class="cart-form__select"
                 label="Получение заказа:"
                 labelClass="cart-form__label"
-                :options="options"
+                :options="deliveryOptionsList"
+                @input="setOrderReceiving"
               />
 
               <BaseInput
-                v-model="contactPhone"
                 name="tel"
                 label="Контактный телефон:"
                 placeholder="+7 999-999-99-99"
                 bigLabel
+                @input="setPhone"
               />
 
               <div class="cart-form__address">
                 <span class="cart-form__label">Новый адрес:</span>
 
                 <div class="cart-form__input">
-                  <BaseInput v-model="street" name="street" label="Улица*" />
+                  <BaseInput name="street" label="Улица*" @input="setStreet" />
                 </div>
 
                 <div class="cart-form__input cart-form__input--small">
-                  <BaseInput v-model="house" name="house" label="Дом*" />
+                  <BaseInput name="house" label="Дом*" @input="setHouse" />
                 </div>
 
                 <div class="cart-form__input cart-form__input--small">
                   <BaseInput
-                    v-model="apartment"
                     name="apartment"
                     label="Квартира"
+                    @input="setApartment"
                   />
                 </div>
               </div>
@@ -155,10 +146,13 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 import BaseTitle from "@/common/components/base/BaseTitle";
 import BaseInput from "@/common/components/base/BaseInput";
 import BaseSelect from "@/common/components/base/BaseSelect";
 import ItemCounter from "@/common/components/ItemCounter";
+
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
@@ -174,72 +168,41 @@ export default {
 
   data() {
     return {
-      orderReceiving: "",
-      contactPhone: "",
-      street: "",
-      house: "",
-      apartment: "",
-      cartList: [
-        {
-          img: { src: require("@/assets/img/product.svg"), alt: "Капричоза" },
-          title: "Капричоза",
-          description: [
-            "30 см, на тонком тесте",
-            "Соус: томатный",
-            "Начинка: грибы, лук, ветчина, пармезан, ананас",
-          ],
-          count: 1,
-          price: "782 ₽",
-        },
-        {
-          img: {
-            src: require("@/assets/img/product.svg"),
-            alt: "Любимая пицца",
-          },
-          title: "Любимая пицца",
-          description: [
-            "30 см, на тонком тесте",
-            "Соус: томатный",
-            "Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блючиз",
-          ],
-          count: 2,
-          price: "782 ₽",
-        },
-      ],
-      additionalList: [
-        {
-          image: require("@/assets/img/cola.svg"),
-          alt: "Coca-Cola 0,5 литра",
-          description: "Coca-Cola 0,5 литра",
-          count: 2,
-          price: "56 ₽",
-        },
-        {
-          image: require("@/assets/img/sauce.svg"),
-          alt: "Острый соус",
-          description: "Острый соус",
-          count: 2,
-          price: "30 ₽",
-        },
-        {
-          image: require("@/assets/img/potato.svg"),
-          alt: "Картошка из печи",
-          description: "Картошка из печи",
-          count: 2,
-          price: "56 ₽",
-        },
-      ],
-      options: [
-        { value: 1, text: "Заберу сам" },
-        { value: 2, text: "Новый адрес" },
-        { value: 3, text: "Дом" },
-      ],
+      currentPrice: 0,
+      previousPrice: 0,
     };
   },
 
+  computed: {
+    ...mapGetters("Cart", ["additionsList", "cartList", "deliveryOptionsList"]),
+  },
+
   methods: {
-    submitOrder(v) {
-      console.log(v);
+    ...mapMutations("Cart", [
+      "setOrderReceiving",
+      "setPhone",
+      "setStreet",
+      "setHouse",
+      "setApartment",
+    ]),
+
+    submitOrder() {
+      this.$store.commit("setOrderStatus", true);
+    },
+
+    addProduct(count, price) {
+      this.currentPrice = price * count;
+
+      if (this.currentPrice > this.previousPrice) {
+        this.$store.commit("changeAmount", this.currentPrice);
+      } else if (this.currentPrice < this.previousPrice) {
+        this.$store.commit(
+          "changeAmount",
+          -(this.previousPrice - this.currentPrice)
+        );
+      }
+
+      this.previousPrice = this.currentPrice;
     },
   },
 };
