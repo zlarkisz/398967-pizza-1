@@ -40,10 +40,10 @@
               </div>
 
               <ItemCounter
-                v-model="product.count"
+                :value="product.count"
                 plusBtnTheme="orange"
                 class="cart-list__counter"
-                @click.native="addProduct(product.count, product.price)"
+                @input="addProduct($event, product.price)"
               />
 
               <div class="cart-list__price">
@@ -70,9 +70,10 @@
 
                 <div class="additional-list__wrapper">
                   <ItemCounter
-                    v-model="add.count"
+                    :value="add.count"
                     plusBtnTheme="orange"
                     class="additional-list__counter"
+                    @input="addProduct($event, add.price)"
                   />
 
                   <div class="additional-list__price">
@@ -168,13 +169,22 @@ export default {
 
   data() {
     return {
-      currentPrice: 0,
-      previousPrice: 0,
+      pricesSum: 0,
     };
   },
 
   computed: {
     ...mapGetters("Cart", ["additionsList", "cartList", "deliveryOptionsList"]),
+  },
+
+  created() {
+    if (this.$store.state.totalAmount === 0) {
+      this.pricesSum = this.cartList.reduce((acc, el) => {
+        return acc + el.price * el.count;
+      }, 0);
+
+      this.$store.commit("changeAmount", this.pricesSum);
+    }
   },
 
   methods: {
@@ -190,19 +200,13 @@ export default {
       this.$store.commit("setOrderStatus", true);
     },
 
-    addProduct(count, price) {
-      this.currentPrice = price * count;
-
-      if (this.currentPrice > this.previousPrice) {
-        this.$store.commit("changeAmount", this.currentPrice);
-      } else if (this.currentPrice < this.previousPrice) {
-        this.$store.commit(
-          "changeAmount",
-          -(this.previousPrice - this.currentPrice)
-        );
+    addProduct({ value, eventType }, price) {
+      console.log(value);
+      if (eventType === "plus") {
+        this.$store.commit("changeAmount", price);
+      } else if (eventType === "minus") {
+        this.$store.commit("changeAmount", -price);
       }
-
-      this.previousPrice = this.currentPrice;
     },
   },
 };
