@@ -9,14 +9,4 @@ export default {
     sauces: pizza.sauces,
     ingredients: pizza.ingredients,
   },
-
-  getters: {
-    doughList: (state) => state.dough,
-
-    sizesList: (state) => state.sizes,
-
-    saucesList: (state) => state.sauces,
-
-    ingredientsList: (state) => state.ingredients,
-  },
 };

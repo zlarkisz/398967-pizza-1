@@ -42,17 +42,25 @@ export default {
     street: "",
     house: "",
     apartment: "",
+    totalAmount: 0,
   },
 
   getters: {
-    additionsList: (state) => state.additions,
-    cartList: (state) => state.cart,
-    deliveryOptionsList: (state) => state.options,
-    orderReceiving: (state) => state.receiving,
-    contactPhone: (state) => state.phone,
-    deliveryStreet: (state) => state.street,
-    deliveryHouse: (state) => state.house,
-    deliveryApartment: (state) => state.apartment,
+    cartAmount: (state) => {
+      return state.cart.reduce((acc, el) => {
+        acc += el.count * el.price;
+        return acc;
+      }, 0);
+    },
+    additionsAmount: (state) => {
+      return state.additions.reduce((acc, el) => {
+        acc += el.count * el.price;
+        return acc;
+      }, 0);
+    },
+    totalAmount: (state, getters) => {
+      return getters.cartAmount + getters.additionsAmount;
+    },
   },
 
   mutations: {
@@ -70,6 +78,9 @@ export default {
     },
     setApartment(state, apartment) {
       state.apartment = apartment;
+    },
+    changeAmount(state, { cartIndex, count, cartList }) {
+      state[cartList][cartIndex].count = count;
     },
   },
 };

@@ -15,11 +15,9 @@
       name="counter"
       class="counter__input"
       :min="0"
-      :value="counter"
-      disabled
+      v-model="counter"
+      @input="onInput"
     />
-
-    <!-- @input="onEnter" -->
 
     <button type="button" :class="plusBtnClasses" @click="incrementCounter()">
       <span class="visually-hidden">Больше</span>
@@ -45,8 +43,12 @@ export default {
 
   data() {
     return {
-      counter: this.value,
+      counter: this.value || 0,
     };
+  },
+
+  watch: {
+    counter: "onInput",
   },
 
   computed: {
@@ -71,30 +73,18 @@ export default {
     reduceСounter() {
       if (this.counter !== 0) {
         this.counter--;
-        this.onInput(this.counter, "minus");
       }
     },
 
     incrementCounter() {
       this.counter++;
-      this.onInput(this.counter, "plus");
     },
 
-    onInput(value, eventType) {
-      this.$emit("input", { value, eventType });
+    onInput(value) {
+      !isNaN(value) && value !== "" && value > 0
+        ? this.$emit("input", parseInt(value))
+        : this.$emit("input", 0);
     },
-
-    // onEnter({ target }) {
-    //   const inputVal = +target.value;
-
-    //   if (!isNaN(inputVal)) {
-    //     this.counter = inputVal;
-    //   } else {
-    //     this.counter = 0;
-    //   }
-
-    //   this.onInput(this.counter, "plus");
-    // },
   },
 };
 </script>

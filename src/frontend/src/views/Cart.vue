@@ -12,11 +12,7 @@
         </div> -->
 
           <ul class="cart-list sheet">
-            <li
-              v-for="(product, i) in cartList"
-              :key="i"
-              class="cart-list__item"
-            >
+            <li v-for="(product, i) in cart" :key="i" class="cart-list__item">
               <div class="product cart-list__product">
                 <img
                   :key="product.img.alt"
@@ -43,7 +39,7 @@
                 :value="product.count"
                 plusBtnTheme="orange"
                 class="cart-list__counter"
-                @input="addProduct($event, product.price)"
+                @input="onChangeAmount($event, i, 'cart')"
               />
 
               <div class="cart-list__price">
@@ -59,7 +55,7 @@
           <div class="cart__additional">
             <ul class="additional-list">
               <li
-                v-for="(add, idx) in additionsList"
+                v-for="(add, idx) in additions"
                 :key="`additional-${idx}`"
                 class="additional-list__item sheet"
               >
@@ -73,7 +69,7 @@
                     :value="add.count"
                     plusBtnTheme="orange"
                     class="additional-list__counter"
-                    @input="addProduct($event, add.price)"
+                    @input="onChangeAmount($event, idx, 'additions')"
                   />
 
                   <div class="additional-list__price">
@@ -90,7 +86,7 @@
                 class="cart-form__select"
                 label="Получение заказа:"
                 labelClass="cart-form__label"
-                :options="deliveryOptionsList"
+                :options="options"
                 @input="setOrderReceiving"
               />
 
@@ -147,7 +143,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import BaseInput from "@/common/components/base/BaseInput";
@@ -174,17 +170,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Cart", ["additionsList", "cartList", "deliveryOptionsList"]),
-  },
-
-  created() {
-    if (this.$store.state.totalAmount === 0) {
-      this.pricesSum = this.cartList.reduce((acc, el) => {
-        return acc + el.price * el.count;
-      }, 0);
-
-      this.$store.commit("changeAmount", this.pricesSum);
-    }
+    ...mapState("Cart", ["additions", "cart", "options"]),
   },
 
   methods: {
@@ -194,19 +180,17 @@ export default {
       "setStreet",
       "setHouse",
       "setApartment",
+      "changeAmount",
     ]),
 
+    ...mapMutations(["setOrderStatus"]),
+
     submitOrder() {
-      this.$store.commit("setOrderStatus", true);
+      this.setOrderStatus(true);
     },
 
-    addProduct({ value, eventType }, price) {
-      console.log(value);
-      if (eventType === "plus") {
-        this.$store.commit("changeAmount", price);
-      } else if (eventType === "minus") {
-        this.$store.commit("changeAmount", -price);
-      }
+    onChangeAmount(count, cartIndex, cartList) {
+      this.changeAmount({ cartIndex, count, cartList });
     },
   },
 };

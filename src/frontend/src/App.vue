@@ -3,13 +3,13 @@
     <AppLayout>
       <router-view />
 
-      <Popup v-if="orderStatus" />
+      <Popup v-if="isOrderPlaced" />
     </AppLayout>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 import AppLayout from "@/layouts/AppLayout";
 import Popup from "@/common/components/Popup";
@@ -23,7 +23,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["orderStatus"]),
+    ...mapState(["isOrderPlaced"]),
   },
 };
 </script>

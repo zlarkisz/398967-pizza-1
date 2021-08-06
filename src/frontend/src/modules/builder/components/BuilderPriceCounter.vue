@@ -1,10 +1,10 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ amount }} ₽</p>
+    <p>Итого: {{ totalAmount }} ₽</p>
     <button
       type="button"
-      :class="['button', { 'button--disabled': !amount }]"
-      :disabled="!amount"
+      :class="['button', { 'button--disabled': !totalAmount }]"
+      :disabled="!totalAmount"
       @click="$emit('submit', true)"
     >
       {{ buttonText }}
@@ -26,7 +26,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ amount: "totalAmount" }),
+    ...mapGetters("Cart", ["totalAmount"]),
   },
 };
 </script>

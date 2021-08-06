@@ -8,7 +8,7 @@
           <p>Основной соус:</p>
 
           <RadioButton
-            v-for="(item, i) in saucesList"
+            v-for="(item, i) in sauces"
             :key="i"
             v-model="selectedSauce"
             :itemName="item.name"
@@ -25,7 +25,7 @@
 
           <ul class="ingridients__list">
             <li
-              v-for="(ingredient, i) in ingredientsList"
+              v-for="(ingredient, i) in ingredients"
               :key="`ingredient-${i}`"
               class="ingridients__item"
             >
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -70,7 +70,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Builder", ["saucesList", "ingredientsList"]),
+    ...mapState("Builder", ["sauces", "ingredients"]),
   },
 
   methods: {

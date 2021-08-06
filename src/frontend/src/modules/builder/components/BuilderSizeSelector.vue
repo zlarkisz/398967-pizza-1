@@ -5,7 +5,7 @@
 
       <div class="sheet__content diameter">
         <RadioButton
-          v-for="(item, i) in sizesList"
+          v-for="(item, i) in sizes"
           :key="i"
           v-model="selectedSize"
           :itemName="item.name"
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -40,7 +40,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Builder", ["sizesList"]),
+    ...mapState("Builder", ["sizes"]),
   },
 };
 </script>
