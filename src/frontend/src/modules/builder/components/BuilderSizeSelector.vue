@@ -20,18 +20,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "BuilderSizeSelector",
-
-  props: {
-    sizes: {
-      type: Array,
-      default: () => [],
-    },
-  },
 
   components: {
     BaseTitle,
@@ -42,6 +37,10 @@ export default {
     return {
       selectedSize: null,
     };
+  },
+
+  computed: {
+    ...mapState("Builder", ["sizes"]),
   },
 };
 </script>

@@ -36,7 +36,7 @@
                 @dragstart.native="startDrag($event, ingredient.label)"
               />
 
-              <ItemCounter />
+              <ItemCounter class="ingridients__counter" />
             </li>
           </ul>
         </div>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
@@ -53,18 +55,6 @@ import SelectorItem from "@/common/components/SelectorItem";
 
 export default {
   name: "BuilderIngredientsSelector",
-
-  props: {
-    sauces: {
-      type: Array,
-      default: () => [],
-    },
-
-    ingredients: {
-      type: Array,
-      default: () => [],
-    },
-  },
 
   components: {
     BaseTitle,
@@ -77,6 +67,10 @@ export default {
     return {
       selectedSauce: null,
     };
+  },
+
+  computed: {
+    ...mapState("Builder", ["sauces", "ingredients"]),
   },
 
   methods: {

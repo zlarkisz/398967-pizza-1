@@ -21,18 +21,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "BuilderDoughSelector",
-
-  props: {
-    dough: {
-      type: Array,
-      default: () => [],
-    },
-  },
 
   components: {
     BaseTitle,
@@ -43,6 +38,10 @@ export default {
     return {
       selectedDough: null,
     };
+  },
+
+  computed: {
+    ...mapState("Builder", ["dough"]),
   },
 };
 </script>
