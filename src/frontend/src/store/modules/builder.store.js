@@ -9,4 +9,8 @@ export default {
     sauces: pizza.sauces,
     ingredients: pizza.ingredients,
   },
+
+  // actions: {
+
+  // }
 };

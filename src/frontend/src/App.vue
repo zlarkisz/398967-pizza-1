@@ -11,6 +11,8 @@
 <script>
 import { mapState } from "vuex";
 
+import { setAuth } from "@/common/helpers";
+
 import AppLayout from "@/layouts/AppLayout";
 import Popup from "@/common/components/Popup";
 
@@ -24,6 +26,18 @@ export default {
 
   computed: {
     ...mapState(["isOrderPlaced"]),
+  },
+
+  created() {
+    window.onerror = function (msg, url, line, col, error) {
+      console.error(error);
+    };
+    if (this.$jwt.getToken()) {
+      setAuth(this.$store);
+    }
+    // Note: fetch initial data
+    this.$store.dispatch("init");
+    this.$api.dough.query();
   },
 };
 </script>
