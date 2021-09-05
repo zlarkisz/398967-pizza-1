@@ -15,7 +15,7 @@ export default {
 
   actions: {
     // during a successful login:
-    async login({ commit, dispatch }, credentials) {
+    async login({ dispatch }, credentials) {
       const data = await this.$api.auth.login(credentials);
       // 1. get the token from the server and store it in LocalStorage
       this.$jwt.saveToken(data.token);

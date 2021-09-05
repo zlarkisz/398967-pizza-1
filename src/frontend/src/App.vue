@@ -37,7 +37,6 @@ export default {
     }
     // Note: fetch initial data
     this.$store.dispatch("init");
-    this.$api.dough.query();
   },
 };
 </script>

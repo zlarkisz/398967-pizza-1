@@ -20,10 +20,10 @@ export default {
   name: "Popup",
 
   methods: {
-    ...mapMutations(["setOrderStatus"]),
+    ...mapMutations(["SET_ORDER_STATUS"]),
 
     closePopup() {
-      this.setOrderStatus(false);
+      this.SET_ORDER_STATUS(false);
     },
   },
 };

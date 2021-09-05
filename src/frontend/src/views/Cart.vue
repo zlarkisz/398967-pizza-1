@@ -183,10 +183,10 @@ export default {
       "changeAmount",
     ]),
 
-    ...mapMutations(["setOrderStatus"]),
+    ...mapMutations(["SET_ORDER_STATUS"]),
 
     submitOrder() {
-      this.setOrderStatus(true);
+      this.SET_ORDER_STATUS(true);
     },
 
     onChangeAmount(count, cartIndex, cartList) {

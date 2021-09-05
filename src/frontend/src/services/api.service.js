@@ -69,7 +69,7 @@ export class AuthApiService extends BaseApiService {
     // get token from LocalStorage using JWT service
     const token = JwtService.getToken();
     // add the authorization header to axios as a Bearer token
-    axios.default.headers.common["Authorization"] = token
+    axios.defaults.headers.common["Authorization"] = token
       ? `Bearer ${token}`
       : "";
   }

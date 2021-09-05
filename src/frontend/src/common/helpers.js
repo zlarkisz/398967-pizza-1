@@ -2,6 +2,9 @@ import resources from "@/common/enums/resources";
 import { AuthApiService, ReadOnlyApiService } from "@/services/api.service";
 import { SET_ENTITY } from "@/store/mutations-types.js";
 
+export const capitalize = (string) =>
+  `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+
 export const createResources = (notifier) => {
   return {
     [resources.AUTH]: new AuthApiService(notifier),
