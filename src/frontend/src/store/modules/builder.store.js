@@ -6,7 +6,7 @@ export default {
 
   state: {
     dough: [],
-    sizes: pizza.sizes,
+    sizes: [],
     sauces: pizza.sauces,
     ingredients: pizza.ingredients,
   },

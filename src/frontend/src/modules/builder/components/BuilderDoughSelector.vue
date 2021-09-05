@@ -9,7 +9,7 @@
           :key="item.id"
           v-model="selectedDough"
           :itemName="item.name"
-          :radioValue="getSize(item.name)"
+          :radioValue="item.id"
           :checked="active === i"
           :itemDescription="item.description"
           :size="getSize(item.name)"
@@ -42,6 +42,10 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState("Builder", ["dough"]),
+  },
+
   methods: {
     ...mapActions({ getDough: "Builder/query" }),
 
@@ -52,10 +56,6 @@ export default {
 
   async created() {
     await this.getDough("dough");
-  },
-
-  computed: {
-    ...mapState("Builder", ["dough"]),
   },
 };
 </script>

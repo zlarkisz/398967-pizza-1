@@ -13,10 +13,11 @@
             v-model="selectedSauce"
             :itemName="item.name"
             :radioValue="item.value"
-            :checked="item.checked"
+            :checked="active === i"
             name="ingridients"
             labelType="radio"
             :inputVisuallyHidden="false"
+            @input="active = i"
           />
         </div>
 
@@ -30,10 +31,10 @@
               class="ingridients__item"
             >
               <SelectorItem
-                :imageClass="ingredient.label"
+                :imageClass="getImage(ingredient.name)"
                 :name="ingredient.name"
                 draggable
-                @dragstart.native="startDrag($event, ingredient.label)"
+                @dragstart.native="startDrag($event, getImage(ingredient.name))"
               />
 
               <ItemCounter class="ingridients__counter" />
@@ -46,7 +47,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -65,6 +66,7 @@ export default {
 
   data() {
     return {
+      active: null,
       selectedSauce: null,
     };
   },
@@ -74,11 +76,55 @@ export default {
   },
 
   methods: {
+    ...mapActions({ getItems: "Builder/query" }),
+
     startDrag(evt, item) {
       evt.dataTransfer.dropEffect = "move";
       evt.dataTransfer.effectAllowed = "move";
       evt.dataTransfer.setData("item", item);
     },
+
+    getImage(name) {
+      switch (name) {
+        case "Грибы":
+          return "mushrooms";
+        case "Чеддер":
+          return "cheddar";
+        case "Салями":
+          return "salami";
+        case "Ветчина":
+          return "ham";
+        case "Ананас":
+          return "ananas";
+        case "Бекон":
+          return "bacon";
+        case "Лук":
+          return "onion";
+        case "Чили":
+          return "chile";
+        case "Халапеньо":
+          return "jalapeno";
+        case "Маслины":
+          return "olives";
+        case "Томаты":
+          return "tomatoes";
+        case "Лосось":
+          return "salmon";
+        case "Моцарелла":
+          return "mozzarella";
+        case "Пармезан":
+          return "parmesan";
+        case "Блю чиз":
+          return "blue_cheese";
+        default:
+          return false;
+      }
+    },
+  },
+
+  async created() {
+    await this.getItems("sauces");
+    await this.getItems("ingredients");
   },
 };
 </script>

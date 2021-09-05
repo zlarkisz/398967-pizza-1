@@ -9,6 +9,12 @@ export const createResources = (notifier) => {
   return {
     [resources.AUTH]: new AuthApiService(notifier),
     [resources.DOUGH]: new ReadOnlyApiService(resources.DOUGH, notifier),
+    [resources.SIZES]: new ReadOnlyApiService(resources.SIZES, notifier),
+    [resources.SAUCES]: new ReadOnlyApiService(resources.SAUCES, notifier),
+    [resources.INGREDIENTS]: new ReadOnlyApiService(
+      resources.INGREDIENTS,
+      notifier
+    ),
   };
 };
 
