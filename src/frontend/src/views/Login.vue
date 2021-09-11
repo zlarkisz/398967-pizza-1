@@ -59,8 +59,9 @@ export default {
 
   methods: {
     ...mapActions({ login: "Auth/login" }),
+
     async submitHandler() {
-      await this.login(this.user);
+      await this.login({ credentials: this.user, context: this });
     },
   },
 };

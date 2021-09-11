@@ -1,4 +1,3 @@
-import pizza from "@/static/pizza.json";
 import { SET_ENTITY } from "@/store/mutations-types";
 
 export default {
@@ -7,8 +6,8 @@ export default {
   state: {
     dough: [],
     sizes: [],
-    sauces: pizza.sauces,
-    ingredients: pizza.ingredients,
+    sauces: [],
+    ingredients: [],
   },
 
   actions: {

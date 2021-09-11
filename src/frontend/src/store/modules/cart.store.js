@@ -1,10 +1,12 @@
-import misc from "@/static/misc.json";
+import { SET_ENTITY } from "@/store/mutations-types";
+
+const setCount = (el) => (el.count = 0);
 
 export default {
   namespaced: true,
 
   state: {
-    additions: misc,
+    misc: [],
     cart: [
       {
         img: { src: require("@/assets/img/product.svg"), alt: "Капричоза" },
@@ -45,6 +47,21 @@ export default {
     totalAmount: 0,
   },
 
+  actions: {
+    async query({ commit }, type) {
+      const data = await this.$api[type].query();
+      const mutatedData = data.map(setCount);
+
+      type === "misc" ? mutatedData : data;
+
+      commit(
+        SET_ENTITY,
+        { module: "Cart", entity: type, value: data },
+        { root: true }
+      );
+    },
+  },
+
   getters: {
     cartAmount: (state) => {
       return state.cart.reduce((acc, el) => {
@@ -53,7 +70,7 @@ export default {
       }, 0);
     },
     additionsAmount: (state) => {
-      return state.additions.reduce((acc, el) => {
+      return state.misc.reduce((acc, el) => {
         acc += el.count * el.price;
         return acc;
       }, 0);
@@ -79,8 +96,8 @@ export default {
     setApartment(state, apartment) {
       state.apartment = apartment;
     },
-    changeAmount(state, { cartIndex, count, cartList }) {
-      state[cartList][cartIndex].count = count;
+    changeAmount(state, { id, count, list }) {
+      state[list][id - 1].count = count;
     },
   },
 };
