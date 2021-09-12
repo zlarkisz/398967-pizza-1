@@ -8,6 +8,21 @@ export default {
     sizes: [],
     sauces: [],
     ingredients: [],
+    pizzas: [
+      {
+        name: "",
+        sauceId: 0,
+        doughId: 0,
+        sizeId: 0,
+        quantity: 0,
+        ingredients: [
+          {
+            ingredientId: 0,
+            quantity: 0,
+          },
+        ],
+      },
+    ],
   },
 
   actions: {

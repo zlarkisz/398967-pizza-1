@@ -51,15 +51,9 @@
           </li>
         </ul>
 
-        <CartAdditional @changeAmount="onChangeAmount" />
+        <CartAdditional />
 
-        <CartForm
-          @setReceiving="setOrderReceiving"
-          @setPhone="setPhone"
-          @setStreet="setStreet"
-          @setHouse="setHouse"
-          @setApartment="setApartment"
-        />
+        <CartForm />
       </div>
     </main>
 
@@ -111,18 +105,11 @@ export default {
   },
 
   computed: {
-    ...mapState("Cart", ["misc", "cart", "options"]),
+    ...mapState("Cart", ["cart"]),
   },
 
   methods: {
-    ...mapMutations("Cart", [
-      "setOrderReceiving",
-      "setPhone",
-      "setStreet",
-      "setHouse",
-      "setApartment",
-      "changeAmount",
-    ]),
+    ...mapMutations("Cart", ["changeAmount"]),
 
     ...mapMutations(["SET_ORDER_STATUS"]),
 

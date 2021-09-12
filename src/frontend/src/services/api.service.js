@@ -88,7 +88,7 @@ export class AuthApiService extends BaseApiService {
 
   async getMe() {
     // get the profile of a logged in user
-    const { data } = axios.get("whoAmI");
+    const data = axios.get("whoAmI");
     return data;
   }
 }

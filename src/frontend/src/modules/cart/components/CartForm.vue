@@ -6,7 +6,7 @@
         label="Получение заказа:"
         labelClass="cart-form__label"
         :options="options"
-        @input="$emit('setReceiving', $event)"
+        @input="setOrderReceiving"
       />
 
       <BaseInput
@@ -15,18 +15,15 @@
         label="Контактный телефон:"
         placeholder="+7 999-999-99-99"
         bigLabel
-        @input="$emit('setPhone', $event)"
+        required
+        @input="setPhone"
       />
 
       <div class="cart-form__address">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
-          <BaseInput
-            name="street"
-            label="Улица*"
-            @input="$emit('setStreet', $event)"
-          />
+          <BaseInput name="street" label="Улица*" required @input="setStreet" />
         </div>
 
         <div class="cart-form__input cart-form__input--small">
@@ -34,7 +31,8 @@
             name="house"
             type="number"
             label="Дом*"
-            @input="$emit('setHouse', $event)"
+            required
+            @input="setHouse"
           />
         </div>
 
@@ -43,7 +41,8 @@
             name="apartment"
             type="number"
             label="Квартира"
-            @input="$emit('setApartment', $event)"
+            required
+            @input="setApartment"
           />
         </div>
       </div>
@@ -52,7 +51,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 import BaseInput from "@/common/components/base/BaseInput";
 import BaseSelect from "@/common/components/base/BaseSelect";
@@ -66,7 +65,24 @@ export default {
   },
 
   computed: {
-    ...mapState("Cart", ["options"]),
+    ...mapState("Cart", [
+      "options",
+      "apartment",
+      "house",
+      "phone",
+      "receiving",
+      "street",
+    ]),
+  },
+
+  methods: {
+    ...mapMutations("Cart", [
+      "setOrderReceiving",
+      "setPhone",
+      "setStreet",
+      "setHouse",
+      "setApartment",
+    ]),
   },
 };
 </script>

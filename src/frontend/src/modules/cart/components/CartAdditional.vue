@@ -12,9 +12,7 @@
             :value="add.count"
             plusBtnTheme="orange"
             class="additional-list__counter"
-            @input="
-              $emit('changeAmount', { count: $event, id: add.id, list: 'misc' })
-            "
+            @input="onChangeAmount({ count: $event, id: add.id, list: 'misc' })"
           />
 
           <div class="additional-list__price">
@@ -27,7 +25,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 import ItemCounter from "@/common/components/ItemCounter";
 
@@ -44,6 +42,12 @@ export default {
 
   methods: {
     ...mapActions({ getMisc: "Cart/query" }),
+
+    ...mapMutations("Cart", ["changeAmount"]),
+
+    onChangeAmount({ count, id, list }) {
+      this.changeAmount({ id, count, list });
+    },
   },
 
   async created() {

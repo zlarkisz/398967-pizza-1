@@ -1,7 +1,7 @@
 <template>
   <div class="layout__content">
     <div class="layout__title">
-      <h1 class="title title--big">Мои данные</h1>
+      <BaseTitle :level="1" size="big">Мои данные</BaseTitle>
     </div>
 
     <div class="user">
@@ -22,10 +22,10 @@
         />
       </picture>
       <div class="user__name">
-        <span>Василий Ложкин</span>
+        <span>{{ user.name }}</span>
       </div>
       <p class="user__phone">
-        Контактный телефон: <span>+7 999-999-99-99</span>
+        Контактный телефон: <span>{{ user.phone }}</span>
       </p>
     </div>
 
@@ -56,57 +56,54 @@
 
         <div class="address-form__wrapper">
           <div class="address-form__input">
-            <label class="input">
-              <span>Название адреса*</span>
-              <input
-                type="text"
-                name="addr-name"
-                placeholder="Введите название адреса"
-                required
-              />
-            </label>
+            <BaseInput
+              label="Название адреса*"
+              placeholder="Введите название адреса"
+              name="addr-name"
+              required
+              v-model="address"
+            />
           </div>
+
           <div class="address-form__input address-form__input--size--normal">
-            <label class="input">
-              <span>Улица*</span>
-              <input
-                type="text"
-                name="addr-street"
-                placeholder="Введите название улицы"
-                required
-              />
-            </label>
+            <BaseInput
+              label="Улица*"
+              placeholder="Введите название улицы"
+              name="addr-street"
+              required
+              v-model="street"
+            />
           </div>
+
           <div class="address-form__input address-form__input--size--small">
-            <label class="input">
-              <span>Дом*</span>
-              <input
-                type="text"
-                name="addr-house"
-                placeholder="Введите номер дома"
-                required
-              />
-            </label>
+            <BaseInput
+              type="text"
+              label="Дом*"
+              placeholder="Введите номер дома"
+              name="addr-house"
+              required
+              v-model="house"
+            />
           </div>
+
           <div class="address-form__input address-form__input--size--small">
-            <label class="input">
-              <span>Квартира</span>
-              <input
-                type="text"
-                name="addr-apartment"
-                placeholder="Введите № квартиры"
-              />
-            </label>
+            <BaseInput
+              type="text"
+              label="Квартира"
+              placeholder="Введите № квартиры"
+              name="addr-apartment"
+              v-model="apartment"
+            />
           </div>
+
           <div class="address-form__input">
-            <label class="input">
-              <span>Комментарий</span>
-              <input
-                type="text"
-                name="addr-comment"
-                placeholder="Введите комментарий"
-              />
-            </label>
+            <BaseInput
+              type="text"
+              label="Комментарий"
+              placeholder="Введите комментарий"
+              name="addr-comment"
+              v-model="comment"
+            />
           </div>
         </div>
 
@@ -128,9 +125,39 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
+import BaseTitle from "@/common/components/base/BaseTitle";
+import BaseInput from "@/common/components/base/BaseInput";
+
 export default {
   name: "Profile",
+
+  components: {
+    BaseTitle,
+    BaseInput,
+  },
+
+  data() {
+    return {
+      address: "",
+      street: "",
+      house: "",
+      apartment: "",
+      comment: "",
+    };
+  },
+
+  computed: {
+    ...mapState("Auth", ["user"]),
+  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.user {
+  &__phone {
+    margin-left: 30px;
+  }
+}
+</style>

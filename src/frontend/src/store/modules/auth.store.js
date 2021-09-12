@@ -54,7 +54,7 @@ export default {
     // Get the data of an authorized user
     async getMe({ commit, dispatch }) {
       try {
-        const data = await this.$api.auth.getMe();
+        const { data } = await this.$api.auth.getMe();
         commit(
           SET_ENTITY,
           { module: "Auth", entity: "isAuthenticated", value: true },
