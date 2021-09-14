@@ -12,12 +12,12 @@
             :key="i"
             v-model="selectedSauce"
             :itemName="item.name"
-            :radioValue="item.value"
+            :radioValue="item.id"
             :checked="active === i"
             name="ingridients"
             labelType="radio"
             :inputVisuallyHidden="false"
-            @input="active = i"
+            @input="selectSauce($event, i)"
           />
         </div>
 
@@ -37,7 +37,10 @@
                 @dragstart.native="startDrag($event, getImage(ingredient.name))"
               />
 
-              <ItemCounter class="ingridients__counter" />
+              <ItemCounter
+                @input="setIngredient($event, ingredient)"
+                class="ingridients__counter"
+              />
             </li>
           </ul>
         </div>
@@ -47,7 +50,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
+
+import { eventBus } from "@/main.js";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -77,6 +82,11 @@ export default {
 
   methods: {
     ...mapActions({ getItems: "Builder/query" }),
+
+    ...mapMutations({
+      setPizzaSauce: "Builder/setPizzaOptions",
+      setPizzaIngredient: "Builder/setPizzaIngredients",
+    }),
 
     startDrag(evt, item) {
       evt.dataTransfer.dropEffect = "move";
@@ -119,6 +129,25 @@ export default {
         default:
           return false;
       }
+    },
+
+    selectSauce(e, i) {
+      this.active = i;
+      this.setPizzaSauce({ ingredient: "sauceId", value: parseInt(e) });
+    },
+
+    setIngredient(e, ing) {
+      const ingredient = {
+        ingredientId: ing.id,
+        quantity: e,
+      };
+
+      this.setPizzaIngredient(ingredient);
+
+      eventBus.$emit("setIngredients", {
+        name: this.getImage(ing.name),
+        count: e,
+      });
     },
   },
 

@@ -6,6 +6,7 @@
       name="pizza_name"
       hideLabel
       v-model="pizzaName"
+      @input="setName"
     />
 
     <div
@@ -30,6 +31,10 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
+import { eventBus } from "@/main.js";
+
 import BaseInput from "@/common/components/base/BaseInput";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
@@ -45,14 +50,41 @@ export default {
     return {
       pizzaName: "",
       drops: [],
+      name: "",
+      count: 0,
     };
   },
 
   methods: {
+    ...mapMutations({ setPizzaName: "Builder/setPizzaOptions" }),
+
     onDrop(evt) {
       const draggedElement = evt.dataTransfer.getData("item");
+      if (this.drops.includes(draggedElement)) return;
       this.drops.push(draggedElement);
     },
+
+    setName(e) {
+      this.setPizzaName({ ingredient: "name", value: e });
+    },
+
+    setDrop({ name, count }) {
+      if (count !== 0) {
+        if (this.drops.includes(name)) return;
+
+        this.drops.push(name);
+      } else {
+        this.drops = this.drops.filter((el) => el !== name);
+      }
+    },
+  },
+
+  created() {
+    eventBus.$on("setIngredients", this.setDrop);
+  },
+
+  beforeDestroy() {
+    eventBus.$off("setIngredients");
   },
 };
 </script>

@@ -13,7 +13,7 @@
           :checked="active === i"
           :size="getSize(item.multiplier)"
           name="diameter"
-          @input="active = i"
+          @input="selectSize($event, i)"
         />
       </div>
     </div>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -48,6 +48,8 @@ export default {
   methods: {
     ...mapActions({ getSizes: "Builder/query" }),
 
+    ...mapMutations({ setPizzaSize: "Builder/setPizzaOptions" }),
+
     getSize(size) {
       switch (size) {
         case 1:
@@ -59,6 +61,11 @@ export default {
         default:
           return false;
       }
+    },
+
+    selectSize(e, i) {
+      this.active = i;
+      this.setPizzaSize({ ingredient: "sizeId", value: parseInt(e) });
     },
   },
 
