@@ -15,7 +15,7 @@ export default {
 
   actions: {
     // during a successful login:
-    async login({ dispatch }, { credentials, context }) {
+    async login({ dispatch }, { credentials }) {
       const data = await this.$api.auth.login(credentials);
       // 1. get the token from the server and store it in LocalStorage
       this.$jwt.saveToken(data.token);
@@ -23,8 +23,6 @@ export default {
       this.$api.auth.setAuthHeader();
       // Send a request for a user profile
       dispatch("getMe");
-      // Route to main page
-      context.$router.push("/");
     },
 
     // During a logout, we can only clear the token on the frontend,
@@ -53,6 +51,7 @@ export default {
 
     // Get the data of an authorized user
     async getMe({ commit, dispatch }) {
+      window.localStorage.setItem("isAuthenticated", true);
       try {
         const { data } = await this.$api.auth.getMe();
         commit(

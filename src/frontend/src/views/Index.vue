@@ -1,6 +1,6 @@
 <template>
   <form action="#" method="post">
-    <div v-if="$route.name !== 'Login'" class="content__wrapper">
+    <div class="content__wrapper">
       <BaseTitle :level="1" size="big" :sheet="false">
         Конструктор пиццы
       </BaseTitle>
@@ -13,8 +13,6 @@
 
       <BuilderPizzaView />
     </div>
-
-    <router-view />
   </form>
 </template>
 

@@ -61,7 +61,8 @@ export default {
     ...mapActions({ login: "Auth/login" }),
 
     async submitHandler() {
-      await this.login({ credentials: this.user, context: this });
+      await this.login({ credentials: this.user });
+      this.$router.push("/");
     },
   },
 };
