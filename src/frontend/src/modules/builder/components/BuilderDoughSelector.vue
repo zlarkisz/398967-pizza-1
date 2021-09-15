@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -49,15 +49,16 @@ export default {
   methods: {
     ...mapActions({ getDough: "Builder/query" }),
 
-    ...mapMutations({ setPizzaDough: "Builder/setPizzaOptions" }),
-
     getSize(name) {
       return name === "Тонкое" ? "light" : "large";
     },
 
     selectDough(e, i) {
       this.active = i;
-      this.setPizzaDough({ ingredient: "doughId", value: parseInt(e) });
+      this.$emit("setPizzaDough", {
+        ingredient: "doughId",
+        value: parseInt(e),
+      });
     },
   },
 

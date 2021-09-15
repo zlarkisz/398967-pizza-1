@@ -84,7 +84,6 @@ export default {
     ...mapActions({ getItems: "Builder/query" }),
 
     ...mapMutations({
-      setPizzaSauce: "Builder/setPizzaOptions",
       setPizzaIngredient: "Builder/setPizzaIngredients",
     }),
 
@@ -133,7 +132,10 @@ export default {
 
     selectSauce(e, i) {
       this.active = i;
-      this.setPizzaSauce({ ingredient: "sauceId", value: parseInt(e) });
+      this.$emit("setPizzaSauce", {
+        ingredient: "sauceId",
+        value: parseInt(e),
+      });
     },
 
     setIngredient(e, ing) {
@@ -142,7 +144,7 @@ export default {
         quantity: e,
       };
 
-      this.setPizzaIngredient(ingredient);
+      this.$emit("setPizzaIngredient", ingredient);
 
       eventBus.$emit("setIngredients", {
         name: this.getImage(ing.name),

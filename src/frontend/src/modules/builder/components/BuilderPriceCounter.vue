@@ -1,11 +1,16 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ totalAmount }} ₽</p>
+    <p :key="totalAmount">
+      Итого: {{ pizzaAmount ? pizzaPrice : totalAmount }} ₽
+    </p>
     <button
       type="button"
-      :class="['button', { 'button--disabled': !totalAmount }]"
-      :disabled="!totalAmount"
-      @click="$emit('submit', true)"
+      :class="[
+        'button',
+        { 'button--disabled': pizzaAmount ? !pizzaPrice : !totalAmount },
+      ]"
+      :disabled="pizzaAmount ? !pizzaPrice : !totalAmount"
+      @click="$emit('makePizza', true)"
     >
       {{ buttonText }}
     </button>
@@ -15,6 +20,8 @@
 <script>
 import { mapGetters } from "vuex";
 
+import { eventBus } from "@/main.js";
+
 export default {
   name: "BuilderPriceCounter",
 
@@ -23,10 +30,35 @@ export default {
       type: String,
       required: true,
     },
+
+    pizzaAmount: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      pizzaPrice: 0,
+    };
   },
 
   computed: {
     ...mapGetters("Cart", ["totalAmount"]),
+  },
+
+  methods: {
+    setPizzaPrice({ price }) {
+      this.pizzaPrice = price;
+    },
+  },
+
+  created() {
+    eventBus.$on("setPizzaPrice", this.setPizzaPrice);
+  },
+
+  beforeDestroy() {
+    eventBus.$off("setPizzaPrice");
   },
 };
 </script>

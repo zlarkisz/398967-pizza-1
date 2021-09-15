@@ -33,33 +33,8 @@ export default {
         comment: "",
       },
     },
-    cart: [
-      // {
-      //   img: { src: require("@/assets/img/product.svg"), alt: "Капричоза" },
-      //   title: "Капричоза",
-      //   description: [
-      //     "30 см, на тонком тесте",
-      //     "Соус: томатный",
-      //     "Начинка: грибы, лук, ветчина, пармезан, ананас",
-      //   ],
-      //   count: 1,
-      //   price: 782,
-      // },
-      // {
-      //   img: {
-      //     src: require("@/assets/img/product.svg"),
-      //     alt: "Любимая пицца",
-      //   },
-      //   title: "Любимая пицца",
-      //   description: [
-      //     "30 см, на тонком тесте",
-      //     "Соус: томатный",
-      //     "Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блючиз",
-      //   ],
-      //   count: 2,
-      //   price: 782,
-      // },
-    ],
+    pizzas: [],
+    cart: [],
     options: [
       { value: 1, text: "Заберу сам" },
       { value: 2, text: "Новый адрес" },
@@ -89,32 +64,9 @@ export default {
   },
 
   getters: {
-    doughAmount(state, getters, rootState) {
-      const doughtPrice = rootState.Builder.dough.find(
-        (el) => el.id === rootState.Builder.pizza.doughId
-      );
-
-      return doughtPrice?.price || 0;
-    },
-
-    sauceAmount(state, getters, rootState) {
-      const saucePrice = rootState.Builder.sauces.find(
-        (el) => el.id === rootState.Builder.pizza.sauceId
-      );
-
-      return saucePrice?.price || 0;
-    },
-
-    ingredientsAmount(state, getters, rootState) {
-      return rootState.Builder.pizza.ingredients.reduce((acc, el) => {
-        rootState.Builder.ingredients.forEach((ing) => {
-          if (ing.id === el.ingredientId) {
-            let currentIng = el;
-
-            acc += currentIng.quantity * ing.price;
-          }
-        });
-
+    pizzasAmount: (state) => {
+      return state.pizzas.reduce((acc, el) => {
+        acc += el.quantity * el.price;
         return acc;
       }, 0);
     },
@@ -134,13 +86,7 @@ export default {
     },
 
     totalAmount: (state, getters) => {
-      return (
-        getters.cartAmount +
-        getters.doughAmount +
-        getters.sauceAmount +
-        getters.ingredientsAmount +
-        getters.additionsAmount
-      );
+      return getters.pizzasAmount + getters.additionsAmount;
     },
   },
 
@@ -148,20 +94,37 @@ export default {
     setOrderReceiving(state, receiving) {
       state.receiving = receiving;
     },
+
     setPhone(state, phone) {
       state.phone = phone;
     },
+
     setStreet(state, street) {
       state.street = street;
     },
+
     setHouse(state, house) {
       state.house = house;
     },
+
     setApartment(state, apartment) {
       state.apartment = apartment;
     },
+
     changeAmount(state, { id, count, list }) {
       state[list][id - 1].count = count;
+    },
+
+    setPizza(state, pizza) {
+      state.pizzas.push(pizza);
+    },
+
+    deletePizza(state, idx) {
+      state.pizzas = state.pizzas.filter((el, i) => i !== idx);
+    },
+
+    setPizzaQuantity(state, { idx, quantity }) {
+      state.pizzas[idx].quantity = quantity;
     },
   },
 };

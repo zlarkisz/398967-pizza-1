@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -48,8 +48,6 @@ export default {
   methods: {
     ...mapActions({ getSizes: "Builder/query" }),
 
-    ...mapMutations({ setPizzaSize: "Builder/setPizzaOptions" }),
-
     getSize(size) {
       switch (size) {
         case 1:
@@ -65,7 +63,7 @@ export default {
 
     selectSize(e, i) {
       this.active = i;
-      this.setPizzaSize({ ingredient: "sizeId", value: parseInt(e) });
+      this.$emit("setPizzaSize", { ingredient: "sizeId", value: parseInt(e) });
     },
   },
 

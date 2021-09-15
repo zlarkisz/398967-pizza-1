@@ -26,7 +26,11 @@
       </div>
     </div>
 
-    <BuilderPriceCounter buttonText="Готовьте!" />
+    <BuilderPriceCounter
+      pizzaAmount
+      @makePizza="$emit('makePizza', true)"
+      buttonText="Готовьте!"
+    />
   </div>
 </template>
 
@@ -57,6 +61,7 @@ export default {
 
   methods: {
     ...mapMutations({ setPizzaName: "Builder/setPizzaOptions" }),
+    ...mapMutations({ setPizza: "Cart/setPizza" }),
 
     onDrop(evt) {
       const draggedElement = evt.dataTransfer.getData("item");
@@ -65,7 +70,7 @@ export default {
     },
 
     setName(e) {
-      this.setPizzaName({ ingredient: "name", value: e });
+      this.$emit("setPizzaName", { ingredient: "name", value: e });
     },
 
     setDrop({ name, count }) {
