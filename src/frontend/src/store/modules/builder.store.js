@@ -13,7 +13,7 @@ export default {
       sauceId: 0,
       doughId: 0,
       sizeId: 0,
-      quantity: 0,
+      quantity: 1,
       ingredients: [],
     },
   },

@@ -16,12 +16,7 @@ export default {
           doughId: 0,
           sizeId: 0,
           quantity: 0,
-          ingredients: [
-            {
-              ingredientId: 0,
-              quantity: 0,
-            },
-          ],
+          ingredients: [],
         },
       ],
       misc: [
@@ -39,31 +34,31 @@ export default {
       },
     },
     cart: [
-      {
-        img: { src: require("@/assets/img/product.svg"), alt: "Капричоза" },
-        title: "Капричоза",
-        description: [
-          "30 см, на тонком тесте",
-          "Соус: томатный",
-          "Начинка: грибы, лук, ветчина, пармезан, ананас",
-        ],
-        count: 1,
-        price: 782,
-      },
-      {
-        img: {
-          src: require("@/assets/img/product.svg"),
-          alt: "Любимая пицца",
-        },
-        title: "Любимая пицца",
-        description: [
-          "30 см, на тонком тесте",
-          "Соус: томатный",
-          "Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блючиз",
-        ],
-        count: 2,
-        price: 782,
-      },
+      // {
+      //   img: { src: require("@/assets/img/product.svg"), alt: "Капричоза" },
+      //   title: "Капричоза",
+      //   description: [
+      //     "30 см, на тонком тесте",
+      //     "Соус: томатный",
+      //     "Начинка: грибы, лук, ветчина, пармезан, ананас",
+      //   ],
+      //   count: 1,
+      //   price: 782,
+      // },
+      // {
+      //   img: {
+      //     src: require("@/assets/img/product.svg"),
+      //     alt: "Любимая пицца",
+      //   },
+      //   title: "Любимая пицца",
+      //   description: [
+      //     "30 см, на тонком тесте",
+      //     "Соус: томатный",
+      //     "Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блючиз",
+      //   ],
+      //   count: 2,
+      //   price: 782,
+      // },
     ],
     options: [
       { value: 1, text: "Заберу сам" },
@@ -94,20 +89,58 @@ export default {
   },
 
   getters: {
+    doughAmount(state, getters, rootState) {
+      const doughtPrice = rootState.Builder.dough.find(
+        (el) => el.id === rootState.Builder.pizza.doughId
+      );
+
+      return doughtPrice?.price || 0;
+    },
+
+    sauceAmount(state, getters, rootState) {
+      const saucePrice = rootState.Builder.sauces.find(
+        (el) => el.id === rootState.Builder.pizza.sauceId
+      );
+
+      return saucePrice?.price || 0;
+    },
+
+    ingredientsAmount(state, getters, rootState) {
+      return rootState.Builder.pizza.ingredients.reduce((acc, el) => {
+        rootState.Builder.ingredients.forEach((ing) => {
+          if (ing.id === el.ingredientId) {
+            let currentIng = el;
+
+            acc += currentIng.quantity * ing.price;
+          }
+        });
+
+        return acc;
+      }, 0);
+    },
+
     cartAmount: (state) => {
       return state.cart.reduce((acc, el) => {
         acc += el.count * el.price;
         return acc;
       }, 0);
     },
+
     additionsAmount: (state) => {
       return state.misc.reduce((acc, el) => {
         acc += el.count * el.price;
         return acc;
       }, 0);
     },
+
     totalAmount: (state, getters) => {
-      return getters.cartAmount + getters.additionsAmount;
+      return (
+        getters.cartAmount +
+        getters.doughAmount +
+        getters.sauceAmount +
+        getters.ingredientsAmount +
+        getters.additionsAmount
+      );
     },
   },
 

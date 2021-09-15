@@ -62,7 +62,9 @@ export default {
 
     async submitHandler() {
       await this.login({ credentials: this.user });
-      this.$router.push("/");
+
+      // Добавил таймаут, потому что в роуте почему-то не видит сразу store.state.Auth.isAuthenticated
+      setTimeout(() => this.$router.push("/"), 1000);
     },
   },
 };
