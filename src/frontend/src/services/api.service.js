@@ -40,7 +40,12 @@ export class CrudApiService extends ReadOnlyApiService {
 
   // request to create an entity
   async post(entity) {
-    const { data } = await axios.post(this.#resource, entity);
+    const { data } = await axios.post(this.#resource, entity, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
     return data;
   }
 

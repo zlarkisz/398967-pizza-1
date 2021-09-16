@@ -1,5 +1,9 @@
 import resources from "@/common/enums/resources";
-import { AuthApiService, ReadOnlyApiService } from "@/services/api.service";
+import {
+  AuthApiService,
+  ReadOnlyApiService,
+  CrudApiService,
+} from "@/services/api.service";
 import { SET_ENTITY } from "@/store/mutations-types.js";
 
 export const capitalize = (string) =>
@@ -17,6 +21,10 @@ export const createResources = (notifier) => {
     ),
     [resources.MISC]: new ReadOnlyApiService(resources.MISC, notifier),
   };
+};
+
+export const postResources = (notifier) => {
+  return { [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier) };
 };
 
 export const setAuth = (store) => {

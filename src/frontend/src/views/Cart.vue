@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import ItemCounter from "@/common/components/ItemCounter";
@@ -112,7 +112,9 @@ export default {
   },
 
   computed: {
-    ...mapState("Cart", ["pizzas"]),
+    ...mapState("Cart", ["pizzas", "order", "pizzas"]),
+    ...mapState("Cart", ["pizzas", "order", "pizzas"]),
+    ...mapState("Auth", ["user"]),
 
     ...mapState("Builder", ["dough", "sizes", "sauces", "ingredients"]),
 
@@ -121,17 +123,22 @@ export default {
     },
   },
 
+  mounted() {
+    this.setUserId(this.user.id);
+  },
+
   methods: {
     ...mapMutations("Cart", [
       "changeAmount",
       "setPizzaQuantity",
       "deletePizza",
+      "setUserId",
     ]),
 
-    ...mapMutations(["SET_ORDER_STATUS"]),
+    ...mapActions("Cart", ["sendAnOrder"]),
 
-    submitOrder() {
-      this.SET_ORDER_STATUS(true);
+    async submitOrder() {
+      await this.sendAnOrder(this.order);
     },
 
     setQuantity(e, i) {

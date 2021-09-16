@@ -1,4 +1,4 @@
-import { SET_ENTITY } from "@/store/mutations-types";
+import { SET_ENTITY, SET_ORDER_STATUS } from "@/store/mutations-types";
 
 const setCount = (el) => (el.count = 0);
 
@@ -8,33 +8,37 @@ export default {
   state: {
     misc: [],
     order: {
-      userId: "",
+      userId: "string",
       pizzas: [
         {
-          name: "",
-          sauceId: 0,
-          doughId: 0,
-          sizeId: 0,
-          quantity: 0,
-          ingredients: [],
+          name: "string",
+          sauceId: 1,
+          doughId: 1,
+          sizeId: 1,
+          quantity: 1,
+          ingredients: [
+            {
+              ingredientId: 1,
+              quantity: 1,
+            },
+          ],
         },
       ],
       misc: [
         {
-          miscId: 0,
-          quantity: 0,
+          miscId: 1,
+          quantity: 1,
         },
       ],
       address: {
-        name: "",
-        street: "",
-        building: "",
-        flat: "",
-        comment: "",
+        name: "string",
+        street: "string",
+        building: "string",
+        flat: "string",
+        comment: "string",
       },
     },
     pizzas: [],
-    cart: [],
     options: [
       { value: 1, text: "Заберу сам" },
       { value: 2, text: "Новый адрес" },
@@ -60,6 +64,13 @@ export default {
         { module: "Cart", entity: type, value: data },
         { root: true }
       );
+    },
+
+    async sendAnOrder({ commit }, order) {
+      const data = await this.$post.orders.post(order);
+      console.log(data);
+
+      commit(SET_ORDER_STATUS, true);
     },
   },
 
@@ -125,6 +136,10 @@ export default {
 
     setPizzaQuantity(state, { idx, quantity }) {
       state.pizzas[idx].quantity = quantity;
+    },
+
+    setUserId(state, id) {
+      state.order.userId = id;
     },
   },
 };
