@@ -30,6 +30,7 @@
       pizzaAmount
       @makePizza="$emit('makePizza', true)"
       buttonText="Готовьте!"
+      :isDisabled="isDisabled"
     />
   </div>
 </template>
@@ -44,6 +45,13 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 
 export default {
   name: "BuilderPizzaView",
+
+  props: {
+    isDisabled: {
+      type: Boolean,
+      default: true,
+    },
+  },
 
   components: {
     BaseInput,

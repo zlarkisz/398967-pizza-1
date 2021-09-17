@@ -77,6 +77,7 @@
 
       <BuilderPriceCounter
         buttonText="Оформить заказ"
+        :isDisabled="!isNewAddress || !order.pizzas.length"
         @makePizza="submitOrder"
         class="footer__price"
       />
@@ -120,6 +121,18 @@ export default {
 
     stuffing() {
       return [];
+    },
+
+    isNewAddress() {
+      const address = this.order.address;
+
+      return (
+        address.name === "Новый адрес" &&
+        !!address.street &&
+        address.street.length !== 0 &&
+        !!address.building &&
+        address.building.length !== 0
+      );
     },
   },
 

@@ -7,9 +7,12 @@
       type="button"
       :class="[
         'button',
-        { 'button--disabled': pizzaAmount ? !pizzaPrice : !totalAmount },
+        {
+          'button--disabled':
+            isDisabled || (pizzaAmount ? !pizzaPrice : !totalAmount),
+        },
       ]"
-      :disabled="pizzaAmount ? !pizzaPrice : !totalAmount"
+      :disabled="isDisabled || (pizzaAmount ? !pizzaPrice : !totalAmount)"
       @click="$emit('makePizza', true)"
     >
       {{ buttonText }}
@@ -32,6 +35,11 @@ export default {
     },
 
     pizzaAmount: {
+      type: Boolean,
+      default: false,
+    },
+
+    isDisabled: {
       type: Boolean,
       default: false,
     },

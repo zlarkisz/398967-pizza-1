@@ -6,7 +6,7 @@
         label="Получение заказа:"
         labelClass="cart-form__label"
         :options="options"
-        @input="setOrderReceiving"
+        @input="setReceiving"
       />
 
       <BaseInput
@@ -83,6 +83,12 @@ export default {
       "setHouse",
       "setApartment",
     ]),
+
+    setReceiving(e) {
+      const name = this.options.find((el) => el.value === parseInt(e));
+
+      this.setOrderReceiving(name.text);
+    },
   },
 };
 </script>

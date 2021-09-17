@@ -17,6 +17,7 @@
       <BuilderPizzaView
         @setPizzaName="setPizzaOptions"
         @makePizza="makePizza"
+        :isDisabled="!isPizzaisFull"
       />
     </div>
   </form>
@@ -99,6 +100,12 @@ export default {
 
         return acc;
       }, 0);
+    },
+
+    isPizzaisFull() {
+      const isElementFull = (e) => !!e;
+
+      return Object.values(this.pizza).every(isElementFull);
     },
   },
 

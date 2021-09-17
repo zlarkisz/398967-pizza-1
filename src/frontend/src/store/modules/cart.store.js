@@ -8,34 +8,15 @@ export default {
   state: {
     misc: [],
     order: {
-      userId: "string",
-      pizzas: [
-        {
-          name: "string",
-          sauceId: 1,
-          doughId: 1,
-          sizeId: 1,
-          quantity: 1,
-          ingredients: [
-            {
-              ingredientId: 1,
-              quantity: 1,
-            },
-          ],
-        },
-      ],
-      misc: [
-        {
-          miscId: 1,
-          quantity: 1,
-        },
-      ],
+      userId: "",
+      pizzas: [],
+      misc: [],
       address: {
-        name: "string",
-        street: "string",
-        building: "string",
-        flat: "string",
-        comment: "string",
+        name: "",
+        street: "",
+        building: "",
+        flat: "",
+        comment: "",
       },
     },
     pizzas: [],
@@ -44,11 +25,6 @@ export default {
       { value: 2, text: "Новый адрес" },
       { value: 3, text: "Дом" },
     ],
-    receiving: "",
-    phone: "",
-    street: "",
-    house: "",
-    apartment: "",
     totalAmount: 0,
   },
 
@@ -70,7 +46,7 @@ export default {
       const data = await this.$post.orders.post(order);
       console.log(data);
 
-      commit(SET_ORDER_STATUS, true);
+      commit(SET_ORDER_STATUS, true, { root: true });
     },
   },
 
@@ -103,23 +79,23 @@ export default {
 
   mutations: {
     setOrderReceiving(state, receiving) {
-      state.receiving = receiving;
+      state.order.address.name = receiving;
     },
 
     setPhone(state, phone) {
-      state.phone = phone;
+      state.order.address.comment = phone;
     },
 
     setStreet(state, street) {
-      state.street = street;
+      state.order.address.street = street;
     },
 
     setHouse(state, house) {
-      state.house = house;
+      state.order.address.building = house;
     },
 
     setApartment(state, apartment) {
-      state.apartment = apartment;
+      state.order.address.flat = apartment;
     },
 
     changeAmount(state, { id, count, list }) {
