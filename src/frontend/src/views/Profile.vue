@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import BaseInput from "@/common/components/base/BaseInput";
@@ -148,8 +148,17 @@ export default {
     };
   },
 
+  methods: {
+    ...mapActions("Addresses", ["query"]),
+  },
+
   computed: {
     ...mapState("Auth", ["user"]),
+    ...mapState("Addresses", ["addresses"]),
+  },
+
+  async created() {
+    await this.query();
   },
 };
 </script>

@@ -53,7 +53,13 @@
             </div>
 
             <div class="cart-list__button">
-              <button type="button" class="cart-list__edit">Изменить</button>
+              <button
+                @click="$router.push('/')"
+                type="button"
+                class="cart-list__edit"
+              >
+                Изменить
+              </button>
             </div>
           </li>
         </ul>
@@ -77,7 +83,7 @@
 
       <BuilderPriceCounter
         buttonText="Оформить заказ"
-        :isDisabled="!isNewAddress || !order.pizzas.length"
+        :isDisabled="isNewAddress || !order.pizzas.length"
         @makePizza="submitOrder"
         class="footer__price"
       />
@@ -113,26 +119,30 @@ export default {
   },
 
   computed: {
-    ...mapState("Cart", ["pizzas", "order", "pizzas"]),
-    ...mapState("Cart", ["pizzas", "order", "pizzas"]),
-    ...mapState("Auth", ["user"]),
-
     ...mapState("Builder", ["dough", "sizes", "sauces", "ingredients"]),
-
-    stuffing() {
-      return [];
-    },
+    ...mapState("Cart", ["pizzas", "order", "pizzas", "misc"]),
+    ...mapState("Auth", ["user"]),
 
     isNewAddress() {
       const address = this.order.address;
 
-      return (
-        address.name === "Новый адрес" &&
-        !!address.street &&
-        address.street.length !== 0 &&
-        !!address.building &&
-        address.building.length !== 0
-      );
+      if (!address.street.length) {
+        return true;
+      } else if (!address.building.length) {
+        return true;
+      } else if (!address.comment.length) {
+        return true;
+      } else if (!address.flat.length) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+
+  watch: {
+    pizzas(v) {
+      console.log(v);
     },
   },
 
@@ -142,15 +152,30 @@ export default {
 
   methods: {
     ...mapMutations("Cart", [
-      "changeAmount",
       "setPizzaQuantity",
       "deletePizza",
       "setUserId",
+      "setOrderMisc",
+      "setOrderPizzas",
     ]),
 
     ...mapActions("Cart", ["sendAnOrder"]),
 
     async submitOrder() {
+      const finalMiscs = this.misc.filter((m) => m.count !== 0);
+      const orderMisc = finalMiscs.map((el) => {
+        return { miscId: el.id, quantity: el.count };
+      });
+      let finalPizzas = [];
+
+      this.order.pizzas.forEach((p) => {
+        delete p.price;
+        finalPizzas.push(p);
+      });
+
+      this.setOrderMisc(orderMisc);
+      this.setOrderPizzas(finalPizzas);
+
       await this.sendAnOrder(this.order);
     },
 

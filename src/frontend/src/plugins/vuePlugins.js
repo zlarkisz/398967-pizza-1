@@ -2,7 +2,7 @@ import Vue from "vue";
 import JWTService from "@/services/jwt.service";
 import Notifier from "@/plugins/notifier";
 import store from "@/store";
-import { createResources, postResources } from "@/common/helpers";
+import { createResources } from "@/common/helpers";
 
 const plugins = {
   install(Vue) {
@@ -12,9 +12,6 @@ const plugins = {
         $notifier: () => new Notifier(store),
         $api() {
           return createResources(this.$notifier);
-        },
-        $post() {
-          return postResources(this.$notifier);
         },
       },
     });

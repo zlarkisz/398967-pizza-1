@@ -20,11 +20,12 @@ export const createResources = (notifier) => {
       notifier
     ),
     [resources.MISC]: new ReadOnlyApiService(resources.MISC, notifier),
+    [resources.ADDRESSES]: new ReadOnlyApiService(
+      resources.ADDRESSES,
+      notifier
+    ),
+    [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier),
   };
-};
-
-export const postResources = (notifier) => {
-  return { [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier) };
 };
 
 export const setAuth = (store) => {

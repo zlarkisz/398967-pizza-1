@@ -31,9 +31,7 @@ export default {
   actions: {
     async query({ commit }, type) {
       const data = await this.$api[type].query();
-      const mutatedData = data.map(setCount);
-
-      type === "misc" ? mutatedData : data;
+      data.map(setCount);
 
       commit(
         SET_ENTITY,
@@ -43,7 +41,7 @@ export default {
     },
 
     async sendAnOrder({ commit }, order) {
-      const data = await this.$post.orders.post(order);
+      const data = await this.$api.orders.post(order);
       console.log(data);
 
       commit(SET_ORDER_STATUS, true, { root: true });
@@ -104,6 +102,7 @@ export default {
 
     setPizza(state, pizza) {
       state.pizzas.push(pizza);
+      state.order.pizzas = [...state.pizzas];
     },
 
     deletePizza(state, idx) {
@@ -112,6 +111,14 @@ export default {
 
     setPizzaQuantity(state, { idx, quantity }) {
       state.pizzas[idx].quantity = quantity;
+    },
+
+    setOrderMisc(state, misc) {
+      state.order.misc = misc;
+    },
+
+    setOrderPizzas(state, pizzas) {
+      state.order.pizzas = pizzas;
     },
 
     setUserId(state, id) {
