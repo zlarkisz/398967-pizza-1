@@ -24,6 +24,7 @@ export const createResources = (notifier) => {
       resources.ADDRESSES,
       notifier
     ),
+    [resources.ADDRESSES]: new CrudApiService(resources.ADDRESSES, notifier),
     [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier),
   };
 };

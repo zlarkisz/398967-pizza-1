@@ -30,28 +30,35 @@
     </div>
 
     <div class="layout__address">
-      <div class="sheet address-form">
+      <div
+        v-for="address in addresses"
+        :key="address.id"
+        class="sheet address-form"
+      >
         <div class="address-form__header">
-          <b>Адрес №1. Тест</b>
+          <b>Адрес №{{ address.id }}. {{ address.name }}</b>
           <div class="address-form__edit">
             <button type="button" class="icon">
               <span class="visually-hidden">Изменить адрес</span>
             </button>
           </div>
         </div>
-        <p>Невский пр., д. 22, оф. 46</p>
-        <small>Позвоните, пожалуйста, от проходной</small>
+        <p>
+          {{ address.street }}, д. {{ address.building }}, оф.
+          {{ address.flat }}
+        </p>
+        <small>{{ address.comment }}</small>
       </div>
     </div>
 
     <div class="layout__address">
       <form
-        action="test.html"
+        @submit.prevent
         method="post"
         class="address-form address-form--opened sheet"
       >
         <div class="address-form__header">
-          <b>Адрес №1</b>
+          <b>Адрес №{{ addresses.length + 1 }}</b>
         </div>
 
         <div class="address-form__wrapper">
@@ -61,7 +68,7 @@
               placeholder="Введите название адреса"
               name="addr-name"
               required
-              v-model="address"
+              v-model="address.name"
             />
           </div>
 
@@ -71,28 +78,28 @@
               placeholder="Введите название улицы"
               name="addr-street"
               required
-              v-model="street"
+              v-model="address.street"
             />
           </div>
 
           <div class="address-form__input address-form__input--size--small">
             <BaseInput
-              type="text"
+              type="number"
               label="Дом*"
               placeholder="Введите номер дома"
               name="addr-house"
               required
-              v-model="house"
+              v-model="address.building"
             />
           </div>
 
           <div class="address-form__input address-form__input--size--small">
             <BaseInput
-              type="text"
+              type="number"
               label="Квартира"
               placeholder="Введите № квартиры"
               name="addr-apartment"
-              v-model="apartment"
+              v-model="address.flat"
             />
           </div>
 
@@ -102,7 +109,7 @@
               label="Комментарий"
               placeholder="Введите комментарий"
               name="addr-comment"
-              v-model="comment"
+              v-model="address.comment"
             />
           </div>
         </div>
@@ -111,7 +118,9 @@
           <button type="button" class="button button--transparent">
             Удалить
           </button>
-          <button type="submit" class="button">Сохранить</button>
+          <button type="submit" class="button" @click="sendAddress">
+            Сохранить
+          </button>
         </div>
       </form>
     </div>
@@ -140,16 +149,35 @@ export default {
 
   data() {
     return {
-      address: "",
-      street: "",
-      house: "",
-      apartment: "",
-      comment: "",
+      address: {
+        name: "",
+        userId: "",
+        street: "",
+        building: "",
+        flat: "",
+        comment: "",
+      },
     };
   },
 
   methods: {
-    ...mapActions("Addresses", ["query"]),
+    ...mapActions("Addresses", ["query", "post"]),
+
+    setAddressUserId() {
+      this.address.userId = this.user.id;
+    },
+
+    clearCurrentAddress() {
+      for (let key in this.address) {
+        this.address[key] = "";
+      }
+    },
+
+    async sendAddress() {
+      this.setAddressUserId();
+      await this.post(this.address);
+      this.clearCurrentAddress();
+    },
   },
 
   computed: {

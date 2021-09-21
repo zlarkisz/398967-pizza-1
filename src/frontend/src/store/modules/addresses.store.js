@@ -4,7 +4,7 @@ export default {
   namespaced: true,
 
   state: {
-    addresses: {},
+    addresses: [],
   },
 
   actions: {
@@ -15,6 +15,19 @@ export default {
         { module: "Addresses", entity: "addresses", value: data },
         { root: true }
       );
+    },
+
+    async post({ commit }, address) {
+      const data = await this.$api.addresses.post(address);
+      console.log(data);
+
+      commit("addAddress", data);
+    },
+  },
+
+  mutations: {
+    addAddress(state, address) {
+      state.addresses.push(address);
     },
   },
 };
