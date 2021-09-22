@@ -9,6 +9,7 @@
       :name="name"
       :placeholder="placeholder"
       :required="required"
+      v-model="$attrs.value"
       @input="onInput"
     />
   </label>

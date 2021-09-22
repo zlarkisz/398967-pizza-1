@@ -38,7 +38,7 @@
         <div class="address-form__header">
           <b>Адрес №{{ address.id }}. {{ address.name }}</b>
           <div class="address-form__edit">
-            <button type="button" class="icon">
+            <button type="button" class="icon" @click="changeAddress(address)">
               <span class="visually-hidden">Изменить адрес</span>
             </button>
           </div>
@@ -115,7 +115,12 @@
         </div>
 
         <div class="address-form__buttons">
-          <button type="button" class="button button--transparent">
+          <button
+            type="button"
+            class="button button--transparent"
+            :disabled="!address.id"
+            @click="deleteAddress(address.id)"
+          >
             Удалить
           </button>
           <button type="submit" class="button" @click="sendAddress">
@@ -160,8 +165,13 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState("Auth", ["user"]),
+    ...mapState("Addresses", ["addresses"]),
+  },
+
   methods: {
-    ...mapActions("Addresses", ["query", "post"]),
+    ...mapActions("Addresses", ["query", "post", "delete"]),
 
     setAddressUserId() {
       this.address.userId = this.user.id;
@@ -173,16 +183,20 @@ export default {
       }
     },
 
+    changeAddress(address) {
+      this.address = address;
+    },
+
+    async deleteAddress(id) {
+      await this.delete(id);
+      this.clearCurrentAddress();
+    },
+
     async sendAddress() {
       this.setAddressUserId();
       await this.post(this.address);
-      this.clearCurrentAddress();
+      // this.clearCurrentAddress();
     },
-  },
-
-  computed: {
-    ...mapState("Auth", ["user"]),
-    ...mapState("Addresses", ["addresses"]),
   },
 
   async created() {

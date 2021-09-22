@@ -19,15 +19,25 @@ export default {
 
     async post({ commit }, address) {
       const data = await this.$api.addresses.post(address);
-      console.log(data);
 
       commit("addAddress", data);
+    },
+
+    async delete({ commit, dispatch }, id) {
+      const data = await this.$api.addresses.delete(id);
+      commit("addAddress", data);
+      dispatch("query");
     },
   },
 
   mutations: {
     addAddress(state, address) {
       state.addresses.push(address);
+    },
+
+    changeAddress(state, address) {
+      const c = state.addresses.find((adrs) => adrs.id === address.id);
+      console.log(c);
     },
   },
 };
