@@ -140,12 +140,6 @@ export default {
     },
   },
 
-  watch: {
-    pizzas(v) {
-      console.log(v);
-    },
-  },
-
   mounted() {
     this.setUserId(this.user.id);
   },

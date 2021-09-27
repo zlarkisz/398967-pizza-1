@@ -1,11 +1,8 @@
 import { SET_ENTITY, SET_ORDER_STATUS } from "@/store/mutations-types";
 
 const setCount = (el) => (el.count = 0);
-
-export default {
-  namespaced: true,
-
-  state: {
+const getDefaultState = () => {
+  return {
     misc: [],
     order: {
       userId: "",
@@ -26,7 +23,13 @@ export default {
       { value: 3, text: "Дом" },
     ],
     totalAmount: 0,
-  },
+  };
+};
+
+export default {
+  namespaced: true,
+
+  state: getDefaultState(),
 
   actions: {
     async query({ commit }, type) {
@@ -41,10 +44,9 @@ export default {
     },
 
     async sendAnOrder({ commit }, order) {
-      const data = await this.$api.orders.post(order);
-      console.log(data);
-
+      await this.$api.orders.post(order);
       commit(SET_ORDER_STATUS, true, { root: true });
+      commit("resetState");
     },
   },
 
@@ -123,6 +125,10 @@ export default {
 
     setUserId(state, id) {
       state.order.userId = id;
+    },
+
+    resetState(state) {
+      Object.assign(state, getDefaultState());
     },
   },
 };

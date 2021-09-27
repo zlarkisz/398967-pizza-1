@@ -123,7 +123,12 @@
           >
             Удалить
           </button>
-          <button type="submit" class="button" @click="sendAddress">
+          <button
+            :disabled="isDisabled"
+            type="submit"
+            class="button"
+            @click="sendAddress"
+          >
             Сохранить
           </button>
         </div>
@@ -162,16 +167,29 @@ export default {
         flat: "",
         comment: "",
       },
+      change: false,
     };
   },
 
   computed: {
     ...mapState("Auth", ["user"]),
     ...mapState("Addresses", ["addresses"]),
+
+    isDisabled() {
+      let dis = false;
+
+      for (let key in this.address) {
+        if (this.address[key] === "" && this.address[key] !== "userId") {
+          dis = true;
+        }
+      }
+
+      return dis;
+    },
   },
 
   methods: {
-    ...mapActions("Addresses", ["query", "post", "delete"]),
+    ...mapActions("Addresses", ["query", "post", "delete", "put"]),
 
     setAddressUserId() {
       this.address.userId = this.user.id;
@@ -184,18 +202,25 @@ export default {
     },
 
     changeAddress(address) {
+      this.change = true;
       this.address = address;
     },
 
     async deleteAddress(id) {
       await this.delete(id);
       this.clearCurrentAddress();
+      this.change = false;
     },
 
     async sendAddress() {
-      this.setAddressUserId();
-      await this.post(this.address);
-      // this.clearCurrentAddress();
+      if (this.change) {
+        await this.put(this.address);
+      } else {
+        this.setAddressUserId();
+        await this.post(this.address);
+      }
+      this.clearCurrentAddress();
+      this.change = false;
     },
   },
 
