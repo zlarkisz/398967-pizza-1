@@ -12,11 +12,12 @@
             :key="i"
             v-model="selectedSauce"
             :itemName="item.name"
-            :radioValue="item.value"
-            :checked="item.checked"
+            :radioValue="item.id"
+            :checked="active === i"
             name="ingridients"
             labelType="radio"
             :inputVisuallyHidden="false"
+            @input="selectSauce($event, i)"
           />
         </div>
 
@@ -30,13 +31,16 @@
               class="ingridients__item"
             >
               <SelectorItem
-                :imageClass="ingredient.label"
+                :imageClass="getImage(ingredient.name)"
                 :name="ingredient.name"
                 draggable
-                @dragstart.native="startDrag($event, ingredient.label)"
+                @dragstart.native="startDrag($event, getImage(ingredient.name))"
               />
 
-              <ItemCounter class="ingridients__counter" />
+              <ItemCounter
+                @input="setIngredient($event, ingredient)"
+                class="ingridients__counter"
+              />
             </li>
           </ul>
         </div>
@@ -46,7 +50,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
+
+import { eventBus } from "@/main.js";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -65,6 +71,7 @@ export default {
 
   data() {
     return {
+      active: null,
       selectedSauce: null,
     };
   },
@@ -74,11 +81,81 @@ export default {
   },
 
   methods: {
+    ...mapActions({ getItems: "Builder/query" }),
+
+    ...mapMutations({
+      setPizzaIngredient: "Builder/setPizzaIngredients",
+    }),
+
     startDrag(evt, item) {
       evt.dataTransfer.dropEffect = "move";
       evt.dataTransfer.effectAllowed = "move";
       evt.dataTransfer.setData("item", item);
     },
+
+    getImage(name) {
+      switch (name) {
+        case "Грибы":
+          return "mushrooms";
+        case "Чеддер":
+          return "cheddar";
+        case "Салями":
+          return "salami";
+        case "Ветчина":
+          return "ham";
+        case "Ананас":
+          return "ananas";
+        case "Бекон":
+          return "bacon";
+        case "Лук":
+          return "onion";
+        case "Чили":
+          return "chile";
+        case "Халапеньо":
+          return "jalapeno";
+        case "Маслины":
+          return "olives";
+        case "Томаты":
+          return "tomatoes";
+        case "Лосось":
+          return "salmon";
+        case "Моцарелла":
+          return "mozzarella";
+        case "Пармезан":
+          return "parmesan";
+        case "Блю чиз":
+          return "blue_cheese";
+        default:
+          return false;
+      }
+    },
+
+    selectSauce(e, i) {
+      this.active = i;
+      this.$emit("setPizzaSauce", {
+        ingredient: "sauceId",
+        value: parseInt(e),
+      });
+    },
+
+    setIngredient(e, ing) {
+      const ingredient = {
+        ingredientId: ing.id,
+        quantity: e,
+      };
+
+      this.$emit("setPizzaIngredient", ingredient);
+
+      eventBus.$emit("setIngredients", {
+        name: this.getImage(ing.name),
+        count: e,
+      });
+    },
+  },
+
+  async created() {
+    await this.getItems("sauces");
+    await this.getItems("ingredients");
   },
 };
 </script>

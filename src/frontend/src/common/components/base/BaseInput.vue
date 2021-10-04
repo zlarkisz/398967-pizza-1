@@ -8,6 +8,8 @@
       :type="type"
       :name="name"
       :placeholder="placeholder"
+      :required="required"
+      v-model="$attrs.value"
       @input="onInput"
     />
   </label>
@@ -47,6 +49,11 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    required: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   methods: {
@@ -57,4 +64,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+input {
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+</style>

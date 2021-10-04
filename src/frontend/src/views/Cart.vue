@@ -1,154 +1,103 @@
 <template>
-  <div>
-    <form class="layout-form" @submit.prevent>
-      <main class="content cart">
-        <div class="container">
-          <div class="cart__title">
-            <BaseTitle :level="1" size="big">Корзина</BaseTitle>
-          </div>
+  <form class="layout-form" @submit.prevent>
+    <main class="content cart">
+      <div class="container">
+        <div class="cart__title">
+          <BaseTitle :level="1" size="big">Корзина</BaseTitle>
+        </div>
 
-          <!-- <div class="sheet cart__empty">
+        <div v-if="!pizzas.length" class="sheet cart__empty">
           <p>В корзине нет ни одного товара</p>
-        </div> -->
+        </div>
 
-          <ul class="cart-list sheet">
-            <li v-for="(product, i) in cart" :key="i" class="cart-list__item">
-              <div class="product cart-list__product">
-                <img
-                  :key="product.img.alt"
-                  :src="product.img.src"
-                  class="product__img"
-                  width="56"
-                  height="56"
-                  :alt="product.img.alt"
-                />
-                <div class="product__text">
-                  <h2>{{ product.title }}</h2>
-                  <ul>
-                    <li
-                      v-for="(desc, idx) in product.description"
-                      :key="`product-${idx}`"
+        <ul v-else class="cart-list sheet">
+          <li v-for="(pizza, i) in pizzas" :key="i" class="cart-list__item">
+            <div class="product cart-list__product">
+              <img
+                src="@/assets/img/product.svg"
+                class="product__img"
+                width="56"
+                height="56"
+                alt="pizza"
+              />
+              <div v-if="pizza.name" class="product__text">
+                <h2>{{ pizza.name }}</h2>
+                <ul>
+                  <li>
+                    {{ getStuffing(pizza.sizeId, "size") }}
+                    {{ getStuffing(pizza.doughId, "dough") }}
+                  </li>
+                  <li>Соус: {{ getStuffing(pizza.sauceId, "sauce") }}</li>
+                  <li>
+                    Начинка:
+                    <span
+                      v-for="item in pizza.ingredients"
+                      :key="item.ingredientId"
                     >
-                      {{ desc }}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <ItemCounter
-                :value="product.count"
-                plusBtnTheme="orange"
-                class="cart-list__counter"
-                @input="onChangeAmount($event, i, 'cart')"
-              />
-
-              <div class="cart-list__price">
-                <b>{{ product.price }} ₽</b>
-              </div>
-
-              <div class="cart-list__button">
-                <button type="button" class="cart-list__edit">Изменить</button>
-              </div>
-            </li>
-          </ul>
-
-          <div class="cart__additional">
-            <ul class="additional-list">
-              <li
-                v-for="(add, idx) in additions"
-                :key="`additional-${idx}`"
-                class="additional-list__item sheet"
-              >
-                <p class="additional-list__description">
-                  <img :src="add.image" width="39" height="60" :alt="add.alt" />
-                  <span>{{ add.name }}</span>
-                </p>
-
-                <div class="additional-list__wrapper">
-                  <ItemCounter
-                    :value="add.count"
-                    plusBtnTheme="orange"
-                    class="additional-list__counter"
-                    @input="onChangeAmount($event, idx, 'additions')"
-                  />
-
-                  <div class="additional-list__price">
-                    <b>{{ add.price }} ₽</b>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div class="cart__form">
-            <div class="cart-form">
-              <BaseSelect
-                class="cart-form__select"
-                label="Получение заказа:"
-                labelClass="cart-form__label"
-                :options="options"
-                @input="setOrderReceiving"
-              />
-
-              <BaseInput
-                name="tel"
-                label="Контактный телефон:"
-                placeholder="+7 999-999-99-99"
-                bigLabel
-                @input="setPhone"
-              />
-
-              <div class="cart-form__address">
-                <span class="cart-form__label">Новый адрес:</span>
-
-                <div class="cart-form__input">
-                  <BaseInput name="street" label="Улица*" @input="setStreet" />
-                </div>
-
-                <div class="cart-form__input cart-form__input--small">
-                  <BaseInput name="house" label="Дом*" @input="setHouse" />
-                </div>
-
-                <div class="cart-form__input cart-form__input--small">
-                  <BaseInput
-                    name="apartment"
-                    label="Квартира"
-                    @input="setApartment"
-                  />
-                </div>
+                      {{ getStuffing(item.ingredientId, "ingredient") }}
+                    </span>
+                  </li>
+                </ul>
               </div>
             </div>
-          </div>
-        </div>
-      </main>
-      <section class="footer">
-        <div class="footer__more">
-          <router-link to="/" class="button button--border button--arrow">
-            Хочу еще одну
-          </router-link>
-        </div>
 
-        <p class="footer__text">
-          Перейти к конструктору<br />чтоб собрать ещё одну пиццу
-        </p>
+            <ItemCounter
+              :value="pizza.quantity"
+              plusBtnTheme="orange"
+              class="cart-list__counter"
+              @input="setQuantity($event, i)"
+            />
 
-        <BuilderPriceCounter
-          buttonText="Оформить заказ"
-          @submit="submitOrder"
-          class="footer__price"
-        />
-      </section>
-    </form>
-  </div>
+            <div class="cart-list__price">
+              <b>{{ pizza.price }} ₽</b>
+            </div>
+
+            <div class="cart-list__button">
+              <button
+                @click="$router.push('/')"
+                type="button"
+                class="cart-list__edit"
+              >
+                Изменить
+              </button>
+            </div>
+          </li>
+        </ul>
+
+        <CartAdditional />
+
+        <CartForm />
+      </div>
+    </main>
+
+    <section class="footer">
+      <div class="footer__more">
+        <router-link to="/" class="button button--border button--arrow">
+          Хочу еще одну
+        </router-link>
+      </div>
+
+      <p class="footer__text">
+        Перейти к конструктору<br />чтоб собрать ещё одну пиццу
+      </p>
+
+      <BuilderPriceCounter
+        buttonText="Оформить заказ"
+        :isDisabled="isNewAddress || !order.pizzas.length"
+        @makePizza="submitOrder"
+        class="footer__price"
+      />
+    </section>
+  </form>
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
-import BaseInput from "@/common/components/base/BaseInput";
-import BaseSelect from "@/common/components/base/BaseSelect";
 import ItemCounter from "@/common/components/ItemCounter";
+import CartAdditional from "@/modules/cart/components/CartAdditional";
+import CartForm from "@/modules/cart/components/CartForm";
 
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
@@ -157,10 +106,10 @@ export default {
 
   components: {
     BaseTitle,
-    BaseInput,
-    BaseSelect,
     ItemCounter,
     BuilderPriceCounter,
+    CartAdditional,
+    CartForm,
   },
 
   data() {
@@ -170,27 +119,92 @@ export default {
   },
 
   computed: {
-    ...mapState("Cart", ["additions", "cart", "options"]),
+    ...mapState("Builder", ["dough", "sizes", "sauces", "ingredients"]),
+    ...mapState("Cart", ["pizzas", "order", "pizzas", "misc"]),
+    ...mapState("Auth", ["user"]),
+
+    isNewAddress() {
+      const address = this.order.address;
+
+      if (!address.street.length) {
+        return true;
+      } else if (!address.building.length) {
+        return true;
+      } else if (!address.comment.length) {
+        return true;
+      } else if (!address.flat.length) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+
+  mounted() {
+    this.setUserId(this.user.id);
   },
 
   methods: {
     ...mapMutations("Cart", [
-      "setOrderReceiving",
-      "setPhone",
-      "setStreet",
-      "setHouse",
-      "setApartment",
-      "changeAmount",
+      "setPizzaQuantity",
+      "deletePizza",
+      "setUserId",
+      "setOrderMisc",
+      "setOrderPizzas",
     ]),
 
-    ...mapMutations(["setOrderStatus"]),
+    ...mapActions("Cart", ["sendAnOrder"]),
 
-    submitOrder() {
-      this.setOrderStatus(true);
+    async submitOrder() {
+      const finalMiscs = this.misc.filter((m) => m.count !== 0);
+      const orderMisc = finalMiscs.map((el) => {
+        return { miscId: el.id, quantity: el.count };
+      });
+      let finalPizzas = [];
+
+      this.order.pizzas.forEach((p) => {
+        delete p.price;
+        finalPizzas.push(p);
+      });
+
+      this.setOrderMisc(orderMisc);
+      this.setOrderPizzas(finalPizzas);
+
+      await this.sendAnOrder(this.order);
     },
 
-    onChangeAmount(count, cartIndex, cartList) {
-      this.changeAmount({ cartIndex, count, cartList });
+    setQuantity(e, i) {
+      if (!e) {
+        this.deletePizza(i);
+      } else {
+        this.setPizzaQuantity({ quantity: e, idx: i });
+      }
+    },
+
+    getStuffing(id, name) {
+      let arr;
+
+      switch (name) {
+        case "size":
+          arr = this.sizes;
+          break;
+        case "dough":
+          arr = this.dough;
+          break;
+        case "sauce":
+          arr = this.sauces;
+          break;
+        case "ingredient":
+          arr = this.ingredients;
+          break;
+
+        default:
+          break;
+      }
+
+      const stuff = arr.find((el) => el.id === id);
+
+      return stuff.name;
     },
   },
 };

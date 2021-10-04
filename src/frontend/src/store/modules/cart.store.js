@@ -1,86 +1,134 @@
-import misc from "@/static/misc.json";
+import { SET_ENTITY, SET_ORDER_STATUS } from "@/store/mutations-types";
 
-export default {
-  namespaced: true,
-
-  state: {
-    additions: misc,
-    cart: [
-      {
-        img: { src: require("@/assets/img/product.svg"), alt: "Капричоза" },
-        title: "Капричоза",
-        description: [
-          "30 см, на тонком тесте",
-          "Соус: томатный",
-          "Начинка: грибы, лук, ветчина, пармезан, ананас",
-        ],
-        count: 1,
-        price: 782,
+const setCount = (el) => (el.count = 0);
+const getDefaultState = () => {
+  return {
+    misc: [],
+    order: {
+      userId: "",
+      pizzas: [],
+      misc: [],
+      address: {
+        name: "",
+        street: "",
+        building: "",
+        flat: "",
+        comment: "",
       },
-      {
-        img: {
-          src: require("@/assets/img/product.svg"),
-          alt: "Любимая пицца",
-        },
-        title: "Любимая пицца",
-        description: [
-          "30 см, на тонком тесте",
-          "Соус: томатный",
-          "Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блючиз",
-        ],
-        count: 2,
-        price: 782,
-      },
-    ],
+    },
+    pizzas: [],
     options: [
       { value: 1, text: "Заберу сам" },
       { value: 2, text: "Новый адрес" },
       { value: 3, text: "Дом" },
     ],
-    receiving: "",
-    phone: "",
-    street: "",
-    house: "",
-    apartment: "",
     totalAmount: 0,
+  };
+};
+
+export default {
+  namespaced: true,
+
+  state: getDefaultState(),
+
+  actions: {
+    async query({ commit }, type) {
+      const data = await this.$api[type].query();
+      data.map(setCount);
+
+      commit(
+        SET_ENTITY,
+        { module: "Cart", entity: type, value: data },
+        { root: true }
+      );
+    },
+
+    async sendAnOrder({ commit }, order) {
+      await this.$api.orders.post(order);
+      commit(SET_ORDER_STATUS, true, { root: true });
+      commit("resetState");
+    },
   },
 
   getters: {
+    pizzasAmount: (state) => {
+      return state.pizzas.reduce((acc, el) => {
+        acc += el.quantity * el.price;
+        return acc;
+      }, 0);
+    },
+
     cartAmount: (state) => {
       return state.cart.reduce((acc, el) => {
         acc += el.count * el.price;
         return acc;
       }, 0);
     },
+
     additionsAmount: (state) => {
-      return state.additions.reduce((acc, el) => {
+      return state.misc.reduce((acc, el) => {
         acc += el.count * el.price;
         return acc;
       }, 0);
     },
+
     totalAmount: (state, getters) => {
-      return getters.cartAmount + getters.additionsAmount;
+      return getters.pizzasAmount + getters.additionsAmount;
     },
   },
 
   mutations: {
     setOrderReceiving(state, receiving) {
-      state.receiving = receiving;
+      state.order.address.name = receiving;
     },
+
     setPhone(state, phone) {
-      state.phone = phone;
+      state.order.address.comment = phone;
     },
+
     setStreet(state, street) {
-      state.street = street;
+      state.order.address.street = street;
     },
+
     setHouse(state, house) {
-      state.house = house;
+      state.order.address.building = house;
     },
+
     setApartment(state, apartment) {
-      state.apartment = apartment;
+      state.order.address.flat = apartment;
     },
-    changeAmount(state, { cartIndex, count, cartList }) {
-      state[cartList][cartIndex].count = count;
+
+    changeAmount(state, { id, count, list }) {
+      state[list][id - 1].count = count;
+    },
+
+    setPizza(state, pizza) {
+      state.pizzas.push(pizza);
+      state.order.pizzas = [...state.pizzas];
+    },
+
+    deletePizza(state, idx) {
+      state.pizzas = state.pizzas.filter((el, i) => i !== idx);
+    },
+
+    setPizzaQuantity(state, { idx, quantity }) {
+      state.pizzas[idx].quantity = quantity;
+    },
+
+    setOrderMisc(state, misc) {
+      state.order.misc = misc;
+    },
+
+    setOrderPizzas(state, pizzas) {
+      state.order.pizzas = pizzas;
+    },
+
+    setUserId(state, id) {
+      state.order.userId = id;
+    },
+
+    resetState(state) {
+      Object.assign(state, getDefaultState());
     },
   },
 };

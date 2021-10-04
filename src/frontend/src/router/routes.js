@@ -1,17 +1,17 @@
+// import canRoute from "@/middlewares";
+
 export default [
   {
     path: "/",
     name: "IndexHome",
     component: () => import("@/views/Index.vue"),
     meta: { layout: "AppLayoutMain" },
-    children: [
-      {
-        path: "login",
-        name: "Login",
-        component: () => import("@/views/Login.vue"),
-        meta: { layout: "AppLayoutMain" },
-      },
-    ],
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/Login.vue"),
+    meta: { layout: "AppLayoutMain" },
   },
   {
     path: "/cart",

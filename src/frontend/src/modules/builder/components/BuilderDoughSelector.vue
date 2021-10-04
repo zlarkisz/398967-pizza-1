@@ -6,14 +6,15 @@
       <div class="sheet__content dough">
         <RadioButton
           v-for="(item, i) in dough"
-          :key="i"
+          :key="item.id"
           v-model="selectedDough"
           :itemName="item.name"
-          :radioValue="item.value"
-          :checked="item.checked"
+          :radioValue="item.id"
+          :checked="active === i"
           :itemDescription="item.description"
-          :size="item.value"
+          :size="getSize(item.name)"
           name="dough"
+          @input="selectDough($event, i)"
         />
       </div>
     </div>
@@ -21,7 +22,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -36,12 +37,33 @@ export default {
 
   data() {
     return {
+      active: null,
       selectedDough: null,
     };
   },
 
   computed: {
     ...mapState("Builder", ["dough"]),
+  },
+
+  methods: {
+    ...mapActions({ getDough: "Builder/query" }),
+
+    getSize(name) {
+      return name === "Тонкое" ? "light" : "large";
+    },
+
+    selectDough(e, i) {
+      this.active = i;
+      this.$emit("setPizzaDough", {
+        ingredient: "doughId",
+        value: parseInt(e),
+      });
+    },
+  },
+
+  async created() {
+    await this.getDough("dough");
   },
 };
 </script>

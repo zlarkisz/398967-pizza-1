@@ -55,8 +55,7 @@ export default {
     },
 
     radioValue: {
-      type: String,
-      default: "",
+      type: [String, Number],
     },
 
     itemDescription: {
