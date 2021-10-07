@@ -15,6 +15,7 @@
       name="counter"
       class="counter__input"
       :min="0"
+      :max="3"
       v-model="counter"
       @input="onInput"
     />
@@ -48,7 +49,20 @@ export default {
   },
 
   watch: {
-    counter: "onInput",
+    counter: {
+      immidiate: true,
+      handler(v) {
+        let count = parseInt(v);
+
+        if (count < 0) {
+          this.counter = count = 0;
+        } else if (count > 3) {
+          this.counter = count = 3;
+        }
+
+        this.onInput(count);
+      },
+    },
   },
 
   computed: {
@@ -64,6 +78,7 @@ export default {
       return [
         "counter__button",
         "counter__button--plus",
+        { "counter__button--disabled": this.counter >= 3 },
         this.plusBtnTheme && `counter__button--${this.plusBtnTheme}`,
       ];
     },
@@ -71,18 +86,16 @@ export default {
 
   methods: {
     reduceСounter() {
-      if (this.counter !== 0) {
-        this.counter--;
-      }
+      if (this.counter !== 0) this.counter--;
     },
 
     incrementCounter() {
-      this.counter++;
+      if (this.counter !== 3) this.counter++;
     },
 
     onInput(value) {
       !isNaN(value) && value !== "" && value > 0
-        ? this.$emit("input", parseInt(value))
+        ? this.$emit("input", value)
         : this.$emit("input", 0);
     },
   },

@@ -153,6 +153,10 @@ export default {
     },
   },
 
+  mounted() {
+    this.selectSauce("1", 0);
+  },
+
   async created() {
     await this.getItems("sauces");
     await this.getItems("ingredients");
