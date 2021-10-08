@@ -67,6 +67,10 @@ export default {
     },
   },
 
+  mounted() {
+    this.selectSize("1", 0);
+  },
+
   async created() {
     await this.getSizes("sizes");
   },

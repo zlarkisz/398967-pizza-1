@@ -16,13 +16,13 @@
       class="content__constructor"
     >
       <div class="pizza pizza--foundation--big-tomato">
-        <div class="pizza__wrapper">
-          <div
+        <transition-group name="list" tag="ul" class="pizza__wrapper">
+          <li
             v-for="(el, i) in drops"
-            :key="i"
+            :key="`pizza__filling-${i}`"
             :class="['pizza__filling', `pizza__filling--${el}`]"
           />
-        </div>
+        </transition-group>
       </div>
     </div>
 
@@ -102,4 +102,25 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.list-enter-active {
+  animation: roll-in 1.5s;
+}
+.list-leave-active {
+  animation: roll-in 1.5s reverse;
+}
+@keyframes roll-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+</style>

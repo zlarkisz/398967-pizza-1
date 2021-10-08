@@ -1,5 +1,6 @@
 <template>
   <div class="layout__content">
+    <AppLayoutSidebar />
     <div class="layout__title">
       <h1 class="title title--big">История заказов</h1>
     </div>
@@ -101,9 +102,14 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 
 export default {
   name: "Orders",
+
+  components: {
+    AppLayoutSidebar,
+  },
 
   data() {
     return {

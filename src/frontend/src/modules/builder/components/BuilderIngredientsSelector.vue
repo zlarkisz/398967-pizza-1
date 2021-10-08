@@ -24,7 +24,7 @@
         <div class="ingridients__filling">
           <p>Начинка:</p>
 
-          <ul class="ingridients__list">
+          <transition-group name="list" tag="ul" class="ingridients__list">
             <li
               v-for="(ingredient, i) in ingredients"
               :key="`ingredient-${i}`"
@@ -42,7 +42,7 @@
                 class="ingridients__counter"
               />
             </li>
-          </ul>
+          </transition-group>
         </div>
       </div>
     </div>
@@ -153,6 +153,10 @@ export default {
     },
   },
 
+  mounted() {
+    this.selectSauce("1", 0);
+  },
+
   async created() {
     await this.getItems("sauces");
     await this.getItems("ingredients");
@@ -160,4 +164,25 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.list-enter-active {
+  animation: roll-in 0.5s;
+}
+.list-leave-active {
+  animation: roll-in 0.5s reverse;
+}
+@keyframes roll-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+</style>

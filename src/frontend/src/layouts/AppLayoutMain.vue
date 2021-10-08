@@ -3,8 +3,6 @@
     <AppLayoutHeader />
 
     <main class="layout">
-      <AppLayoutSidebar v-if="isAuthenticated" />
-
       <div class="content">
         <slot />
       </div>
@@ -16,14 +14,12 @@
 import { mapState } from "vuex";
 
 import AppLayoutHeader from "@/layouts/AppLayoutHeader";
-import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 
 export default {
   name: "AppLayoutMain",
 
   components: {
     AppLayoutHeader,
-    AppLayoutSidebar,
   },
 
   computed: {
@@ -32,4 +28,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.app-layout-main {
+  min-height: 100vh;
+}
+</style>

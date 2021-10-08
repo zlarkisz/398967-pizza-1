@@ -1,5 +1,7 @@
 <template>
   <div class="layout__content">
+    <AppLayoutSidebar />
+
     <div class="layout__title">
       <BaseTitle :level="1" size="big">Мои данные</BaseTitle>
     </div>
@@ -148,6 +150,7 @@ import { mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import BaseInput from "@/common/components/base/BaseInput";
+import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 
 export default {
   name: "Profile",
@@ -155,6 +158,7 @@ export default {
   components: {
     BaseTitle,
     BaseInput,
+    AppLayoutSidebar,
   },
 
   data() {

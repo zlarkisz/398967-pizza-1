@@ -141,7 +141,7 @@ export default {
   },
 
   mounted() {
-    this.setUserId(this.user.id);
+    if (this.user) this.setUserId(this.user.id);
   },
 
   methods: {

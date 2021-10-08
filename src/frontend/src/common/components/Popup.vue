@@ -24,6 +24,8 @@ export default {
 
     closePopup() {
       this.SET_ORDER_STATUS(false);
+
+      setTimeout(() => this.$router.push("/"), 1000);
     },
   },
 };
