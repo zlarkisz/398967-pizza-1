@@ -33,6 +33,7 @@ export default {
 
   actions: {
     async query({ commit }, type) {
+      // debugger;
       const data = await this.$api[type].query();
       data.map(setCount);
 
@@ -52,15 +53,8 @@ export default {
 
   getters: {
     pizzasAmount: (state) => {
-      return state.pizzas.reduce((acc, el) => {
+      return state.order.pizzas.reduce((acc, el) => {
         acc += el.quantity * el.price;
-        return acc;
-      }, 0);
-    },
-
-    cartAmount: (state) => {
-      return state.cart.reduce((acc, el) => {
-        acc += el.count * el.price;
         return acc;
       }, 0);
     },
@@ -103,16 +97,15 @@ export default {
     },
 
     setPizza(state, pizza) {
-      state.pizzas.push(pizza);
-      state.order.pizzas = [...state.pizzas];
+      state.order.pizzas.push(pizza);
     },
 
     deletePizza(state, idx) {
-      state.pizzas = state.pizzas.filter((el, i) => i !== idx);
+      state.order.pizzas = state.order.pizzas.filter((el, i) => i !== idx);
     },
 
     setPizzaQuantity(state, { idx, quantity }) {
-      state.pizzas[idx].quantity = quantity;
+      state.order.pizzas[idx].quantity = quantity;
     },
 
     setOrderMisc(state, misc) {
@@ -125,6 +118,20 @@ export default {
 
     setUserId(state, id) {
       state.order.userId = id;
+    },
+
+    setOrder(state, newOrder) {
+      state.order = newOrder;
+    },
+
+    setCartMisc(state, miscs) {
+      miscs.forEach((m) => {
+        state.misc.forEach((stateMisc) => {
+          if (m.miscId === stateMisc.id) {
+            stateMisc.count = m.quantity;
+          }
+        });
+      });
     },
 
     resetState(state) {

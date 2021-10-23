@@ -51,7 +51,9 @@ export default {
   },
 
   async created() {
-    await this.getMisc("misc");
+    if (!this.misc.length) {
+      await this.getMisc("misc");
+    }
   },
 };
 </script>

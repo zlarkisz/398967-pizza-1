@@ -31,10 +31,13 @@ export default {
       dispatch("query");
     },
 
-    async put({ commit, dispatch }, address) {
-      const data = await this.$api.addresses.put(address);
-      commit("changeAddress", data);
-      dispatch("query");
+    async put({ dispatch }, address) {
+      try {
+        await this.$api.addresses.put(address);
+        dispatch("query");
+      } catch (e) {
+        console.error(e);
+      }
     },
   },
 

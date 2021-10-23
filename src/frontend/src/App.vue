@@ -49,11 +49,11 @@ export default {
 @import "~@/assets/scss/app";
 
 .popup-enter-active {
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 .popup-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .popup-enter,
@@ -67,7 +67,7 @@ export default {
 }
 
 .route-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .route-enter,

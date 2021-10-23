@@ -6,12 +6,16 @@
           <BaseTitle :level="1" size="big">Корзина</BaseTitle>
         </div>
 
-        <div v-if="!pizzas.length" class="sheet cart__empty">
+        <div v-if="!order.pizzas.length" class="sheet cart__empty">
           <p>В корзине нет ни одного товара</p>
         </div>
 
         <ul v-else class="cart-list sheet">
-          <li v-for="(pizza, i) in pizzas" :key="i" class="cart-list__item">
+          <li
+            v-for="(pizza, i) in order.pizzas"
+            :key="i"
+            class="cart-list__item"
+          >
             <div class="product cart-list__product">
               <img
                 src="@/assets/img/product.svg"
@@ -120,7 +124,7 @@ export default {
 
   computed: {
     ...mapState("Builder", ["dough", "sizes", "sauces", "ingredients"]),
-    ...mapState("Cart", ["pizzas", "order", "pizzas", "misc"]),
+    ...mapState("Cart", ["order", "misc"]),
     ...mapState("Auth", ["user"]),
 
     isNewAddress() {
@@ -161,10 +165,12 @@ export default {
         return { miscId: el.id, quantity: el.count };
       });
       let finalPizzas = [];
+      console.log(JSON.stringify(this.order.pizzas));
 
       this.order.pizzas.forEach((p) => {
-        delete p.price;
-        finalPizzas.push(p);
+        let pizza = { ...p };
+        delete pizza.price;
+        finalPizzas.push(pizza);
       });
 
       this.setOrderMisc(orderMisc);
