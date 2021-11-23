@@ -17,27 +17,23 @@ describe("ItemCounter.vue", () => {
     );
   });
 
-  it("check emit", () => {
+  it("check emit and counter", async () => {
     const wrapper = mount(ItemCounter);
+    const button = wrapper.find(".counter__button--plus");
+    const buttonMin = wrapper.find(".counter__button--minus");
 
-    wrapper.vm.$emit("input", 1);
-    wrapper.vm.$emit("input", 0);
+    await button.trigger("click");
 
-    expect(wrapper.emitted("input")).toBeTruthy();
-    expect(wrapper.emitted("input").length).toBe(2);
-    expect(wrapper.emitted("input")[1]).toEqual([0]);
-  });
+    expect(wrapper.vm.counter).toBe(1);
+    expect(wrapper.emitted().input).toBeTruthy();
+    expect(wrapper.emitted().input.length).toBe(1);
+    expect(wrapper.emitted().input[0]).toEqual([1]);
 
-  it("check counter", () => {
-    const wrapper = mount(ItemCounter, {
-      data() {
-        return {
-          counter: 0,
-        };
-      },
-    });
-    wrapper.vm.incrementCounter();
-    wrapper.vm.reduceСounter();
-    expect(wrapper.vm.counter).toBe(0);
+    await buttonMin.trigger("click");
+
+    expect(wrapper.vm.counter).toEqual(0);
+    expect(wrapper.emitted().input).toBeTruthy();
+    expect(wrapper.emitted().input.length).toBe(2);
+    expect(wrapper.emitted().input[1]).toEqual([0]);
   });
 });
