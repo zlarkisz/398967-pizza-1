@@ -25,13 +25,6 @@
         </transition-group>
       </div>
     </div>
-
-    <BuilderPriceCounter
-      pizzaAmount
-      @makePizza="$emit('makePizza', true)"
-      buttonText="Готовьте!"
-      :isDisabled="isDisabled"
-    />
   </div>
 </template>
 
@@ -41,21 +34,12 @@ import { mapMutations } from "vuex";
 import { eventBus } from "@/main.js";
 
 import BaseInput from "@/common/components/base/BaseInput";
-import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "BuilderPizzaView",
 
-  props: {
-    isDisabled: {
-      type: Boolean,
-      default: true,
-    },
-  },
-
   components: {
     BaseInput,
-    BuilderPriceCounter,
   },
 
   data() {

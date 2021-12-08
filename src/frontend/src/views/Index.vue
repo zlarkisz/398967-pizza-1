@@ -14,11 +14,20 @@
         @setPizzaIngredient="setPizzaIngredients"
       />
 
-      <BuilderPizzaView
-        @setPizzaName="setPizzaOptions"
-        @makePizza="makePizza"
-        :isDisabled="!isPizzaisFull"
-      />
+      <div class="pizza-view">
+        <BuilderPizzaView
+          @setPizzaName="setPizzaOptions"
+          @makePizza="makePizza"
+        />
+
+        <BuilderPriceCounter
+          pizzaAmount
+          :pizzaPrice="pizzaPrice"
+          @makePizza="makePizza"
+          buttonText="Готовьте!"
+          :isDisabled="!isPizzaisFull"
+        />
+      </div>
     </div>
   </form>
 </template>
@@ -26,13 +35,12 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 
-import { eventBus } from "@/main.js";
-
 import BaseTitle from "@/common/components/base/BaseTitle";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "IndexHome",
@@ -43,6 +51,7 @@ export default {
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderPizzaView,
+    BuilderPriceCounter,
   },
 
   data() {
@@ -56,6 +65,7 @@ export default {
         ingredients: [],
         price: 0,
       },
+      pizzaPrice: 0,
     };
   },
 
@@ -67,7 +77,7 @@ export default {
         if (v) {
           v.price =
             this.doughAmount + this.sauceAmount + this.ingredientsAmount;
-          eventBus.$emit("setPizzaPrice", { price: v.price });
+          this.pizzaPrice = v.price;
         }
       },
     },
@@ -148,4 +158,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pizza-view {
+  display: flex;
+  flex-direction: column;
+}
+</style>
