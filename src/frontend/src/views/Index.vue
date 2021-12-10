@@ -12,12 +12,14 @@
       <BuilderIngredientsSelector
         @setPizzaSauce="setPizzaOptions"
         @setPizzaIngredient="setPizzaIngredients"
+        @setViewIngredients="setViewIngredients"
       />
 
       <div class="pizza-view">
         <BuilderPizzaView
           @setPizzaName="setPizzaOptions"
           @makePizza="makePizza"
+          :pizzaViewIngredients="pizzaViewIngredients"
         />
 
         <BuilderPriceCounter
@@ -66,6 +68,7 @@ export default {
         price: 0,
       },
       pizzaPrice: 0,
+      pizzaViewIngredients: {},
     };
   },
 
@@ -148,6 +151,10 @@ export default {
       } else {
         this.pizza.ingredients.push(ingredient);
       }
+    },
+
+    setViewIngredients(viewIngregients) {
+      this.pizzaViewIngredients = viewIngregients;
     },
 
     makePizza() {

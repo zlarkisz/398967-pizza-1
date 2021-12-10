@@ -31,8 +31,6 @@
 <script>
 import { mapMutations } from "vuex";
 
-import { eventBus } from "@/main.js";
-
 import BaseInput from "@/common/components/base/BaseInput";
 
 export default {
@@ -42,6 +40,13 @@ export default {
     BaseInput,
   },
 
+  props: {
+    pizzaViewIngredients: {
+      type: Object,
+      default: () => {},
+    },
+  },
+
   data() {
     return {
       pizzaName: "",
@@ -49,6 +54,12 @@ export default {
       name: "",
       count: 0,
     };
+  },
+
+  watch: {
+    pizzaViewIngredients(newValue) {
+      this.setDrop(newValue);
+    },
   },
 
   methods: {
@@ -74,14 +85,6 @@ export default {
         this.drops = this.drops.filter((el) => el !== name);
       }
     },
-  },
-
-  created() {
-    eventBus.$on("setIngredients", this.setDrop);
-  },
-
-  beforeDestroy() {
-    eventBus.$off("setIngredients");
   },
 };
 </script>
