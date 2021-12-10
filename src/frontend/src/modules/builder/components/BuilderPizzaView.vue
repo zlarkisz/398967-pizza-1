@@ -25,37 +25,24 @@
         </transition-group>
       </div>
     </div>
-
-    <BuilderPriceCounter
-      pizzaAmount
-      @makePizza="$emit('makePizza', true)"
-      buttonText="Готовьте!"
-      :isDisabled="isDisabled"
-    />
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-
-import { eventBus } from "@/main.js";
-
 import BaseInput from "@/common/components/base/BaseInput";
-import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "BuilderPizzaView",
 
-  props: {
-    isDisabled: {
-      type: Boolean,
-      default: true,
-    },
-  },
-
   components: {
     BaseInput,
-    BuilderPriceCounter,
+  },
+
+  props: {
+    pizzaViewIngredients: {
+      type: Object,
+      default: () => {},
+    },
   },
 
   data() {
@@ -67,10 +54,13 @@ export default {
     };
   },
 
-  methods: {
-    ...mapMutations({ setPizzaName: "Builder/setPizzaOptions" }),
-    ...mapMutations({ setPizza: "Cart/setPizza" }),
+  watch: {
+    pizzaViewIngredients(newValue) {
+      this.setDrop(newValue);
+    },
+  },
 
+  methods: {
     onDrop(evt) {
       const draggedElement = evt.dataTransfer.getData("item");
       if (this.drops.includes(draggedElement)) return;
@@ -90,14 +80,6 @@ export default {
         this.drops = this.drops.filter((el) => el !== name);
       }
     },
-  },
-
-  created() {
-    eventBus.$on("setIngredients", this.setDrop);
-  },
-
-  beforeDestroy() {
-    eventBus.$off("setIngredients");
   },
 };
 </script>

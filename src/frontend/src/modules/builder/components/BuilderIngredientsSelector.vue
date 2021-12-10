@@ -50,9 +50,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
-
-import { eventBus } from "@/main.js";
+import { mapState, mapActions } from "vuex";
 
 import BaseTitle from "@/common/components/base/BaseTitle";
 import RadioButton from "@/common/components/RadioButton";
@@ -82,10 +80,6 @@ export default {
 
   methods: {
     ...mapActions({ getItems: "Builder/query" }),
-
-    ...mapMutations({
-      setPizzaIngredient: "Builder/setPizzaIngredients",
-    }),
 
     startDrag(evt, item) {
       evt.dataTransfer.dropEffect = "move";
@@ -146,7 +140,7 @@ export default {
 
       this.$emit("setPizzaIngredient", ingredient);
 
-      eventBus.$emit("setIngredients", {
+      this.$emit("setViewIngredients", {
         name: this.getImage(ing.name),
         count: e,
       });

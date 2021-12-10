@@ -23,10 +23,10 @@
           height="72"
         />
       </picture>
-      <div class="user__name">
+      <div v-if="user && user.name" class="user__name">
         <span>{{ user.name }}</span>
       </div>
-      <p class="user__phone">
+      <p v-if="user && user.phone" class="user__phone">
         Контактный телефон: <span>{{ user.phone }}</span>
       </p>
     </div>
@@ -38,7 +38,9 @@
         class="sheet address-form"
       >
         <div class="address-form__header">
-          <b>Адрес №{{ address.id }}. {{ address.name }}</b>
+          <b v-if="address && address.name">
+            Адрес №{{ address.id }}. {{ address.name }}
+          </b>
           <div class="address-form__edit">
             <button type="button" class="icon" @click="changeAddress(address)">
               <span class="visually-hidden">Изменить адрес</span>
@@ -53,7 +55,7 @@
       </div>
     </div>
 
-    <div class="layout__address">
+    <div v-if="change || add" class="layout__address">
       <form
         @submit.prevent
         method="post"
@@ -120,7 +122,7 @@
           <button
             type="button"
             class="button button--transparent"
-            :disabled="!address.id"
+            :disabled="add ? false : !address.id"
             @click="deleteAddress(address.id)"
           >
             Удалить
@@ -137,8 +139,8 @@
       </form>
     </div>
 
-    <div class="layout__button">
-      <button type="button" class="button button--border">
+    <div v-if="!add && !change" class="layout__button">
+      <button type="button" class="button button--border" @click="addAddress">
         Добавить новый адрес
       </button>
     </div>
@@ -172,6 +174,7 @@ export default {
         comment: "",
       },
       change: false,
+      add: false,
     };
   },
 
@@ -181,12 +184,12 @@ export default {
 
     isDisabled() {
       let dis = false;
+      let cleanAddress = { ...this.address };
+      delete cleanAddress.userId;
 
-      for (let key in this.address) {
-        if (this.address[key] === "" && this.address[key] !== "userId") {
-          dis = true;
-        }
-      }
+      const isNotEmpty = (el) => el === "";
+
+      dis = Object.values(cleanAddress).some(isNotEmpty);
 
       return dis;
     },
@@ -210,10 +213,19 @@ export default {
       this.address = address;
     },
 
+    addAddress() {
+      this.add = true;
+    },
+
     async deleteAddress(id) {
-      await this.delete(id);
+      if (this.add) {
+        this.add = false;
+      } else {
+        await this.delete(id);
+        this.change = false;
+      }
+
       this.clearCurrentAddress();
-      this.change = false;
     },
 
     async sendAddress() {
@@ -223,8 +235,10 @@ export default {
         this.setAddressUserId();
         await this.post(this.address);
       }
+
       this.clearCurrentAddress();
       this.change = false;
+      this.add = false;
     },
   },
 

@@ -12,13 +12,23 @@
       <BuilderIngredientsSelector
         @setPizzaSauce="setPizzaOptions"
         @setPizzaIngredient="setPizzaIngredients"
+        @setViewIngredients="setViewIngredients"
       />
 
-      <BuilderPizzaView
-        @setPizzaName="setPizzaOptions"
-        @makePizza="makePizza"
-        :isDisabled="!isPizzaisFull"
-      />
+      <div class="pizza-view">
+        <BuilderPizzaView
+          @setPizzaName="setPizzaOptions"
+          :pizzaViewIngredients="pizzaViewIngredients"
+        />
+
+        <BuilderPriceCounter
+          pizzaAmount
+          :pizzaPrice="pizzaPrice"
+          @makePizza="makePizza"
+          buttonText="Готовьте!"
+          :isDisabled="!isPizzaisFull"
+        />
+      </div>
     </div>
   </form>
 </template>
@@ -26,13 +36,12 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 
-import { eventBus } from "@/main.js";
-
 import BaseTitle from "@/common/components/base/BaseTitle";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "IndexHome",
@@ -43,19 +52,22 @@ export default {
     BuilderSizeSelector,
     BuilderIngredientsSelector,
     BuilderPizzaView,
+    BuilderPriceCounter,
   },
 
   data() {
     return {
       pizza: {
         name: "",
-        sauceId: 0,
-        doughId: 0,
-        sizeId: 0,
+        sauceId: 1,
+        doughId: 1,
+        sizeId: 1,
         quantity: 1,
         ingredients: [],
         price: 0,
       },
+      pizzaPrice: 0,
+      pizzaViewIngredients: {},
     };
   },
 
@@ -66,8 +78,9 @@ export default {
       handler(v) {
         if (v) {
           v.price =
-            this.doughAmount + this.sauceAmount + this.ingredientsAmount;
-          eventBus.$emit("setPizzaPrice", { price: v.price });
+            (this.doughAmount + this.sauceAmount + this.ingredientsAmount) *
+            this.priceModificator;
+          this.pizzaPrice = v.price;
         }
       },
     },
@@ -86,6 +99,14 @@ export default {
       const saucePrice = this.sauces.find((el) => el.id === this.pizza.sauceId);
 
       return saucePrice?.price || 0;
+    },
+
+    priceModificator() {
+      const size = this.sizes.find((el) => {
+        return el.id === this.pizza.sizeId;
+      });
+
+      return size.multiplier;
     },
 
     ingredientsAmount() {
@@ -140,6 +161,10 @@ export default {
       }
     },
 
+    setViewIngredients(viewIngregients) {
+      this.pizzaViewIngredients = viewIngregients;
+    },
+
     makePizza() {
       this.setPizza(this.pizza);
       this.$router.push("/cart");
@@ -148,4 +173,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pizza-view {
+  display: flex;
+  flex-direction: column;
+}
+</style>

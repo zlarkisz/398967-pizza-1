@@ -65,6 +65,10 @@ export default {
   async created() {
     await this.getDough("dough");
   },
+
+  mounted() {
+    this.selectDough("1", 0);
+  },
 };
 </script>
 

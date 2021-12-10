@@ -33,7 +33,7 @@ const actions = {
   },
 };
 
-const mutations = {
+export const mutations = {
   [SET_ORDER_STATUS](state, status) {
     state.isOrderPlaced = status;
   },

@@ -15,20 +15,15 @@
     </div>
     <div class="header__user">
       <transition name="sign-in" mode="out-in">
-        <router-link
-          :key="dynamicLink"
-          :to="dynamicLink"
-          :class="!user ? 'header__login' : false"
-        >
-          <img
-            v-if="user"
-            :src="user.avatar"
-            alt="Василий Ложкин"
-            width="32"
-            height="32"
-          />
-          <span>{{ buttonMessage }}</span>
+        <router-link v-if="user" to="/profile">
+          <img :src="user.avatar" alt="Василий Ложкин" width="32" height="32" />
+          <span>{{ user.name }}</span>
         </router-link>
+      </transition>
+      <transition name="sign-in" mode="out-in">
+        <a :key="dynamicLink" class="header__login" @click="log">
+          <span>{{ dynamicLink }}</span>
+        </a>
       </transition>
     </div>
   </header>
@@ -36,9 +31,12 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
+import Logout from "@/common/mixins/logout";
 
 export default {
   name: "AppLayoutHeader",
+
+  mixins: [Logout],
 
   computed: {
     ...mapGetters("Cart", ["totalAmount"]),
@@ -47,14 +45,18 @@ export default {
       user: (state) => state.Auth.user,
     }),
     dynamicLink() {
-      return this.user ? "/profile" : "/login";
+      return this.user ? "Выйти" : "Войти";
     },
-    buttonMessage() {
-      switch (this.dynamicLink) {
-        case "/profile":
-          return this.user.name;
-        default:
-          return "Войти";
+  },
+
+  methods: {
+    async log() {
+      if (this.dynamicLink === "Войти" && this.$route.name !== "Login") {
+        this.$router.push("/login");
+      } else if (this.dynamicLink === "Выйти") {
+        await this.$logout();
+      } else {
+        return;
       }
     },
   },
@@ -67,12 +69,18 @@ export default {
 }
 
 .sign-in-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .sign-in-enter,
 .sign-in-leave-to {
   transform: scale(0);
   opacity: 0;
+}
+
+.header__login {
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>

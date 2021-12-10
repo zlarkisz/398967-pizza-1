@@ -17,7 +17,6 @@
       :min="0"
       :max="3"
       v-model="counter"
-      @input="onInput"
     />
 
     <button type="button" :class="plusBtnClasses" @click="incrementCounter()">

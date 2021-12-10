@@ -13,7 +13,7 @@
         },
       ]"
       :disabled="isDisabled || (pizzaAmount ? !pizzaPrice : !totalAmount)"
-      @click="$emit('makePizza', true)"
+      @click="$emit('makePizza')"
     >
       {{ buttonText }}
     </button>
@@ -22,8 +22,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-
-import { eventBus } from "@/main.js";
 
 export default {
   name: "BuilderPriceCounter",
@@ -43,30 +41,15 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
 
-  data() {
-    return {
-      pizzaPrice: 0,
-    };
+    pizzaPrice: {
+      type: Number,
+      default: 0,
+    },
   },
 
   computed: {
     ...mapGetters("Cart", ["totalAmount"]),
-  },
-
-  methods: {
-    setPizzaPrice({ price }) {
-      this.pizzaPrice = price;
-    },
-  },
-
-  created() {
-    eventBus.$on("setPizzaPrice", this.setPizzaPrice);
-  },
-
-  beforeDestroy() {
-    eventBus.$off("setPizzaPrice");
   },
 };
 </script>
