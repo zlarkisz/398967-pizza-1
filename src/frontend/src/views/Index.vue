@@ -18,7 +18,6 @@
       <div class="pizza-view">
         <BuilderPizzaView
           @setPizzaName="setPizzaOptions"
-          @makePizza="makePizza"
           :pizzaViewIngredients="pizzaViewIngredients"
         />
 
@@ -60,9 +59,9 @@ export default {
     return {
       pizza: {
         name: "",
-        sauceId: 0,
-        doughId: 0,
-        sizeId: 0,
+        sauceId: 1,
+        doughId: 1,
+        sizeId: 1,
         quantity: 1,
         ingredients: [],
         price: 0,
@@ -79,7 +78,8 @@ export default {
       handler(v) {
         if (v) {
           v.price =
-            this.doughAmount + this.sauceAmount + this.ingredientsAmount;
+            (this.doughAmount + this.sauceAmount + this.ingredientsAmount) *
+            this.priceModificator;
           this.pizzaPrice = v.price;
         }
       },
@@ -99,6 +99,14 @@ export default {
       const saucePrice = this.sauces.find((el) => el.id === this.pizza.sauceId);
 
       return saucePrice?.price || 0;
+    },
+
+    priceModificator() {
+      const size = this.sizes.find((el) => {
+        return el.id === this.pizza.sizeId;
+      });
+
+      return size.multiplier;
     },
 
     ingredientsAmount() {

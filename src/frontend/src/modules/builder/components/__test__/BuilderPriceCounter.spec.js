@@ -72,5 +72,4 @@ it("on button click check should emit true when button does not disabled", async
   await button.trigger("click");
   expect(wrapper.emitted().makePizza).toBeTruthy();
   expect(wrapper.emitted().makePizza.length).toBe(1);
-  expect(wrapper.emitted().makePizza[0]).toEqual([true]);
 });

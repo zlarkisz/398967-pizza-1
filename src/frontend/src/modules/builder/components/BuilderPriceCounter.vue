@@ -13,7 +13,7 @@
         },
       ]"
       :disabled="isDisabled || (pizzaAmount ? !pizzaPrice : !totalAmount)"
-      @click="$emit('makePizza', true)"
+      @click="$emit('makePizza')"
     >
       {{ buttonText }}
     </button>

@@ -29,8 +29,6 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-
 import BaseInput from "@/common/components/base/BaseInput";
 
 export default {
@@ -63,9 +61,6 @@ export default {
   },
 
   methods: {
-    ...mapMutations({ setPizzaName: "Builder/setPizzaOptions" }),
-    ...mapMutations({ setPizza: "Cart/setPizza" }),
-
     onDrop(evt) {
       const draggedElement = evt.dataTransfer.getData("item");
       if (this.drops.includes(draggedElement)) return;
