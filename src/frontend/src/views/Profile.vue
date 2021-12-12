@@ -157,6 +157,8 @@ import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 export default {
   name: "Profile",
 
+  layout: "AppLayoutDefault",
+
   components: {
     BaseTitle,
     BaseInput,

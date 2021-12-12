@@ -108,6 +108,8 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 export default {
   name: "Cart",
 
+  layout: "AppLayoutDefault",
+
   components: {
     BaseTitle,
     ItemCounter,

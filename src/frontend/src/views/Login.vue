@@ -43,6 +43,8 @@ import BaseInput from "@/common/components/base/BaseInput";
 export default {
   nane: "Login",
 
+  layout: "AppLayoutMain",
+
   components: {
     BaseTitle,
     BaseInput,

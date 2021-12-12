@@ -103,6 +103,8 @@ import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 export default {
   name: "Orders",
 
+  layout: "AppLayoutDefault",
+
   components: {
     AppLayoutSidebar,
   },

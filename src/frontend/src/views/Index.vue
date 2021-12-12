@@ -46,6 +46,8 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 export default {
   name: "IndexHome",
 
+  layout: "AppLayoutMain",
+
   components: {
     BaseTitle,
     BuilderDoughSelector,
@@ -106,7 +108,7 @@ export default {
         return el.id === this.pizza.sizeId;
       });
 
-      return size.multiplier;
+      return size?.multiplier || 1;
     },
 
     ingredientsAmount() {
