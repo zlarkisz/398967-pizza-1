@@ -12,13 +12,14 @@ export default Promise.all(routes).then((routes) => {
   });
 
   router.beforeEach((to, from, next) => {
+    console.log(to);
     const isAuth = JwtService.getToken();
 
-    if (to.name === "IndexHome" && !isAuth) {
+    if (to.fullPath === "/" && !isAuth) {
       return next();
-    } else if (to.name === "Cart" && !isAuth) {
+    } else if (to.fullPath === "/cart" && !isAuth) {
       return next();
-    } else if (to.name !== "Login" && !isAuth) {
+    } else if (to.fullPath !== "/login" && !isAuth) {
       return next({ name: "Login" });
     } else {
       return next();
