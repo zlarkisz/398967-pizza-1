@@ -105,7 +105,7 @@ export default {
 
     priceModificator() {
       const size = this.sizes.find((el) => {
-        return el.id === this.pizza.sizeId;
+        return el.multiplier === this.pizza.sizeId;
       });
 
       return size?.multiplier || 1;

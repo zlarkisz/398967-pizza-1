@@ -5,6 +5,7 @@
     </span>
 
     <input
+      :disabled="disabled"
       :type="type"
       :name="name"
       :placeholder="placeholder"
@@ -51,6 +52,11 @@ export default {
     },
 
     required: {
+      type: Boolean,
+      default: false,
+    },
+
+    disabled: {
       type: Boolean,
       default: false,
     },

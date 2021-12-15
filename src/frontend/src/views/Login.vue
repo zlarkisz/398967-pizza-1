@@ -41,7 +41,7 @@ import BaseTitle from "@/common/components/base/BaseTitle";
 import BaseInput from "@/common/components/base/BaseInput";
 
 export default {
-  nane: "Login",
+  name: "Login",
 
   layout: "AppLayoutMain",
 

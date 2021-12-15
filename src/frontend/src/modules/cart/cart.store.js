@@ -9,10 +9,10 @@ const getDefaultState = () => {
       pizzas: [],
       misc: [],
       address: {
-        name: "",
-        street: "",
-        building: "",
-        flat: "",
+        name: " ",
+        street: " ",
+        building: " ",
+        flat: " ",
         comment: "",
       },
     },
@@ -20,7 +20,6 @@ const getDefaultState = () => {
     options: [
       { value: 1, text: "Заберу сам" },
       { value: 2, text: "Новый адрес" },
-      { value: 3, text: "Дом" },
     ],
     totalAmount: 0,
   };
@@ -132,6 +131,14 @@ export default {
           }
         });
       });
+    },
+
+    setCartOption(state, option) {
+      state.options.push(option);
+    },
+
+    setDefaultCartOptions(state, arr) {
+      state.options = arr;
     },
 
     resetState(state) {

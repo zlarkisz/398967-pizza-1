@@ -14,10 +14,14 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   name: "Popup",
+
+  computed: {
+    ...mapState("Auth", { isAuth: "isAuthenticated" }),
+  },
 
   methods: {
     ...mapMutations(["SET_ORDER_STATUS"]),
@@ -25,7 +29,7 @@ export default {
     closePopup() {
       this.SET_ORDER_STATUS(false);
 
-      setTimeout(() => this.$router.push("/"), 1000);
+      setTimeout(() => this.$router.push(!this.isAuth ? "/" : "/orders"), 1000);
     },
   },
 };

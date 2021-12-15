@@ -127,18 +127,23 @@ export default {
   computed: {
     ...mapState("Builder", ["dough", "sizes", "sauces", "ingredients"]),
     ...mapState("Cart", ["order", "misc"]),
-    ...mapState("Auth", ["user"]),
+    ...mapState("Auth", ["user", "isAuthenticated"]),
 
     isNewAddress() {
       const address = this.order.address;
 
-      if (!address.street.length) {
+      if (address.name === "Заберу сам" && address.comment.trim().length) {
+        return false;
+      } else if (!address.street.trim().length) {
         return true;
-      } else if (!address.building.length) {
+      } else if (!address.building.trim().length) {
         return true;
-      } else if (!address.comment.length) {
+      } else if (
+        !address.comment.trim().length &&
+        typeof address.comment !== String
+      ) {
         return true;
-      } else if (!address.flat.length) {
+      } else if (!address.flat.trim().length) {
         return true;
       } else {
         return false;
@@ -147,7 +152,7 @@ export default {
   },
 
   mounted() {
-    if (this.user) this.setUserId(this.user.id);
+    this.setUserId(this.user ? this.user.id : null);
   },
 
   methods: {
@@ -167,7 +172,6 @@ export default {
         return { miscId: el.id, quantity: el.count };
       });
       let finalPizzas = [];
-      console.log(JSON.stringify(this.order.pizzas));
 
       this.order.pizzas.forEach((p) => {
         let pizza = { ...p };
@@ -191,6 +195,7 @@ export default {
 
     getStuffing(id, name) {
       let arr;
+      let stuff;
 
       switch (name) {
         case "size":
@@ -210,7 +215,11 @@ export default {
           break;
       }
 
-      const stuff = arr.find((el) => el.id === id);
+      if (name === "size") {
+        stuff = arr.find((el) => el.multiplier === id);
+      } else {
+        stuff = arr.find((el) => el.id === id);
+      }
 
       return stuff.name;
     },

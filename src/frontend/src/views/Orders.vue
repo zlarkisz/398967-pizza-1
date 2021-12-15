@@ -12,7 +12,7 @@
           </div>
 
           <div class="order__sum">
-            <span>Сумма заказа: {{ order.price }} ₽</span>
+            <span>Сумма заказа: {{ setOrderAmount(order) }} ₽</span>
           </div>
 
           <div class="order__button">
@@ -114,7 +114,6 @@ export default {
       image: "image",
       name: "name",
       price: "price",
-      ordersPrices: [],
     };
   },
 
@@ -137,6 +136,7 @@ export default {
 
     getStuffing(id, name) {
       let arr;
+      let stuff;
 
       switch (name) {
         case "size":
@@ -156,7 +156,11 @@ export default {
           break;
       }
 
-      const stuff = arr.find((el) => el.id === id);
+      if (name === "size") {
+        stuff = arr.find((el) => el.multiplier === id);
+      } else {
+        stuff = arr.find((el) => el.id === id);
+      }
 
       return stuff.name;
     },
@@ -249,54 +253,83 @@ export default {
       this.ingredients.forEach((ingr) => {
         pizza.ingredients.forEach((pIng) => {
           if (pIng.ingredientId === ingr.id) {
-            ingredientsPrice += ingr.price;
+            ingredientsPrice += ingr.price * pIng.quantity;
           }
         });
       });
 
+      let currentMultiplier = this.sizes.find((size) => {
+        return size.multiplier === pizza.sizeId;
+      });
+
       pizzaPrice =
-        (doughPrice + saucePrice + ingredientsPrice) * pizza.quantity;
+        (doughPrice + saucePrice + ingredientsPrice) *
+        currentMultiplier.multiplier *
+        pizza.quantity;
 
       return pizzaPrice;
     },
 
-    setOrdersCount() {
-      this.orders.forEach((order) => {
-        let orderWithPrice = {};
-        orderWithPrice.id = order.id;
-        orderWithPrice.price = 0;
-        this.ordersPrices.push(orderWithPrice);
-      });
+    setOrderAmount(order) {
+      let pizzasArray = [];
+      let totalOrderAmount;
+      let pizzasAmount = 0;
+      let miscsAmount = 0;
+      let acc = 0;
 
-      this.orders.forEach((or) => {
-        or.orderPizzas.forEach((pizza) => {
-          let pizzaPrice = 0;
-          let ingredientsPrice = 0;
-          const doughPrice = this.dough.find(
-            (d) => d.id === pizza.doughId
-          ).price;
-          const saucePrice = this.sauces.find(
-            (s) => s.id === pizza.sauceId
-          ).price;
+      for (let i = 0; i < order.orderPizzas.length; i++) {
+        pizzasArray.push(i);
+      }
 
-          this.ingredients.forEach((ingr) => {
-            pizza.ingredients.forEach((pIng) => {
-              if (pIng.id === ingr.id) {
-                ingredientsPrice += ingr.price;
-              }
-            });
+      if (order?.orderMisc) {
+        miscsAmount = order.orderMisc.reduce((acc, misc) => {
+          this.misc.forEach((el) => {
+            if (el.id === misc.miscId) {
+              acc += el.price * misc.quantity;
+            }
           });
 
-          pizzaPrice =
-            (doughPrice + saucePrice + ingredientsPrice) * pizza.quantity;
+          return acc;
+        }, 0);
+      }
 
-          this.ordersPrices.forEach((orPr) => {
-            if (orPr.id === or.id) {
-              orPr.price += pizzaPrice;
+      for (let i = 0; i < pizzasArray.length; i++) {
+        this.dough.forEach((dough) => {
+          if (dough.id === order?.orderPizzas?.[i]?.doughId) {
+            acc += dough.price;
+          }
+        });
+
+        this.sauces.forEach((sauce) => {
+          if (sauce.id === order?.orderPizzas?.[i]?.sauceId) {
+            acc += sauce.price;
+          }
+        });
+
+        this.ingredients.forEach((ingr) => {
+          order?.orderPizzas?.[i]?.ingredients.forEach((orderIngr) => {
+            if (ingr.id === orderIngr.ingredientId) {
+              acc += ingr.price * orderIngr.quantity;
             }
           });
         });
-      });
+
+        this.sizes.forEach((size) => {
+          if (size.multiplier === order?.orderPizzas?.[i]?.sizeId) {
+            acc *= size.multiplier;
+          }
+        });
+
+        pizzasArray[i] = acc;
+
+        acc = 0;
+      }
+
+      pizzasAmount = pizzasArray.reduce((acc, price) => (acc += price), 0);
+
+      totalOrderAmount = miscsAmount + pizzasAmount;
+
+      return totalOrderAmount;
     },
   },
 
@@ -304,7 +337,6 @@ export default {
     await this.loadDefaultData();
     await this.getMisc("misc");
     await this.getOrders();
-    this.setOrdersCount();
   },
 };
 </script>
