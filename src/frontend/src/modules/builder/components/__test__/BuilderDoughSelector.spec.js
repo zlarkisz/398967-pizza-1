@@ -62,7 +62,13 @@ afterEach(() => {
 
 it("should call query action on created hook", () => {
   //render component
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: {
+      selectedDough: 0,
+    },
+  });
 
   expect(actions.Builder.query).toHaveBeenCalled();
 });
@@ -78,7 +84,13 @@ it("is data display", () => {
     { root: true }
   );
 
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: {
+      selectedDough: 0,
+    },
+  });
 
   const radioButtons = wrapper.findAllComponents(RadioButton);
 
@@ -100,23 +112,26 @@ it("on radioButton click should emit event", async () => {
     { root: true }
   );
 
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: {
+      selectedDough: 1,
+    },
+  });
 
   const radioButtons = wrapper.findAllComponents(RadioButton);
 
-  radioButtons.at(2).vm.$emit("input", 3);
+  radioButtons.at(2).vm.$emit("input", 1);
 
   await wrapper.vm.$nextTick();
 
   expect(wrapper.emitted().setPizzaDough).toBeTruthy();
-  expect(wrapper.emitted().setPizzaDough.length).toBe(2);
-  expect(wrapper.emitted().setPizzaDough[1]).toEqual([
+  expect(wrapper.emitted().setPizzaDough.length).toBe(1);
+  expect(wrapper.emitted().setPizzaDough[0]).toEqual([
     {
       ingredient: "doughId",
-      value: 3,
+      value: 1,
     },
   ]);
-  expect(radioButtons.at(0).props("checked")).toBe(false);
-  expect(radioButtons.at(1).props("checked")).toBe(false);
-  expect(radioButtons.at(2).props("checked")).toBe(true);
 });

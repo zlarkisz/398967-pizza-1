@@ -9,7 +9,12 @@ const createComponent = (options) => {
 };
 
 it("should emit event when input in BaseInput", async () => {
-  createComponent();
+  createComponent({
+    propsData: {
+      viewIngredients: [],
+      pizzaName: "",
+    },
+  });
 
   const input = wrapper.findComponent(BaseInput);
   expect(input.exists()).toBe(true);

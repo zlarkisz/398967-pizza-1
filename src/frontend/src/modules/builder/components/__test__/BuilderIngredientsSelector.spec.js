@@ -87,7 +87,11 @@ afterEach(() => {
 });
 
 it("should call query action on created hook", () => {
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: { ingredientsCounts: [], selectedSauce: 1 },
+  });
 
   expect(actions.Builder.query).toHaveBeenCalled();
 });
@@ -103,7 +107,11 @@ it("should show 2 sauces radio buttons after commit sauces", () => {
     { root: true }
   );
 
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: { ingredientsCounts: [], selectedSauce: 1 },
+  });
 
   const radioButton = wrapper.findAllComponents(RadioButton);
 
@@ -124,7 +132,11 @@ it("when click on radioButton should emit event", async () => {
     { root: true }
   );
 
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: { ingredientsCounts: [], selectedSauce: 1 },
+  });
 
   const radioButtons = wrapper.findAllComponents(RadioButton);
 
@@ -133,8 +145,8 @@ it("when click on radioButton should emit event", async () => {
   await wrapper.vm.$nextTick();
 
   expect(wrapper.emitted().setPizzaSauce).toBeTruthy();
-  expect(wrapper.emitted().setPizzaSauce.length).toBe(2);
-  expect(wrapper.emitted().setPizzaSauce[1]).toEqual([
+  expect(wrapper.emitted().setPizzaSauce.length).toBe(1);
+  expect(wrapper.emitted().setPizzaSauce[0]).toEqual([
     {
       ingredient: "sauceId",
       value: 1,
@@ -155,7 +167,11 @@ it("should show 5 SelectorItem after commit ingredients", () => {
     { root: true }
   );
 
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: { ingredientsCounts: [], selectedSauce: 1 },
+  });
 
   const selectorItems = wrapper.findAllComponents(SelectorItem);
 
@@ -175,7 +191,11 @@ it("should show 5 ItemCounter after commit ingredients", () => {
     { root: true }
   );
 
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: { ingredientsCounts: [], selectedSauce: 1 },
+  });
 
   const itemCounters = wrapper.findAllComponents(ItemCounter);
 
@@ -193,7 +213,11 @@ it("when click on ItemCounter should emit event setPizzaIngredient && setViewIng
     { root: true }
   );
 
-  createComponent({ localVue, store });
+  createComponent({
+    localVue,
+    store,
+    propsData: { ingredientsCounts: [], selectedSauce: 1 },
+  });
 
   const itemCounters = wrapper.findAllComponents(ItemCounter);
 

@@ -18,25 +18,34 @@ describe("ItemCounter.vue", () => {
     );
   });
 
-  it("check emit and counter", async () => {
-    const wrapper = mount(ItemCounter);
+  it("check emit when click on plus button", async () => {
+    const wrapper = mount(ItemCounter, {
+      propsData: {
+        value: 0,
+      },
+    });
     const button = wrapper.find(".counter__button--plus");
-    const buttonMin = wrapper.find(".counter__button--minus");
-    const input = wrapper.find(".counter__input");
 
     await button.trigger("click");
 
-    expect(input.element.value).toBe("1");
     expect(wrapper.emitted().input).toBeTruthy();
     expect(wrapper.emitted().input.length).toBe(1);
     expect(wrapper.emitted().input[0]).toEqual([1]);
+  });
+
+  it("check emit when click on minus button", async () => {
+    const wrapper = mount(ItemCounter, {
+      propsData: {
+        value: 1,
+      },
+    });
+    const buttonMin = wrapper.find(".counter__button--minus");
 
     await buttonMin.trigger("click");
 
-    expect(input.element.value).toBe("0");
     expect(wrapper.emitted().input).toBeTruthy();
-    expect(wrapper.emitted().input.length).toBe(2);
-    expect(wrapper.emitted().input[1]).toEqual([0]);
+    expect(wrapper.emitted().input.length).toBe(1);
+    expect(wrapper.emitted().input[0]).toEqual([0]);
   });
 
   it("when entered string, value should emit 0", async () => {
