@@ -5,16 +5,15 @@
 
       <div class="sheet__content dough">
         <RadioButton
-          v-for="(item, i) in dough"
+          v-for="item in dough"
           :key="item.id"
-          v-model="selectedDough"
           :itemName="item.name"
           :radioValue="item.id"
-          :checked="active === i"
+          :checked="selectedDough === item.id"
           :itemDescription="item.description"
           :size="getSize(item.name)"
           name="dough"
-          @input="selectDough($event, i)"
+          @input="selectDough"
         />
       </div>
     </div>
@@ -35,11 +34,11 @@ export default {
     RadioButton,
   },
 
-  data() {
-    return {
-      active: null,
-      selectedDough: null,
-    };
+  props: {
+    selectedDough: {
+      type: Number,
+      required: true,
+    },
   },
 
   computed: {
@@ -53,8 +52,7 @@ export default {
       return name === "Тонкое" ? "light" : "large";
     },
 
-    selectDough(e, i) {
-      this.active = i;
+    selectDough(e) {
       this.$emit("setPizzaDough", {
         ingredient: "doughId",
         value: parseInt(e),
@@ -64,10 +62,6 @@ export default {
 
   async created() {
     await this.getDough("dough");
-  },
-
-  mounted() {
-    this.selectDough("1", 0);
   },
 };
 </script>

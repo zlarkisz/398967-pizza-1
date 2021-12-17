@@ -5,20 +5,29 @@
         Конструктор пиццы
       </BaseTitle>
 
-      <BuilderDoughSelector @setPizzaDough="setPizzaOptions" />
+      <BuilderDoughSelector
+        :selectedDough="pizza.doughId"
+        @setPizzaDough="setPizzaOptions"
+      />
 
-      <BuilderSizeSelector @setPizzaSize="setPizzaOptions" />
+      <BuilderSizeSelector
+        :selectedSize="pizza.sizeId"
+        @setPizzaSize="setPizzaOptions"
+      />
 
       <BuilderIngredientsSelector
+        :ingredientsCounts="pizza.ingredients"
+        :selectedSauce="pizza.sauceId"
         @setPizzaSauce="setPizzaOptions"
         @setPizzaIngredient="setPizzaIngredients"
-        @setViewIngredients="setViewIngredients"
       />
 
       <div class="pizza-view">
         <BuilderPizzaView
           @setPizzaName="setPizzaOptions"
-          :pizzaViewIngredients="pizzaViewIngredients"
+          @draggElement="setPizzaIngredients"
+          :viewIngredients="pizza.ingredients"
+          :pizzaName="pizza.name"
         />
 
         <BuilderPriceCounter
@@ -126,7 +135,7 @@ export default {
     },
 
     isPizzaisFull() {
-      const isElementFull = (e) => !!e;
+      const isElementFull = (e) => (Array.isArray(e) ? e.length : !!e);
 
       return Object.values(this.pizza).every(isElementFull);
     },
@@ -161,10 +170,6 @@ export default {
       } else {
         this.pizza.ingredients.push(ingredient);
       }
-    },
-
-    setViewIngredients(viewIngregients) {
-      this.pizzaViewIngredients = viewIngregients;
     },
 
     makePizza() {

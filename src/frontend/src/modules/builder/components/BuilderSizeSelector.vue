@@ -5,15 +5,14 @@
 
       <div class="sheet__content diameter">
         <RadioButton
-          v-for="(item, i) in sizes"
+          v-for="item in sizes"
           :key="item.id"
-          v-model="selectedSize"
           :itemName="item.name"
           :radioValue="item.multiplier"
-          :checked="active === i"
+          :checked="selectedSize === item.id"
           :size="getSize(item.multiplier)"
           name="diameter"
-          @input="selectSize($event, i)"
+          @input="selectSize"
         />
       </div>
     </div>
@@ -34,11 +33,11 @@ export default {
     RadioButton,
   },
 
-  data() {
-    return {
-      active: null,
-      selectedSize: null,
-    };
+  props: {
+    selectedSize: {
+      type: Number,
+      required: true,
+    },
   },
 
   computed: {
@@ -61,14 +60,9 @@ export default {
       }
     },
 
-    selectSize(e, i) {
-      this.active = i;
+    selectSize(e) {
       this.$emit("setPizzaSize", { ingredient: "sizeId", value: parseInt(e) });
     },
-  },
-
-  mounted() {
-    this.selectSize("1", 0);
   },
 
   async created() {

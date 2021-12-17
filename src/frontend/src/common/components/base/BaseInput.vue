@@ -10,7 +10,7 @@
       :name="name"
       :placeholder="placeholder"
       :required="required"
-      v-model="$attrs.value"
+      :value="value"
       @input="onInput"
     />
   </label>
@@ -59,6 +59,11 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+
+    value: {
+      type: String,
+      default: "",
     },
   },
 

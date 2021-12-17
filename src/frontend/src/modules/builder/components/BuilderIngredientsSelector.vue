@@ -8,16 +8,15 @@
           <p>Основной соус:</p>
 
           <RadioButton
-            v-for="(item, i) in sauces"
-            :key="i"
-            v-model="selectedSauce"
+            v-for="item in sauces"
+            :key="item.id"
             :itemName="item.name"
             :radioValue="item.id"
-            :checked="active === i"
+            :checked="selectedSauce === item.id"
             name="ingridients"
             labelType="radio"
             :inputVisuallyHidden="false"
-            @input="selectSauce($event, i)"
+            @input="selectSauce"
           />
         </div>
 
@@ -34,10 +33,11 @@
                 :imageClass="getImage(ingredient.name)"
                 :name="ingredient.name"
                 draggable
-                @dragstart.native="startDrag($event, getImage(ingredient.name))"
+                @dragstart.native="startDrag($event, ingredient.id)"
               />
 
               <ItemCounter
+                :value="getIngredientCount(ingredient.id)"
                 @input="setIngredient($event, ingredient)"
                 class="ingridients__counter"
               />
@@ -67,11 +67,15 @@ export default {
     SelectorItem,
   },
 
-  data() {
-    return {
-      active: null,
-      selectedSauce: null,
-    };
+  props: {
+    ingredientsCounts: {
+      type: Array,
+      required: true,
+    },
+    selectedSauce: {
+      type: Number,
+      required: true,
+    },
   },
 
   computed: {
@@ -81,10 +85,23 @@ export default {
   methods: {
     ...mapActions({ getItems: "Builder/query" }),
 
-    startDrag(evt, item) {
+    startDrag(evt, id) {
+      const currentIngredient =
+        this.ingredientsCounts.find((ingr) => ingr.ingredientId === id) || null;
+      const defaultIngredient = { ingredientId: id, quantity: 1 };
+      const draggedIngredient =
+        currentIngredient && currentIngredient.quantity + 1 !== 4
+          ? { ingredientId: id, quantity: currentIngredient.quantity + 1 }
+          : currentIngredient && currentIngredient.quantity + 1 === 4
+          ? { ingredientId: id, quantity: 3 }
+          : defaultIngredient;
+
       evt.dataTransfer.dropEffect = "move";
       evt.dataTransfer.effectAllowed = "move";
-      evt.dataTransfer.setData("item", item);
+      evt.dataTransfer.setData(
+        "ingredientId",
+        JSON.stringify(draggedIngredient)
+      );
     },
 
     getImage(name) {
@@ -124,8 +141,7 @@ export default {
       }
     },
 
-    selectSauce(e, i) {
-      this.active = i;
+    selectSauce(e) {
       this.$emit("setPizzaSauce", {
         ingredient: "sauceId",
         value: parseInt(e),
@@ -145,10 +161,13 @@ export default {
         count: e,
       });
     },
-  },
 
-  mounted() {
-    this.selectSauce("1", 0);
+    getIngredientCount(id) {
+      return (
+        this.ingredientsCounts.find((el) => el.ingredientId === id)?.quantity ||
+        0
+      );
+    },
   },
 
   async created() {

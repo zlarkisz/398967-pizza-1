@@ -4,7 +4,7 @@
       type="button"
       ref="min"
       :class="minusBtnClasses"
-      :disabled="counter <= 0"
+      :disabled="value <= 0"
       @click="reduceСounter()"
     >
       <span class="visually-hidden">Меньше</span>
@@ -16,7 +16,8 @@
       class="counter__input"
       :min="0"
       :max="3"
-      v-model="counter"
+      :value="value"
+      @input="onInput"
     />
 
     <button type="button" :class="plusBtnClasses" @click="incrementCounter()">
@@ -41,35 +42,12 @@ export default {
     },
   },
 
-  data() {
-    return {
-      counter: this.value || 0,
-    };
-  },
-
-  watch: {
-    counter: {
-      immidiate: true,
-      handler(v) {
-        let count = parseInt(v);
-
-        if (count < 0) {
-          this.counter = count = 0;
-        } else if (count > 3) {
-          this.counter = count = 3;
-        }
-
-        this.onInput(count);
-      },
-    },
-  },
-
   computed: {
     minusBtnClasses() {
       return [
         "counter__button",
         "counter__button--minus",
-        { "counter__button--disabled": this.counter <= 0 },
+        { "counter__button--disabled": this.value <= 0 },
       ];
     },
 
@@ -77,7 +55,7 @@ export default {
       return [
         "counter__button",
         "counter__button--plus",
-        { "counter__button--disabled": this.counter >= 3 },
+        { "counter__button--disabled": this.value >= 3 },
         this.plusBtnTheme && `counter__button--${this.plusBtnTheme}`,
       ];
     },
@@ -85,16 +63,18 @@ export default {
 
   methods: {
     reduceСounter() {
-      if (this.counter !== 0) this.counter--;
+      if (this.value !== 0) this.onInput(this.value - 1);
     },
 
     incrementCounter() {
-      if (this.counter !== 3) this.counter++;
+      if (this.value !== 3) this.onInput(this.value + 1);
     },
 
     onInput(value) {
-      !isNaN(value) && value !== "" && value > 0
-        ? this.$emit("input", value)
+      const val = parseInt(value);
+
+      !isNaN(val) && val !== "" && val > 0
+        ? this.$emit("input", val)
         : this.$emit("input", 0);
     },
   },

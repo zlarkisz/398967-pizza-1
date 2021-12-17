@@ -5,7 +5,7 @@
       placeholder="Введите название пиццы"
       name="pizza_name"
       hideLabel
-      v-model="pizzaName"
+      :value="pizzaName"
       @input="setName"
     />
 
@@ -17,11 +17,7 @@
     >
       <div class="pizza pizza--foundation--big-tomato">
         <transition-group name="list" tag="ul" class="pizza__wrapper">
-          <li
-            v-for="(el, i) in drops"
-            :key="`pizza__filling-${i}`"
-            :class="['pizza__filling', `pizza__filling--${el}`]"
-          />
+          <li v-for="el in fillingClasses" :key="el" :class="el" />
         </transition-group>
       </div>
     </div>
@@ -29,6 +25,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import BaseInput from "@/common/components/base/BaseInput";
 
 export default {
@@ -39,45 +36,100 @@ export default {
   },
 
   props: {
-    pizzaViewIngredients: {
-      type: Object,
-      default: () => {},
+    viewIngredients: {
+      type: Array,
+      required: true,
+    },
+    pizzaName: {
+      type: String,
+      required: true,
     },
   },
 
-  data() {
-    return {
-      pizzaName: "",
-      drops: [],
-      name: "",
-      count: 0,
-    };
-  },
+  computed: {
+    ...mapState("Builder", ["ingredients"]),
 
-  watch: {
-    pizzaViewIngredients(newValue) {
-      this.setDrop(newValue);
+    fillingClasses() {
+      return this.viewIngredients.flatMap((el) => {
+        if (el.quantity === 0) return [];
+
+        const currentName = this.ingredients.find(
+          (ing) => ing.id === el.ingredientId
+        ).name;
+
+        if (el.quantity === 1) {
+          return [
+            `pizza__filling pizza__filling--${this.getImage(currentName)}`,
+          ];
+        } else if (el.quantity === 2) {
+          return [
+            `pizza__filling pizza__filling--${this.getImage(currentName)}`,
+            `pizza__filling pizza__filling--${this.getImage(
+              currentName
+            )} pizza__filling--second`,
+          ];
+        } else if (el.quantity === 3) {
+          return [
+            `pizza__filling pizza__filling--${this.getImage(currentName)}`,
+            `pizza__filling pizza__filling--${this.getImage(
+              currentName
+            )} pizza__filling--second`,
+            `pizza__filling pizza__filling--${this.getImage(
+              currentName
+            )} pizza__filling--third`,
+          ];
+        }
+      });
     },
   },
 
   methods: {
     onDrop(evt) {
-      const draggedElement = evt.dataTransfer.getData("item");
-      if (this.drops.includes(draggedElement)) return;
-      this.drops.push(draggedElement);
+      const draggedElementId = JSON.parse(
+        evt.dataTransfer.getData("ingredientId")
+      );
+      this.$emit("draggElement", draggedElementId);
+      evt.dataTransfer.clearData();
     },
 
     setName(e) {
       this.$emit("setPizzaName", { ingredient: "name", value: e });
     },
 
-    setDrop({ name, count }) {
-      if (count !== 0) {
-        if (this.drops.includes(name)) return;
-
-        this.drops.push(name);
-      } else {
-        this.drops = this.drops.filter((el) => el !== name);
+    getImage(name) {
+      switch (name) {
+        case "Грибы":
+          return "mushrooms";
+        case "Чеддер":
+          return "cheddar";
+        case "Салями":
+          return "salami";
+        case "Ветчина":
+          return "ham";
+        case "Ананас":
+          return "ananas";
+        case "Бекон":
+          return "bacon";
+        case "Лук":
+          return "onion";
+        case "Чили":
+          return "chile";
+        case "Халапеньо":
+          return "jalapeno";
+        case "Маслины":
+          return "olives";
+        case "Томаты":
+          return "tomatoes";
+        case "Лосось":
+          return "salmon";
+        case "Моцарелла":
+          return "mozzarella";
+        case "Пармезан":
+          return "parmesan";
+        case "Блю чиз":
+          return "blue_cheese";
+        default:
+          return false;
       }
     },
   },
@@ -86,22 +138,26 @@ export default {
 
 <style lang="scss" scoped>
 .list-enter-active {
-  animation: roll-in 1.5s;
+  animation: roll-in 1s;
 }
 .list-leave-active {
-  animation: roll-in 1.5s reverse;
+  animation: roll-in 0.5s reverse;
 }
 @keyframes roll-in {
   0% {
-    transform: scale(0);
+    background-size: 100%;
     opacity: 0;
   }
   25% {
-    transform: scale(1.5);
+    background-size: 115%;
     opacity: 0.5;
   }
+  75% {
+    background-size: 130%;
+    opacity: 0.75;
+  }
   100% {
-    transform: scale(1);
+    background-size: 100%;
     opacity: 1;
   }
 }
