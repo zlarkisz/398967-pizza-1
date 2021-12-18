@@ -6,7 +6,7 @@
       </transition>
 
       <transition name="popup">
-        <Popup v-if="isOrderPlaced" />
+        <PopupManager v-if="isOrderPlaced" />
       </transition>
     </AppLayout>
   </div>
@@ -18,14 +18,14 @@ import { mapState } from "vuex";
 import { setAuth } from "@/common/helpers";
 
 import AppLayout from "@/layouts/AppLayout";
-import Popup from "@/common/components/Popup";
+import PopupManager from "@/common/components/PopupManager";
 
 export default {
   name: "App",
 
   components: {
     AppLayout,
-    Popup,
+    PopupManager,
   },
 
   computed: {

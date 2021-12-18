@@ -81,6 +81,7 @@ export default {
     },
 
     setPhone(state, phone) {
+      if (!state.order.address) return;
       state.order.address.comment = phone;
     },
 

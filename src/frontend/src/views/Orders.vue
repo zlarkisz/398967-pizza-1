@@ -33,8 +33,8 @@
 
         <ul class="order__list">
           <li
-            v-for="(pizza, i) in order.orderPizzas"
-            :key="`pizza-${i}`"
+            v-for="pizza in order.orderPizzas"
+            :key="pizza.name"
             class="order__item"
           >
             <div class="product">
@@ -189,13 +189,15 @@ export default {
         userId: order.userId,
         pizzas: [],
         misc: [],
-        address: {
-          name: order.orderAddress.name,
-          street: order.orderAddress.street,
-          building: order.orderAddress.building,
-          flat: order.orderAddress.flat,
-          comment: order.orderAddress.comment,
-        },
+        address: order.orderAddress
+          ? {
+              name: order.orderAddress.name,
+              street: order.orderAddress.street,
+              building: order.orderAddress.building,
+              flat: order.orderAddress.flat,
+              comment: order.orderAddress.comment,
+            }
+          : null,
       };
       let repeatedMiscs = [];
 
@@ -223,14 +225,16 @@ export default {
         finalOrder.pizzas.push(newPizza);
       });
 
-      order.orderMisc.forEach((misc) => {
-        let finalMisc = {
-          miscId: misc.miscId,
-          quantity: misc.quantity,
-        };
+      if (order.orderMisc) {
+        order.orderMisc.forEach((misc) => {
+          let finalMisc = {
+            miscId: misc.miscId,
+            quantity: misc.quantity,
+          };
 
-        repeatedMiscs.push(finalMisc);
-      });
+          repeatedMiscs.push(finalMisc);
+        });
+      }
 
       this.setCartMisc(repeatedMiscs);
       this.setOrder(finalOrder);

@@ -3,7 +3,11 @@
     <span :class="labelClass">{{ label }}</span>
 
     <select :name="name" class="select" @input="onInput">
-      <option v-for="(option, i) in options" :key="i" :value="option.value">
+      <option
+        v-for="option in options"
+        :key="option.text"
+        :value="option.value"
+      >
         {{ option.text }}
       </option>
     </select>

@@ -17,7 +17,7 @@
 import { mapMutations, mapState } from "vuex";
 
 export default {
-  name: "Popup",
+  name: "PopupManager",
 
   computed: {
     ...mapState("Auth", { isAuth: "isAuthenticated" }),

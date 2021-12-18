@@ -12,8 +12,8 @@
 
         <ul v-else class="cart-list sheet">
           <li
-            v-for="(pizza, i) in order.pizzas"
-            :key="i"
+            v-for="pizza in order.pizzas"
+            :key="pizza.name"
             class="cart-list__item"
           >
             <div class="product cart-list__product">
