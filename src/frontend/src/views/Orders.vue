@@ -85,7 +85,7 @@
           </li>
         </ul>
 
-        <p class="order__address">
+        <p v-if="order.orderAddress" class="order__address">
           {{ order.orderAddress.street }}, д.{{ order.orderAddress.building }},
           оф.{{ order.orderAddress.flat }}
 

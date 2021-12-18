@@ -14,7 +14,7 @@ export default Promise.all(routes).then((routes) => {
   router.beforeEach((to, from, next) => {
     const isAuth = JwtService.getToken();
 
-    if (to.fullPath === "/" && !isAuth) {
+    if (to.path === "/" && !isAuth) {
       return next();
     } else if (to.fullPath === "/cart" && !isAuth) {
       return next();

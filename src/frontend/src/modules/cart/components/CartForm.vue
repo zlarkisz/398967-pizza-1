@@ -23,10 +23,7 @@
         />
       </div>
 
-      <div
-        v-if="order.address.name !== 'Заберу сам'"
-        class="cart-form__address"
-      >
+      <div v-if="order.address !== null" class="cart-form__address">
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -135,55 +132,55 @@ export default {
       "setApartment",
       "setCartOption",
       "setDefaultCartOptions",
+      "setOrderAddressNull",
     ]),
     ...mapActions("Addresses", { getAddresses: "query" }),
 
     setReceiving(e) {
       const name = this.options.find((el) => el.value === parseInt(e));
 
-      this.setOrderReceiving(name.text);
-
-      if (name.value === 1 || name.value === 2) {
+      if (name.value === 1) {
+        this.setOrderAddressNull();
+      } else if (name.value === 2) {
         this.isDisabled = false;
+        this.setOrderReceiving(name.text);
       } else {
         this.isDisabled = true;
-      }
 
-      this.addresses.forEach((adr) => {
-        if (adr.name === name.text) {
-          this.phone = adr.comment;
-          this.setPhone(adr.comment);
-          this.street = adr.street;
-          this.setStreet(adr.street);
-          this.house = adr.building;
-          this.setHouse(adr.building);
-          this.flat = adr.flat;
-          this.setApartment(adr.flat);
-        } else {
-          this.phone = "";
-          this.street = "";
-          this.house = "";
-          this.flat = "";
-        }
-      });
+        this.setOrderReceiving(name.text);
+
+        this.addresses.forEach((adr) => {
+          if (adr.name === name.text) {
+            this.phone = adr.comment;
+            this.setPhone(adr.comment);
+            this.street = adr.street;
+            this.setStreet(adr.street);
+            this.house = adr.building;
+            this.setHouse(adr.building);
+            this.flat = adr.flat;
+            this.setApartment(adr.flat);
+          } else {
+            this.phone = "";
+            this.street = "";
+            this.house = "";
+            this.flat = "";
+          }
+        });
+      }
     },
   },
 
-  mounted() {
-    this.setOrderReceiving("Заберу сам");
-  },
-
-  async created() {
-    await this.getAddresses().then(() => {
-      if (this.isAuth) {
+  created() {
+    if (this.isAuth) {
+      this.getAddresses().then(() => {
         this.addresses.forEach((adr) => {
           this.setCartOption({
             value: this.options.length + 1,
             text: adr.name,
           });
         });
-      }
-    });
+      });
+    }
   },
 };
 </script>

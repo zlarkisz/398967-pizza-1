@@ -1,7 +1,7 @@
 <template>
   <div class="app-layout-main">
     <AppLayoutHeader />
-
+    <AppNotifications />
     <main class="layout">
       <div class="content">
         <slot />
@@ -14,12 +14,14 @@
 import { mapState } from "vuex";
 
 import AppLayoutHeader from "@/layouts/AppLayoutHeader";
+import AppNotifications from "@/common/components/AppNotifications";
 
 export default {
   name: "AppLayoutMain",
 
   components: {
     AppLayoutHeader,
+    AppNotifications,
   },
 
   computed: {

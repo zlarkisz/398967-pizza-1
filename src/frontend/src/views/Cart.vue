@@ -58,7 +58,7 @@
 
             <div class="cart-list__button">
               <button
-                @click="$router.push('/')"
+                @click="$router.push({ path: '/', query: { id: i } })"
                 type="button"
                 class="cart-list__edit"
               >
@@ -131,6 +131,8 @@ export default {
 
     isNewAddress() {
       const address = this.order.address;
+
+      if (address === null) return false;
 
       if (address.name === "Заберу сам" && address.comment.trim().length) {
         return false;

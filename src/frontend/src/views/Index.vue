@@ -99,6 +99,7 @@ export default {
 
   computed: {
     ...mapState("Builder", ["dough", "sizes", "sauces", "ingredients"]),
+    ...mapState("Cart", ["order"]),
 
     doughAmount() {
       const doughtPrice = this.dough.find((el) => el.id === this.pizza.doughId);
@@ -141,6 +142,26 @@ export default {
     },
   },
 
+  created() {
+    if (this.$route.query?.id) {
+      const currentPizza = this.order.pizzas[this.$route.query?.id];
+
+      if (!currentPizza) {
+        this.$router.replace("/");
+        return;
+      }
+
+      this.pizza.name = currentPizza.name;
+      this.pizza.sauceId = currentPizza.sauceId;
+      this.pizza.doughId = currentPizza.doughId;
+      this.pizza.sizeId = currentPizza.sizeId;
+      this.pizza.quantity = currentPizza.quantity;
+      this.pizza.ingredients = currentPizza.ingredients.map((el) => ({
+        ...el,
+      }));
+    }
+  },
+
   methods: {
     ...mapMutations({ setPizza: "Cart/setPizza" }),
 
@@ -173,7 +194,12 @@ export default {
     },
 
     makePizza() {
-      this.setPizza(this.pizza);
+      if (this.$route.query?.id) {
+        this.setPizza({ pizza: this.pizza, id: this.$route.query?.id });
+      } else {
+        this.setPizza({ pizza: this.pizza });
+      }
+
       this.$router.push("/cart");
     },
   },
