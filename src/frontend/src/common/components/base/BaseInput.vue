@@ -74,18 +74,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-input {
-  /* Chrome, Safari, Edge, Opera */
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-}
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-</style>

@@ -114,3 +114,8 @@
     background-image: url("~@/assets/img/filling-big/tomatoes.svg");
   }
 }
+
+.pizza-view {
+  display: flex;
+  flex-direction: column;
+}

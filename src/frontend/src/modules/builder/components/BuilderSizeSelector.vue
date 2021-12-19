@@ -7,8 +7,8 @@
         <RadioButton
           v-for="item in sizes"
           :key="item.id"
-          :itemName="item.name"
-          :radioValue="item.multiplier"
+          :item-name="item.name"
+          :radio-value="item.multiplier"
           :checked="selectedSize === item.id"
           :size="getSize(item.multiplier)"
           name="diameter"

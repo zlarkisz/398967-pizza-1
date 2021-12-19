@@ -7,10 +7,10 @@
         <RadioButton
           v-for="item in dough"
           :key="item.id"
-          :itemName="item.name"
-          :radioValue="item.id"
+          :item-name="item.name"
+          :radio-value="item.id"
           :checked="selectedDough === item.id"
-          :itemDescription="item.description"
+          :item-description="item.description"
           :size="getSize(item.name)"
           name="dough"
           @input="selectDough"

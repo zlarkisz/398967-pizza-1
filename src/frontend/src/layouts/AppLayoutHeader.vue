@@ -63,24 +63,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.sign-in-enter-active {
-  transition: all 0.5s ease;
-}
-
-.sign-in-leave-active {
-  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.sign-in-enter,
-.sign-in-leave-to {
-  transform: scale(0);
-  opacity: 0;
-}
-
-.header__login {
-  &:hover {
-    cursor: pointer;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

@@ -1,18 +1,15 @@
 <template>
   <div class="content__result">
-    <p :key="totalAmount">
-      Итого: {{ pizzaAmount ? pizzaPrice : totalAmount }} ₽
-    </p>
+    <p :key="totalAmount">Итого: {{ amount }} ₽</p>
     <button
       type="button"
       :class="[
         'button',
         {
-          'button--disabled':
-            isDisabled || (pizzaAmount ? !pizzaPrice : !totalAmount),
+          'button--disabled': disabled,
         },
       ]"
-      :disabled="isDisabled || (pizzaAmount ? !pizzaPrice : !totalAmount)"
+      :disabled="disabled"
       @click="$emit('makePizza')"
     >
       {{ buttonText }}
@@ -50,6 +47,17 @@ export default {
 
   computed: {
     ...mapGetters("Cart", ["totalAmount"]),
+
+    disabled() {
+      return (
+        this.isDisabled ||
+        (this.pizzaAmount ? !this.pizzaPrice : !this.totalAmount)
+      );
+    },
+
+    amount() {
+      return this.pizzaAmount ? this.pizzaPrice : this.totalAmount;
+    },
   },
 };
 </script>

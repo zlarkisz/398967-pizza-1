@@ -6,36 +6,36 @@
       </BaseTitle>
 
       <BuilderDoughSelector
-        :selectedDough="pizza.doughId"
+        :selected-dough="pizza.doughId"
         @setPizzaDough="setPizzaOptions"
       />
 
       <BuilderSizeSelector
-        :selectedSize="pizza.sizeId"
+        :selected-size="pizza.sizeId"
         @setPizzaSize="setPizzaOptions"
       />
 
       <BuilderIngredientsSelector
-        :ingredientsCounts="pizza.ingredients"
-        :selectedSauce="pizza.sauceId"
+        :ingredients-counts="pizza.ingredients"
+        :selected-sauce="pizza.sauceId"
         @setPizzaSauce="setPizzaOptions"
         @setPizzaIngredient="setPizzaIngredients"
       />
 
       <div class="pizza-view">
         <BuilderPizzaView
+          :view-ingredients="pizza.ingredients"
+          :pizza-name="pizza.name"
           @setPizzaName="setPizzaOptions"
           @draggElement="setPizzaIngredients"
-          :viewIngredients="pizza.ingredients"
-          :pizzaName="pizza.name"
         />
 
         <BuilderPriceCounter
-          pizzaAmount
-          :pizzaPrice="pizzaPrice"
+          pizza-amount
+          :pizza-price="pizzaPrice"
+          button-text="Готовьте!"
+          :is-disabled="!isPizzaisFull"
           @makePizza="makePizza"
-          buttonText="Готовьте!"
-          :isDisabled="!isPizzaisFull"
         />
       </div>
     </div>
@@ -55,8 +55,6 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 export default {
   name: "IndexHome",
 
-  layout: "AppLayoutMain",
-
   components: {
     BaseTitle,
     BuilderDoughSelector,
@@ -65,6 +63,8 @@ export default {
     BuilderPizzaView,
     BuilderPriceCounter,
   },
+
+  layout: "AppLayoutMain",
 
   data() {
     return {
@@ -80,21 +80,6 @@ export default {
       pizzaPrice: 0,
       pizzaViewIngredients: {},
     };
-  },
-
-  watch: {
-    pizza: {
-      deep: true,
-      immediate: true,
-      handler(v) {
-        if (v) {
-          v.price =
-            (this.doughAmount + this.sauceAmount + this.ingredientsAmount) *
-            this.priceModificator;
-          this.pizzaPrice = v.price;
-        }
-      },
-    },
   },
 
   computed: {
@@ -139,6 +124,21 @@ export default {
       const isElementFull = (e) => (Array.isArray(e) ? e.length : !!e);
 
       return Object.values(this.pizza).every(isElementFull);
+    },
+  },
+
+  watch: {
+    pizza: {
+      deep: true,
+      immediate: true,
+      handler(v) {
+        if (v) {
+          v.price =
+            (this.doughAmount + this.sauceAmount + this.ingredientsAmount) *
+            this.priceModificator;
+          this.pizzaPrice = v.price;
+        }
+      },
     },
   },
 
@@ -206,9 +206,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.pizza-view {
-  display: flex;
-  flex-direction: column;
-}
-</style>
+<style lang="scss" scoped></style>

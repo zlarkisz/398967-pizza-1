@@ -8,9 +8,15 @@
       :checked="checked"
       @input="onInput"
     />
-    <b v-if="itemName && itemDescription">{{ itemName }}</b>
-    <span v-if="itemName && itemDescription">{{ itemDescription }}</span>
-    <span v-if="itemName">{{ itemName }}</span>
+    <b v-if="itemName && itemDescription">
+      {{ itemName }}
+    </b>
+    <span v-if="itemName && itemDescription">
+      {{ itemDescription }}
+    </span>
+    <span v-if="itemName">
+      {{ itemName }}
+    </span>
   </label>
 </template>
 

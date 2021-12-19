@@ -103,11 +103,11 @@ import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 export default {
   name: "Orders",
 
-  layout: "AppLayoutDefault",
-
   components: {
     AppLayoutSidebar,
   },
+
+  layout: "AppLayoutDefault",
 
   data() {
     return {
@@ -121,6 +121,12 @@ export default {
     ...mapState("Orders", ["orders"]),
     ...mapState("Builder", ["dough", "sizes", "sauces", "ingredients"]),
     ...mapState("Cart", ["misc"]),
+  },
+
+  async created() {
+    await this.loadDefaultData();
+    await this.getMisc("misc");
+    await this.getOrders();
   },
 
   methods: {
@@ -335,12 +341,6 @@ export default {
 
       return totalOrderAmount;
     },
-  },
-
-  async created() {
-    await this.loadDefaultData();
-    await this.getMisc("misc");
-    await this.getOrders();
   },
 };
 </script>

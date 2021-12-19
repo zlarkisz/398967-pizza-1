@@ -10,12 +10,12 @@
           <RadioButton
             v-for="item in sauces"
             :key="item.id"
-            :itemName="item.name"
-            :radioValue="item.id"
+            :item-name="item.name"
+            :radio-value="item.id"
             :checked="selectedSauce === item.id"
             name="ingridients"
-            labelType="radio"
-            :inputVisuallyHidden="false"
+            label-type="radio"
+            :input-visually-hidden="false"
             @input="selectSauce"
           />
         </div>
@@ -30,7 +30,7 @@
               class="ingridients__item"
             >
               <SelectorItem
-                :imageClass="getImage(ingredient.name)"
+                :image-class="getImage(ingredient.name)"
                 :name="ingredient.name"
                 draggable
                 @dragstart.native="startDrag($event, ingredient.id)"
@@ -38,8 +38,8 @@
 
               <ItemCounter
                 :value="getIngredientCount(ingredient.id)"
-                @input="setIngredient($event, ingredient)"
                 class="ingridients__counter"
+                @input="setIngredient($event, ingredient)"
               />
             </li>
           </transition-group>

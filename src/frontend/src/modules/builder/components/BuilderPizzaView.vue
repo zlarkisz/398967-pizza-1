@@ -4,16 +4,16 @@
       label="Название пиццы"
       placeholder="Введите название пиццы"
       name="pizza_name"
-      hideLabel
+      hide-label
       :value="pizzaName"
       @input="setName"
     />
 
     <div
+      class="content__constructor"
       @drop="onDrop"
       @dragover.prevent
       @dragenter.prevent
-      class="content__constructor"
     >
       <div class="pizza pizza--foundation--big-tomato">
         <transition-group name="list" tag="ul" class="pizza__wrapper">

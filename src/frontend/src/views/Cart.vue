@@ -3,7 +3,7 @@
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
-          <BaseTitle :level="1" size="big">Корзина</BaseTitle>
+          <BaseTitle :level="1" size="big"> Корзина </BaseTitle>
         </div>
 
         <div v-if="!order.pizzas.length" class="sheet cart__empty">
@@ -47,7 +47,7 @@
 
             <ItemCounter
               :value="pizza.quantity"
-              plusBtnTheme="orange"
+              plus-btn-theme="orange"
               class="cart-list__counter"
               @input="setQuantity($event, i)"
             />
@@ -58,9 +58,9 @@
 
             <div class="cart-list__button">
               <button
-                @click="$router.push({ path: '/', query: { id: i } })"
                 type="button"
                 class="cart-list__edit"
+                @click="$router.push({ path: '/', query: { id: i } })"
               >
                 Изменить
               </button>
@@ -86,10 +86,10 @@
       </p>
 
       <BuilderPriceCounter
-        buttonText="Оформить заказ"
-        :isDisabled="isNewAddress || !order.pizzas.length"
-        @makePizza="submitOrder"
+        button-text="Оформить заказ"
+        :is-disabled="disabled"
         class="footer__price"
+        @makePizza="submitOrder"
       />
     </section>
   </form>
@@ -108,8 +108,6 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 export default {
   name: "Cart",
 
-  layout: "AppLayoutDefault",
-
   components: {
     BaseTitle,
     ItemCounter,
@@ -117,6 +115,8 @@ export default {
     CartAdditional,
     CartForm,
   },
+
+  layout: "AppLayoutDefault",
 
   data() {
     return {
@@ -150,6 +150,10 @@ export default {
       } else {
         return false;
       }
+    },
+
+    disabled() {
+      return this.isNewAddress || !this.order.pizzas.length;
     },
   },
 
@@ -229,10 +233,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.footer {
-  &__price {
-    margin: 0 0 0 auto;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

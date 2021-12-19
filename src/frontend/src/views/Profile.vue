@@ -3,7 +3,7 @@
     <AppLayoutSidebar />
 
     <div class="layout__title">
-      <BaseTitle :level="1" size="big">Мои данные</BaseTitle>
+      <BaseTitle :level="1" size="big"> Мои данные </BaseTitle>
     </div>
 
     <div class="user">
@@ -57,9 +57,9 @@
 
     <div v-if="change || add" class="layout__address">
       <form
-        @submit.prevent
         method="post"
         class="address-form address-form--opened sheet"
+        @submit.prevent
       >
         <div class="address-form__header">
           <b>Адрес №{{ addresses.length + 1 }}</b>
@@ -68,52 +68,52 @@
         <div class="address-form__wrapper">
           <div class="address-form__input">
             <BaseInput
+              v-model="address.name"
               label="Название адреса*"
               placeholder="Введите название адреса"
               name="addr-name"
               required
-              v-model="address.name"
             />
           </div>
 
           <div class="address-form__input address-form__input--size--normal">
             <BaseInput
+              v-model="address.street"
               label="Улица*"
               placeholder="Введите название улицы"
               name="addr-street"
               required
-              v-model="address.street"
             />
           </div>
 
           <div class="address-form__input address-form__input--size--small">
             <BaseInput
+              v-model="address.building"
               type="number"
               label="Дом*"
               placeholder="Введите номер дома"
               name="addr-house"
               required
-              v-model="address.building"
             />
           </div>
 
           <div class="address-form__input address-form__input--size--small">
             <BaseInput
+              v-model="address.flat"
               type="number"
               label="Квартира"
               placeholder="Введите № квартиры"
               name="addr-apartment"
-              v-model="address.flat"
             />
           </div>
 
           <div class="address-form__input">
             <BaseInput
+              v-model="address.comment"
               type="text"
               label="Комментарий"
               placeholder="Введите комментарий"
               name="addr-comment"
-              v-model="address.comment"
             />
           </div>
         </div>
@@ -157,13 +157,13 @@ import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 export default {
   name: "Profile",
 
-  layout: "AppLayoutDefault",
-
   components: {
     BaseTitle,
     BaseInput,
     AppLayoutSidebar,
   },
+
+  layout: "AppLayoutDefault",
 
   data() {
     return {
@@ -195,6 +195,10 @@ export default {
 
       return dis;
     },
+  },
+
+  async created() {
+    await this.query();
   },
 
   methods: {
@@ -243,17 +247,7 @@ export default {
       this.add = false;
     },
   },
-
-  async created() {
-    await this.query();
-  },
 };
 </script>
 
-<style lang="scss" scoped>
-.user {
-  &__phone {
-    margin-left: 30px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

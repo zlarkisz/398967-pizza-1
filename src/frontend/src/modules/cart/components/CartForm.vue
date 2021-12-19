@@ -5,20 +5,20 @@
         <BaseSelect
           class="cart-form__select"
           label="Получение заказа:"
-          labelClass="cart-form__label"
+          label-class="cart-form__label"
           :options="dynamicOptions"
           @input="setReceiving"
         />
 
         <BaseInput
+          v-model="phone"
           name="tel"
           type="number"
           label="Контактный телефон:"
           placeholder="+7 999-999-99-99"
-          bigLabel
+          big-label
           required
           :disabled="isDisabled"
-          v-model="phone"
           @input="setPhone"
         />
       </div>
@@ -28,35 +28,35 @@
 
         <div class="cart-form__input">
           <BaseInput
+            v-model="street"
             name="street"
             label="Улица*"
             required
             :disabled="isDisabled"
-            v-model="street"
             @input="setStreet"
           />
         </div>
 
         <div class="cart-form__input cart-form__input--small">
           <BaseInput
+            v-model="house"
             name="house"
             type="number"
             label="Дом*"
             required
             :disabled="isDisabled"
-            v-model="house"
             @input="setHouse"
           />
         </div>
 
         <div class="cart-form__input cart-form__input--small">
           <BaseInput
+            v-model="flat"
             name="apartment"
             type="number"
             label="Квартира"
             required
             :disabled="isDisabled"
-            v-model="flat"
             @input="setApartment"
           />
         </div>
@@ -185,11 +185,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.cart-form_top {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-</style>
+<style lang="scss" scoped></style>

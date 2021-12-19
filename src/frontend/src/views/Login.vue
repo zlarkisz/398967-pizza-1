@@ -5,27 +5,27 @@
     </router-link>
 
     <div class="sign-form__title">
-      <BaseTitle :level="1">Авторизуйтесь на сайте</BaseTitle>
+      <BaseTitle :level="1"> Авторизуйтесь на сайте </BaseTitle>
     </div>
 
     <form @submit.prevent.stop="submitHandler">
       <div class="sign-form__input">
         <BaseInput
+          v-model="user.email"
           label="E-mail"
           placeholder="example@mail.ru"
           name="email"
           type="email"
-          v-model="user.email"
         />
       </div>
 
       <div class="sign-form__input">
         <BaseInput
+          v-model="user.password"
           label="Пароль"
           placeholder="***********"
           name="pass"
           type="password"
-          v-model="user.password"
         />
       </div>
 
@@ -43,12 +43,12 @@ import BaseInput from "@/common/components/base/BaseInput";
 export default {
   name: "Login",
 
-  layout: "AppLayoutMain",
-
   components: {
     BaseTitle,
     BaseInput,
   },
+
+  layout: "AppLayoutMain",
 
   data() {
     return {

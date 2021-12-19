@@ -30,8 +30,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.app-layout-main {
-  min-height: 100vh;
-}
-</style>
+<style lang="scss" scoped></style>

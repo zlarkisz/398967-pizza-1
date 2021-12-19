@@ -10,7 +10,7 @@
         <div class="additional-list__wrapper">
           <ItemCounter
             :value="add.count"
-            plusBtnTheme="orange"
+            plus-btn-theme="orange"
             class="additional-list__counter"
             @input="onChangeAmount({ count: $event, id: add.id, list: 'misc' })"
           />

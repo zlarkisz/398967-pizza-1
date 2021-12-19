@@ -21,18 +21,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.route-enter-active {
-  transition: all 0.5s ease;
-}
-
-.route-leave-active {
-  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.route-enter,
-.route-leave-to {
-  transform: translateX(100px);
-  opacity: 1;
-}
-</style>
+<style lang="scss" scoped></style>

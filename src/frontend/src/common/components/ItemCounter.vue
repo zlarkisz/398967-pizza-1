@@ -1,8 +1,8 @@
 <template>
   <div class="counter counter--orange">
     <button
-      type="button"
       ref="min"
+      type="button"
       :class="minusBtnClasses"
       :disabled="value <= 0"
       @click="reduceСounter()"
@@ -81,17 +81,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.counter {
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Firefox */
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

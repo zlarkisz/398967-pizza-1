@@ -1,6 +1,8 @@
 <template>
   <label>
-    <span :class="labelClass">{{ label }}</span>
+    <span :class="labelClass">
+      {{ label }}
+    </span>
 
     <select :name="name" class="select" @input="onInput">
       <option
