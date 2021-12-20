@@ -53,3 +53,24 @@
   transform: translateX(100px);
   opacity: 1;
 }
+
+.list-enter-active {
+  animation: roll-in 0.5s;
+}
+.list-leave-active {
+  animation: roll-in 0.5s reverse;
+}
+@keyframes roll-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

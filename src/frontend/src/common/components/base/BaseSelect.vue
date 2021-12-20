@@ -4,10 +4,13 @@
       {{ label }}
     </span>
 
-    <select :name="name" class="select" @input="onInput">
+    <select :name="name"
+            class="select"
+            @input="onInput"
+    >
       <option
         v-for="option in options"
-        :key="option.text"
+        :key="option.value"
         :value="option.value"
       >
         {{ option.text }}
@@ -50,4 +53,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/select";
+</style>

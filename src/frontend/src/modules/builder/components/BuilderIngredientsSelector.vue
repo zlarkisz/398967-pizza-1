@@ -23,7 +23,10 @@
         <div class="ingridients__filling">
           <p>Начинка:</p>
 
-          <transition-group name="list" tag="ul" class="ingridients__list">
+          <transition-group name="list"
+                            tag="ul"
+                            class="ingridients__list"
+          >
             <li
               v-for="(ingredient, i) in ingredients"
               :key="`ingredient-${i}`"
@@ -72,6 +75,7 @@ export default {
       type: Array,
       required: true,
     },
+
     selectedSauce: {
       type: Number,
       required: true,
@@ -80,6 +84,11 @@ export default {
 
   computed: {
     ...mapState("Builder", ["sauces", "ingredients"]),
+  },
+
+  async created() {
+    await this.getItems("sauces");
+    await this.getItems("ingredients");
   },
 
   methods: {
@@ -169,33 +178,10 @@ export default {
       );
     },
   },
-
-  async created() {
-    await this.getItems("sauces");
-    await this.getItems("ingredients");
-  },
 };
 </script>
 
 <style lang="scss" scoped>
-.list-enter-active {
-  animation: roll-in 0.5s;
-}
-.list-leave-active {
-  animation: roll-in 0.5s reverse;
-}
-@keyframes roll-in {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  25% {
-    transform: scale(1.5);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+@import "~@/assets/scss/blocks/transitions";
+@import "~@/assets/scss/blocks/ingridients";
 </style>

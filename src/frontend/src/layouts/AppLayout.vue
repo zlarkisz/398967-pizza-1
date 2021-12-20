@@ -1,5 +1,8 @@
 <template>
-  <transition name="route" mode="out-in">
+  <transition
+    name="route"
+    mode="out-in"
+  >
     <component :is="layout">
       <slot />
     </component>

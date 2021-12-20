@@ -23,7 +23,9 @@
         />
       </div>
 
-      <div v-if="order.address !== null" class="cart-form__address">
+      <div v-if="order.address !== null"
+           class="cart-form__address"
+      >
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -89,19 +91,9 @@ export default {
         { value: 1, text: "Заберу сам" },
         { value: 2, text: "Новый адрес" },
       ],
+
       isDisabled: false,
     };
-  },
-
-  watch: {
-    $route: {
-      immediate: true,
-      handler(to, from) {
-        if (to !== from) {
-          this.setDefaultCartOptions(this.defaultOptions);
-        }
-      },
-    },
   },
 
   computed: {
@@ -123,6 +115,30 @@ export default {
     },
   },
 
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        if (to !== from) {
+          this.setDefaultCartOptions(this.defaultOptions);
+        }
+      },
+    },
+  },
+
+  created() {
+    if (this.isAuth) {
+      this.getAddresses().then(() => {
+        this.addresses.forEach((adr) => {
+          this.setCartOption({
+            value: this.options.length + 1,
+            text: adr.name,
+          });
+        });
+      });
+    }
+  },
+
   methods: {
     ...mapMutations("Cart", [
       "setOrderReceiving",
@@ -134,6 +150,7 @@ export default {
       "setDefaultCartOptions",
       "setOrderAddressNull",
     ]),
+
     ...mapActions("Addresses", { getAddresses: "query" }),
 
     setReceiving(e) {
@@ -169,20 +186,10 @@ export default {
       }
     },
   },
-
-  created() {
-    if (this.isAuth) {
-      this.getAddresses().then(() => {
-        this.addresses.forEach((adr) => {
-          this.setCartOption({
-            value: this.options.length + 1,
-            text: adr.name,
-          });
-        });
-      });
-    }
-  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/cart";
+@import "~@/assets/scss/blocks/cart-form";
+</style>

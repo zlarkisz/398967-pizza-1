@@ -1,16 +1,24 @@
 <template>
-  <form class="layout-form" @submit.prevent>
+  <form class="layout-form"
+        @submit.prevent
+  >
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
-          <BaseTitle :level="1" size="big"> Корзина </BaseTitle>
+          <BaseTitle :level="1"
+                     size="big"
+          > Корзина </BaseTitle>
         </div>
 
-        <div v-if="!order.pizzas.length" class="sheet cart__empty">
+        <div v-if="!order.pizzas.length"
+             class="sheet cart__empty"
+        >
           <p>В корзине нет ни одного товара</p>
         </div>
 
-        <ul v-else class="cart-list sheet">
+        <ul v-else
+            class="cart-list sheet"
+        >
           <li
             v-for="pizza in order.pizzas"
             :key="pizza.name"
@@ -24,7 +32,9 @@
                 height="56"
                 alt="pizza"
               />
-              <div v-if="pizza.name" class="product__text">
+              <div v-if="pizza.name"
+                   class="product__text"
+              >
                 <h2>{{ pizza.name }}</h2>
                 <ul>
                   <li>
@@ -76,7 +86,9 @@
 
     <section class="footer">
       <div class="footer__more">
-        <router-link to="/" class="button button--border button--arrow">
+        <router-link to="/"
+                     class="button button--border button--arrow"
+        >
           Хочу еще одну
         </router-link>
       </div>
@@ -106,6 +118,7 @@ import CartForm from "@/modules/cart/components/CartForm";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
+  /* eslint-disable-next-line */
   name: "Cart",
 
   components: {
@@ -233,4 +246,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/cart";
+@import "~@/assets/scss/blocks/cart-form";
+@import "~@/assets/scss/blocks/cart-list";
+</style>

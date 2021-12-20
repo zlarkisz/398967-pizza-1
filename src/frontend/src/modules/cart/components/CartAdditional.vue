@@ -1,9 +1,16 @@
 <template>
   <div class="cart__additional">
     <ul class="additional-list">
-      <li v-for="add in misc" :key="add.id" class="additional-list__item sheet">
+      <li v-for="add in misc"
+          :key="add.id"
+          class="additional-list__item sheet"
+      >
         <p class="additional-list__description">
-          <img :src="add.image" width="39" height="60" :alt="add.name" />
+          <img :src="add.image"
+               width="39"
+               height="60"
+               :alt="add.name"
+          />
           <span>{{ add.name }}</span>
         </p>
 
@@ -40,6 +47,12 @@ export default {
     ...mapState("Cart", ["misc"]),
   },
 
+  async created() {
+    if (!this.misc.length) {
+      await this.getMisc("misc");
+    }
+  },
+
   methods: {
     ...mapActions({ getMisc: "Cart/query" }),
 
@@ -49,13 +62,10 @@ export default {
       this.changeAmount({ id, count, list });
     },
   },
-
-  async created() {
-    if (!this.misc.length) {
-      await this.getMisc("misc");
-    }
-  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/cart";
+@import "~@/assets/scss/blocks/additional-list";
+</style>

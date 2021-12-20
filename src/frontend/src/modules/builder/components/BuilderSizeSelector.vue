@@ -44,6 +44,10 @@ export default {
     ...mapState("Builder", ["sizes"]),
   },
 
+  async created() {
+    await this.getSizes("sizes");
+  },
+
   methods: {
     ...mapActions({ getSizes: "Builder/query" }),
 
@@ -64,11 +68,9 @@ export default {
       this.$emit("setPizzaSize", { ingredient: "sizeId", value: parseInt(e) });
     },
   },
-
-  async created() {
-    await this.getSizes("sizes");
-  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/layout/content";
+</style>

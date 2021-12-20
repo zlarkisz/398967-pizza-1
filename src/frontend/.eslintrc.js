@@ -2,8 +2,9 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    jest: true,
   },
-  extends: ["plugin:vue/essential", "eslint:recommended", "@vue/prettier"],
+  extends: ["plugin:vue/essential", "eslint:recommended"],
   parserOptions: {
     parser: "babel-eslint",
   },
@@ -11,14 +12,14 @@ module.exports = {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "vue/attribute-hyphenation": "error",
-    // "vue/max-attributes-per-line": [
-    //   "error",
-    //   {
-    //     singleline: {
-    //       max: 0,
-    //     },
-    //   },
-    // ],
+    "vue/max-attributes-per-line": [
+      "error",
+      {
+        singleline: {
+          max: 1,
+        },
+      },
+    ],
     "vue/attributes-order": [
       "error",
       {
@@ -39,44 +40,7 @@ module.exports = {
       },
     ],
     "vue/order-in-components": [
-      "error",
-      {
-        order: [
-          "el",
-          "name",
-          "key",
-          "parent",
-          "functional",
-          ["delimiters", "comments"],
-          ["components", "directives", "filters"],
-          "extends",
-          "mixins",
-          ["provide", "inject"],
-          "ROUTER_GUARDS",
-          "layout",
-          "middleware",
-          "validate",
-          "scrollToTop",
-          "transition",
-          "loading",
-          "inheritAttrs",
-          "model",
-          ["props", "propsData"],
-          "emits",
-          "setup",
-          "asyncData",
-          "data",
-          "fetch",
-          "head",
-          "computed",
-          "watch",
-          "watchQuery",
-          "LIFECYCLE_HOOKS",
-          "methods",
-          ["template", "render"],
-          "renderError",
-        ],
-      },
+      "error"
     ],
     "vue/new-line-between-multi-line-property": [
       "error",
@@ -84,6 +48,20 @@ module.exports = {
         minLineOfMultilineProperty: 2,
       },
     ],
+    "vue/html-indent": ["error", 2, {
+      "attribute": 1,
+      "baseIndent": 1,
+      "closeBracket": 0,
+      "alignAttributesVertically": true,
+      "ignores": []
+    }],
+    "vue/html-closing-bracket-newline": ["error", {
+      "singleline": "never",
+      "multiline": "always"
+    }],
+    "vue/no-reserved-component-names": ["error", {
+      "disallowVueBuiltInComponents": true,
+    }]
   },
   overrides: [
     {

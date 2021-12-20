@@ -1,7 +1,14 @@
 <template>
-  <form action="#" method="post">
+  <form
+    action="#"
+    method="post"
+  >
     <div class="content__wrapper">
-      <BaseTitle :level="1" size="big" :sheet="false">
+      <BaseTitle
+        :level="1"
+        size="big"
+        :sheet="false"
+      >
         Конструктор пиццы
       </BaseTitle>
 
@@ -77,6 +84,7 @@ export default {
         ingredients: [],
         price: 0,
       },
+
       pizzaPrice: 0,
       pizzaViewIngredients: {},
     };

@@ -130,7 +130,6 @@ it("should calculate price", async () => {
   const dough = wrapper.findComponent(BuilderDoughSelector);
   const size = wrapper.findComponent(BuilderSizeSelector);
   const ingredients = wrapper.findComponent(BuilderIngredientsSelector);
-  const view = wrapper.findComponent(BuilderPizzaView);
   const counter = wrapper.findComponent(BuilderPriceCounter);
 
   dough.vm.$emit("setPizzaDough", { ingredient: "doughId", value: 2 });

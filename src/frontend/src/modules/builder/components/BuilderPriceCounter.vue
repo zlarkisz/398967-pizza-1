@@ -62,4 +62,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/button";
+@import "~@/assets/scss/layout/content";
+</style>

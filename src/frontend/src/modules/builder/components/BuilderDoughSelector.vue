@@ -45,6 +45,10 @@ export default {
     ...mapState("Builder", ["dough"]),
   },
 
+  async created() {
+    await this.getDough("dough");
+  },
+
   methods: {
     ...mapActions({ getDough: "Builder/query" }),
 
@@ -58,10 +62,6 @@ export default {
         value: parseInt(e),
       });
     },
-  },
-
-  async created() {
-    await this.getDough("dough");
   },
 };
 </script>

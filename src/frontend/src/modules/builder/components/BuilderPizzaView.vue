@@ -16,8 +16,14 @@
       @dragenter.prevent
     >
       <div class="pizza pizza--foundation--big-tomato">
-        <transition-group name="list" tag="ul" class="pizza__wrapper">
-          <li v-for="el in fillingClasses" :key="el" :class="el" />
+        <transition-group name="list"
+                          tag="ul"
+                          class="pizza__wrapper"
+        >
+          <li v-for="el in fillingClasses"
+              :key="el"
+              :class="el"
+          />
         </transition-group>
       </div>
     </div>
@@ -40,6 +46,7 @@ export default {
       type: Array,
       required: true,
     },
+
     pizzaName: {
       type: String,
       required: true,
@@ -137,6 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/scss/blocks/pizza";
 .list-enter-active {
   animation: roll-in 1s;
 }

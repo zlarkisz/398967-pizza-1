@@ -1,7 +1,9 @@
 <template>
   <header class="header">
     <div class="header__logo">
-      <router-link to="/" class="logo">
+      <router-link to="/"
+                   class="logo"
+      >
         <img
           src="@/assets/img/logo.svg"
           alt="V!U!E! Pizza logo"
@@ -14,14 +16,27 @@
       <router-link to="/cart">{{ totalAmount }} ₽</router-link>
     </div>
     <div class="header__user">
-      <transition name="sign-in" mode="out-in">
-        <router-link v-if="user" to="/profile">
-          <img :src="user.avatar" alt="Василий Ложкин" width="32" height="32" />
+      <transition name="sign-in"
+                  mode="out-in"
+      >
+        <router-link v-if="user"
+                     to="/profile"
+        >
+          <img :src="user.avatar"
+               alt="Василий Ложкин"
+               width="32"
+               height="32"
+          />
           <span>{{ user.name }}</span>
         </router-link>
       </transition>
-      <transition name="sign-in" mode="out-in">
-        <a :key="dynamicLink" class="header__login" @click="log">
+      <transition name="sign-in"
+                  mode="out-in"
+      >
+        <a :key="dynamicLink"
+           class="header__login"
+           @click="log"
+        >
           <span>{{ dynamicLink }}</span>
         </a>
       </transition>
@@ -44,6 +59,7 @@ export default {
       isLogin: (state) => state.Auth.isAuthenticated,
       user: (state) => state.Auth.user,
     }),
+
     dynamicLink() {
       return this.user ? "Выйти" : "Войти";
     },
@@ -63,4 +79,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/layout/header";
+</style>

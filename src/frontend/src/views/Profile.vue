@@ -3,7 +3,9 @@
     <AppLayoutSidebar />
 
     <div class="layout__title">
-      <BaseTitle :level="1" size="big"> Мои данные </BaseTitle>
+      <BaseTitle :level="1"
+                 size="big"
+      > Мои данные </BaseTitle>
     </div>
 
     <div class="user">
@@ -23,10 +25,14 @@
           height="72"
         />
       </picture>
-      <div v-if="user && user.name" class="user__name">
+      <div v-if="user && user.name"
+           class="user__name"
+      >
         <span>{{ user.name }}</span>
       </div>
-      <p v-if="user && user.phone" class="user__phone">
+      <p v-if="user && user.phone"
+         class="user__phone"
+      >
         Контактный телефон: <span>{{ user.phone }}</span>
       </p>
     </div>
@@ -42,7 +48,10 @@
             Адрес №{{ address.id }}. {{ address.name }}
           </b>
           <div class="address-form__edit">
-            <button type="button" class="icon" @click="changeAddress(address)">
+            <button type="button"
+                    class="icon"
+                    @click="changeAddress(address)"
+            >
               <span class="visually-hidden">Изменить адрес</span>
             </button>
           </div>
@@ -55,7 +64,9 @@
       </div>
     </div>
 
-    <div v-if="change || add" class="layout__address">
+    <div v-if="change || add"
+         class="layout__address"
+    >
       <form
         method="post"
         class="address-form address-form--opened sheet"
@@ -139,8 +150,13 @@
       </form>
     </div>
 
-    <div v-if="!add && !change" class="layout__button">
-      <button type="button" class="button button--border" @click="addAddress">
+    <div v-if="!add && !change"
+         class="layout__button"
+    >
+      <button type="button"
+              class="button button--border"
+              @click="addAddress"
+      >
         Добавить новый адрес
       </button>
     </div>
@@ -155,6 +171,7 @@ import BaseInput from "@/common/components/base/BaseInput";
 import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 
 export default {
+  /* eslint-disable-next-line */
   name: "Profile",
 
   components: {
@@ -175,6 +192,7 @@ export default {
         flat: "",
         comment: "",
       },
+
       change: false,
       add: false,
     };
@@ -250,4 +268,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/user";
+@import "~@/assets/scss/blocks/button";
+@import "~@/assets/scss/blocks/address-form";
+@import "~@/assets/scss/layout/layout";
+</style>

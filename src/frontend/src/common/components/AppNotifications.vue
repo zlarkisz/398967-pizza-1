@@ -1,5 +1,7 @@
 <template>
-  <div v-if="notifications.length" class="notification__wrapper">
+  <div v-if="notifications.length"
+       class="notification__wrapper"
+  >
     <div
       v-for="{ text, type } in notifications"
       :key="type"
@@ -20,4 +22,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/notification";
+</style>

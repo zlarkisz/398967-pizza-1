@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <AppLayout>
-      <transition name="route" mode="out-in">
+      <transition name="route"
+                  mode="out-in"
+      >
         <router-view />
       </transition>
 
@@ -21,6 +23,7 @@ import AppLayout from "@/layouts/AppLayout";
 import PopupManager from "@/common/components/PopupManager";
 
 export default {
+  /* eslint-disable-next-line */
   name: "App",
 
   components: {

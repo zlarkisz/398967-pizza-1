@@ -20,7 +20,10 @@
       @input="onInput"
     />
 
-    <button type="button" :class="plusBtnClasses" @click="incrementCounter()">
+    <button type="button"
+            :class="plusBtnClasses"
+            @click="incrementCounter()"
+    >
       <span class="visually-hidden">Больше</span>
     </button>
   </div>
@@ -81,4 +84,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/input";
+@import "~@/assets/scss/blocks/counter";
+@import "~@/assets/scss/blocks/button";
+</style>

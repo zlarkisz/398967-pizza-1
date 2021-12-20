@@ -5,7 +5,10 @@
       <h1 class="title title--big">История заказов</h1>
     </div>
     <template v-if="orders.length">
-      <section v-for="order in orders" :key="order.id" class="sheet order">
+      <section v-for="order in orders"
+               :key="order.id"
+               class="sheet order"
+      >
         <div class="order__wrapper">
           <div class="order__number">
             <b>Заказ #{{ order.id }}</b>
@@ -25,7 +28,10 @@
             </button>
           </div>
           <div class="order__button">
-            <button type="button" class="button" @click="submitOrder(order)">
+            <button type="button"
+                    class="button"
+                    @click="submitOrder(order)"
+            >
               Повторить
             </button>
           </div>
@@ -71,7 +77,9 @@
         </ul>
 
         <ul class="order__additional">
-          <li v-for="misc in order.orderMisc" :key="`misk-${misc.id}`">
+          <li v-for="misc in order.orderMisc"
+              :key="`misk-${misc.id}`"
+          >
             <img
               :src="setMisc(misc.miscId, image)"
               width="20"
@@ -85,7 +93,9 @@
           </li>
         </ul>
 
-        <p v-if="order.orderAddress" class="order__address">
+        <p v-if="order.orderAddress"
+           class="order__address"
+        >
           {{ order.orderAddress.street }}, д.{{ order.orderAddress.building }},
           оф.{{ order.orderAddress.flat }}
 
@@ -101,6 +111,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 import AppLayoutSidebar from "@/layouts/AppLayoutSidebar";
 
 export default {
+  /* eslint-disable-next-line */
   name: "Orders",
 
   components: {
@@ -345,4 +356,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/order";
+@import "~@/assets/scss/blocks/button";
+</style>

@@ -1,13 +1,17 @@
 <template>
   <div class="popup">
-    <a class="close" @click="closePopup">
+    <a class="close"
+       @click="closePopup"
+    >
       <span class="visually-hidden">Закрыть попап</span>
     </a>
     <div class="popup__title">
       <h2 class="title">Спасибо за заказ</h2>
     </div>
     <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
-    <div class="popup__button" @click="closePopup">
+    <div class="popup__button"
+         @click="closePopup"
+    >
       <a class="button">Отлично, я жду!</a>
     </div>
   </div>
@@ -35,4 +39,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/button";
+@import "~@/assets/scss/layout/popup";
+</style>

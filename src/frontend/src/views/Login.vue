@@ -1,6 +1,8 @@
 <template>
   <div class="sign-form">
-    <router-link to="/" class="close close--white">
+    <router-link to="/"
+                 class="close close--white"
+    >
       <span class="visually-hidden">Закрыть форму авторизации</span>
     </router-link>
 
@@ -29,7 +31,9 @@
         />
       </div>
 
-      <button type="submit" class="button">Авторизоваться</button>
+      <button type="submit"
+              class="button"
+      >Авторизоваться</button>
     </form>
   </div>
 </template>
@@ -41,6 +45,7 @@ import BaseTitle from "@/common/components/base/BaseTitle";
 import BaseInput from "@/common/components/base/BaseInput";
 
 export default {
+  /* eslint-disable-next-line */
   name: "Login",
 
   components: {
@@ -72,4 +77,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/button";
+@import "~@/assets/scss/blocks/address-form";
+@import "~@/assets/scss/layout/sign-form";
+</style>
