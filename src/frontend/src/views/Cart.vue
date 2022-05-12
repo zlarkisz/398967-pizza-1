@@ -20,7 +20,7 @@
             class="cart-list sheet"
         >
           <li
-            v-for="pizza in order.pizzas"
+            v-for="(pizza, i) in order.pizzas"
             :key="pizza.name"
             class="cart-list__item"
           >
